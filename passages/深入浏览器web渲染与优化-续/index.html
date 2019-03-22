@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="Dong Yuanxin" />
+  
+  
+  <title>深入浏览器web渲染与优化-续 | AirCloud Blog</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="性能优化," />
+  
+
+  
+  <meta name="description" content="Sheldon_lu的小站">
+
+  
+
+  <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"Hyq9wkH495DgNHWhDQCOfQSp-gzGzoHsz","appkey":"WaR7nrzhliHj9aVwdQzkdlGd","comment":true,"count":true},
+    welcome: {"enable":true,"interval":30},
+    start_time: "2019-03-15",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "Dong Yuanxin",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+  
+</head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">SHELDON</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 安静写些东西</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/sheldon-lu/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2017-08-31
+    </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    深入浏览器web渲染与优化-续
+  </h1>
+  
+  <article class="passage-article">
+    <blockquote>
+<p>本篇文章接上一篇继续分析浏览器web渲染相关内容，但是更侧重优化工作。当然，主要还是基于X5来分析</p>
+</blockquote>
+<p>上一篇文章我们主要是从浏览器内核的线程角度来分析相关工作的，对整体流程没有宏观清晰的分析，这次我们从宏观到微观，从整体到局部，来进行分析和探究可以优化的地方。</p>
+<p>首先，一个网页的加载，需要什么工作呢？</p>
+<p><img src="https://www.10000h.top/images/data_img/webRender2/P1.png" alt=""></p>
+<p>这个工作可以分为三部分：云(云端)、管(传输链路)、端(客户端)，从云经过管传到端，然后经过加载解析排版渲染，从而完成网页从请求到呈现的工作(当然，我们这里没有涉及协议的分析，实际上根据协议不同，这个传输可能是多次传输)。</p>
+<p>数据到端之后，又经过以下过程，才最终显示出来：</p>
+<p><img src="https://www.10000h.top/images/data_img/webRender2/P2.png" alt=""></p>
+<p>在这个过程中，我们怎么衡量性能呢？</p>
+<p>固然，我们有诸多浏览器提供的API，这些API能让我们获取到较多信息并且记录上报：</p>
+<p><img src="https://www.10000h.top/images/data_img/webRender2/P3.png" alt=""></p>
+<p>但是这些具体数值表达的含义有限，并且他们实际上也不等于用户体验。</p>
+<p>所以，找到一个科学并且可以检测的标准，并且这个标准可以和用户体验有正相关关系，这个是至关重要的。</p>
+<p>目前这个标准是<strong>首屏时间</strong>(就之前自己的了解，具体的还区分首屏展示时间和首屏可交互时间，但是这里讲师不做区分，就下文提供的测算方法而言，显然这里指的是首屏展示时间，<em>另外，展示后到用户的第一次操作都会有一个至少1s的延时，毕竟用户手指按下的动作是会比较慢的，这个时间js的交互都能完成了，所以首屏展示时间更加重要–from dorsywang</em>)</p>
+<p>那么<strong>首屏时间</strong>怎么测量呢？</p>
+<p><strong>拿摄像机快速拍照测量的</strong>。这个答案可能有些吃惊，但是目前X5内核业务的相关开发人员的确就是采用这种方式测算的，通过高速相机不断拍照，然后辅助图像识别，判断首屏是否已经加载完成，最终再通过人工回归校对。<br>因为如果采用程序检测的话，基本上都会对过程本身造成一定的影响，所以没有采用这种方式。<br>当然，通过摄像+图像识别的这种方式也是有一定的弊端，比如说，假设首屏有一个图片，而图片的加载通常比较慢并且不影响css、js的加载，这个时候直接通过图片识别的话就可能会有一定的误判。</p>
+<p>知道了怎么测算，那么接下来分析影响这个指标的一些原因：</p>
+<ul>
+<li>资源阻塞内核线程</li>
+</ul>
+<p>我们知道，一般情况下，css和JS是阻塞页面的，当然也会对首屏时间造成影响。</p>
+<p>对这个问题，X5内核有关键子资源(阻塞资源)缓存，这里的关键资源，指的是内核经过统计判断得出的业务常用的关键子资源。</p>
+<p>当然，这个统计也可能缺乏一定的准确性，所以相关团队也正在推进这方面的内容规范化(比如写入Web App Manifest)</p>
+<ul>
+<li>中文Layout的时间过长</li>
+</ul>
+<p>这个问题我之前没有听说过，但是的确是这样子，实际上，浏览器在绘制文字的时候经历的过程非常的多，其中有一个环节是找到文字的宽度和高度(因为在英文状态下，每一个字符的宽度是不同的，所以每一个字符都要查找，但是英文总共只有26个字符)，而中文由于字符比较多，常用得就有6000多个，完整的更是有2万个以上，所以这个过程需要花费更多的时间。</p>
+<p>为了解决这个问题，X5内核考虑到中文文字几乎都是等宽等高的，所以这个过程对一个文字串来说只需要查询一次即可，实际上是节约了这个环节。</p>
+<ul>
+<li>首次渲染太慢</li>
+</ul>
+<p>为了解决这个问题，可以采用先绘制首屏的方式，这个也就是基于第一篇文章中讲到的浏览器的分块渲染机制</p>
+<ul>
+<li>一次解析内容过多</li>
+</ul>
+<p>采用首屏探测机制，优先解析首屏内容。</p>
+<p>另外，这里可以前端配合去做首屏优化：</p>
+<p>在首屏的位置插入首屏标签，内核解析到标签后立即终止解析并且排版上屏</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta <span class="attribute">name</span>=‘x5-pagetype’ <span class="attribute">content</span>=‘optpage'&gt;</span><br></pre></td></tr></table></figure>
+<p>然后在首屏分界的地方：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">&lt;first-screen/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>有了这，可以专门去优化首屏标签之前的内容(这个标签前尽量展现耗时少和不需要阻塞解析的资源)。</p>
+<p>另外，X5内核也提供了主资源预拉取的接口，并且考虑到预拉取的cookie问题，还提供了preconnect预链接。<br><em>TIP:主资源中关联的子资源预拉取不用主动调用</em></p>
+<ul>
+<li>预先操作</li>
+</ul>
+<p>另外为了提供更加极致的优化，X5内核(QQ浏览器、手Q Webview)还提供了如下诸多预操作：</p>
+<ul>
+<li>在”黏贴并转到”之前就开始进行网络请求和预渲染</li>
+<li>经常访问的站点可以预解析DNS</li>
+<li>点击地址栏时进行搜索预连接</li>
+<li>点击链接时，先预链接，再做跳转。</li>
+<li>……</li>
+</ul>
+<h3 id="其他方式优化"><a href="#其他方式优化" class="headerlink" title="其他方式优化"></a>其他方式优化</h3><p>实际上上文主要讲了客户端方面的优化工作，实际上对于”云”、”管”两端，还是有很多优化工作可以讲的，但是由于这个和前端关系不是特别密切，我挑一部分讲一讲。这些在我们前端做个人项目的后台时候也可以参考</p>
+<h5 id="后台提速"><a href="#后台提速" class="headerlink" title="后台提速"></a>后台提速</h5><ul>
+<li>直接使用IP，节省dns的查询时间</li>
+<li>维持长连接</li>
+<li>HTTP1.1启用包头节省</li>
+<li>服务器缓存</li>
+<li>文本资源压缩传输GZIP(6)</li>
+<li>图片尺寸压缩、图片质量压缩、支持webp和sharpp/hevc格式。</li>
+</ul>
+<h5 id="降低网络时延"><a href="#降低网络时延" class="headerlink" title="降低网络时延"></a>降低网络时延</h5><ul>
+<li>就快接入和就近接入</li>
+</ul>
+<p>在选择接入点的时候，如果采用就近接入，可以保持路由稳定，有利于负载均衡，并且实现简单，便于维护。但是也有一定的缺点：经验判断，准确度不够高 ； 无法自动切换路由。</p>
+<p>相比较而言，选择就快接入，是一个能够提效的方式。</p>
+<h5 id="内容防劫持"><a href="#内容防劫持" class="headerlink" title="内容防劫持"></a>内容防劫持</h5><p>运营商劫持对我们来说已经是不陌生的话题了，但是X5内核有一个比较新的防劫持手段，就是客户端和云加速服务器同时采用轻量级http加密，虽然这种方式普适性不强，但是的确可以解决腾讯自身业务的防劫持问题。</p>
+<h4 id="QUIC和http2"><a href="#QUIC和http2" class="headerlink" title="QUIC和http2"></a>QUIC和http2</h4><p>QUIC 基于UDP的协议通讯方式，有这些优势：</p>
+<ul>
+<li>延迟少</li>
+<li>前向纠错</li>
+<li>没有<strong>线头阻塞[注1]</strong>的多路复用</li>
+<li>通信通道的定义基于ID而不是IP+端口，使得切换网络后继续转发链接成为可能</li>
+</ul>
+<p>——————</p>
+<p>注1：线头阻塞：</p>
+<p><img src="https://www.10000h.top/images/data_img/webRender2/P4.png" alt=""></p>
+<p>——————</p>
+<p>附1: 带宽和延迟对网页加载的影响：</p>
+<p><img src="https://www.10000h.top/images/data_img/webRender2/X1.png" alt=""></p>
+
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#其他方式优化"><span class="toc-text">其他方式优化</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#后台提速"><span class="toc-text">后台提速</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#降低网络时延"><span class="toc-text">降低网络时延</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#内容防劫持"><span class="toc-text">内容防劫持</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#QUIC和http2"><span class="toc-text">QUIC和http2</span></a></li></ol></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: SHELDON</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">http://niexiaotao.cn/passages/深入浏览器web渲染与优化-续/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/性能优化/"><i class="fa fa-tags"></i>性能优化</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">博客推荐</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://godbmw.com/" target="_blank">GodBMW</a>
+          </span>
+        
+      </div>
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">系列教程</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://godbmw.com/categories/webpack4%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/" target="_blank">webpack4系列教程</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="https://godbmw.com/design-patterns/" target="_blank">设计模式手册</a>
+          </span>
+        
+      </div>
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">抓到我</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://juejin.im/user/5b91fcf06fb9a05d3c7fd4a5" target="_blank">掘金</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="https://segmentfault.com/" target="_blank">思否</a>
+          </span>
+        
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: lushldon94@gmail.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2019 <a href="https://github.com/dongyuanxin/theme-ad/" target="_blank">Theme-AD</a>.
+      Created by <a href="https://godbmw.com/" target="_blank">GodBMW</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+        
+          <div>
+            <img src="/images/wechat.png" alt="WeChat">
+            
+              <p>WeChat</p>
+            
+          </div>
+        
+          <div>
+            <img src="/images/alipay.png" alt="AliPay">
+            
+              <p>AliPay</p>
+            
+          </div>
+        
+      </div>
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/passages/CentOS安装node8-x版本/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/passages/深入浏览器web渲染与优化/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    <a href="javascript:void(0);" id="site-reward">
+      <i class="fa fa-thumbs-up"></i>
+    </a>
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+
+
+
+
+
+    
+  </body>
+</html>
