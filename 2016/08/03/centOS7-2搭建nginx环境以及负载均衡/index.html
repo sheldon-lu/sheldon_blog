@@ -1,146 +1,182 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+  
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="聂小涛的博客">
-    <meta name="keyword"  content="腾讯">
-    <link rel="shortcut icon" href="/img/favicon.ico">
+  <meta charset="utf-8">
+  <meta name="author" content="Dong Yuanxin" />
+  
+  
+  <title>centOS7.2搭建nginx环境以及负载均衡 | AirCloud Blog</title>
 
-    <title>
-        
-        centOS7.2搭建nginx环境以及负载均衡 - AirCloud的博客 | AirCloud&#39;s Blog
-        
-    </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/aircloud.css">
-    <link rel="stylesheet" href="/css/gitment.css">
-    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
-    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
-    <!-- ga & ba script hoook -->
-    <script></script>
+  
+    <meta name="keywords" content="centOS,nginx," />
+  
+
+  
+  <meta name="description" content="董沅鑫的小站">
+
+  
+
+  <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"Hyq9wkH495DgNHWhDQCOfQSp-gzGzoHsz","appkey":"WaR7nrzhliHj9aVwdQzkdlGd","comment":true,"count":true},
+    welcome: {"enable":true,"interval":30},
+    start_time: "2018-02-10",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "Dong Yuanxin",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+  
 </head>
-
-<body>
-
-<div class="site-nav-toggle" id="site-nav-toggle">
-    <button>
-        <span class="btn-bar"></span>
-        <span class="btn-bar"></span>
-        <span class="btn-bar"></span>
-    </button>
-</div>
-
-<div class="index-about">
-    <i> sometimes code， sometimes design </i>
-</div>
-
-<div class="index-container">
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
     
-    <div class="index-left">
-        
-<div class="nav" id="nav">
-    <div class="avatar-name">
-        <div class="avatar">
-            <img src="/img/avatar.jpg" />
-        </div>
-        <div class="name">
-            <i>Xiaotao Nie</i>
-        </div>
-    </div>
-    <div class="contents" id="nav-content">
-        <ul>
-            <li >
-                <a href="/">
-                    <i class="iconfont icon-shouye1"></i>
-                    <span>主页</span>
-                </a>
-            </li>
-            <li >
-                <a href="/tags">
-                    <i class="iconfont icon-biaoqian1"></i>
-                    <span>标签</span>
-                </a>
-            </li>
-            <li >
-                <a href="/archive">
-                    <i class="iconfont icon-guidang2"></i>
-                    <span>存档</span>
-                </a>
-            </li>
-            <li >
-                <a href="/about/">
-                    <i class="iconfont icon-guanyu2"></i>
-                    <span>关于</span>
-                </a>
-            </li>
-            
-            <li>
-                <a id="search">
-                    <i class="iconfont icon-sousuo1"></i>
-                    <span>搜索</span>
-                </a>
-            </li>
-            
-        </ul>
-    </div>
+      <span class="site-header-brand-title">
+        <a href="/">GODBMW</a>
+      </span>
     
-        <div id="toc" class="toc-article">
     
-</div>
+      <span class="site-header-brand-motto"> | 安静写些东西</span>
     
-</div>
-
-
-<div class="search-field" id="search-field">
-    <div class="search-container">
-        <div class="search-input">
-            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
-            <input id="search-input"/>
-            <span id="begin-search">搜索</span>
-        </div>
-        <div class="search-result-container" id="search-result-container">
-
-        </div>
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/dongyuanxin/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
     </div>
-</div>
-        <div class="index-about-mobile">
-            <i> sometimes code， sometimes design </i>
-        </div>
-    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2016-08-03
+    </span>
     
-    <div class="index-middle">
-        <!-- Main Content -->
-        
-
-
-<div class="post-container">
-    <div class="post-title">
-        centOS7.2搭建nginx环境以及负载均衡
-    </div>
-
-    <div class="post-meta">
-        <span class="attr">发布于：<span>2016-08-03 21:16:24</span></span>
-        
-        <span class="attr">标签：/
-        
-        <a class="tag" href="/tags/#centOS" title="centOS">centOS</a>
-        <span>/</span>
-        
-        <a class="tag" href="/tags/#nginx" title="nginx">nginx</a>
-        <span>/</span>
-        
-        
-        </span>
-        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
-</span>
-</span>
-    </div>
-    <div class="post-content ">
-        <p> 之所以要整理出这篇文章，是因为1是搭建环境的过程中会遇到大大小小各种问题，2是网上目前也没有关于centos7.2搭建nginx环境的问题整理，因此在这里记录。</p>
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    centOS7.2搭建nginx环境以及负载均衡
+  </h1>
+  
+  <article class="passage-article">
+    <p> 之所以要整理出这篇文章，是因为1是搭建环境的过程中会遇到大大小小各种问题，2是网上目前也没有关于centos7.2搭建nginx环境的问题整理，因此在这里记录。</p>
 <p>前置工作就不赘述了，首先<code>ssh root@115.29.102.81</code> (换成你们自己的公网IP)登陆进入到自己的服务器命令行，之后开始基本的安装：</p>
 <p><strong>1.添加资源</strong></p>
 <p>添加CentOS 7 Nginx yum资源库,打开终端,使用以下命令(没有换行):</p>
@@ -184,154 +220,212 @@
 <p>附2:防火墙基本学习：</p>
 <figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">1</span>、firewalld简介</span><br><span class="line">firewalld是centos7的一大特性，最大的好处有两个：支持动态更新，不用重启服务；第二个就是加入了防火墙的“zone”概念</span><br><span class="line"> </span><br><span class="line">firewalld有图形界面和工具界面，由于我在服务器上使用，图形界面请参照官方文档，本文以字符界面做介绍</span><br><span class="line"> </span><br><span class="line">firewalld的字符界面管理工具是 firewall-<span class="keyword">cmd</span><span class="bash"> </span></span><br><span class="line"><span class="bash"> </span></span><br><span class="line"><span class="bash">firewalld默认配置文件有两个：/usr/lib/firewalld/ （系统配置，尽量不要修改）和 /etc/firewalld/ （用户配置地址）</span></span><br><span class="line"><span class="bash"> </span></span><br><span class="line"><span class="bash">zone概念：</span></span><br><span class="line"><span class="bash">硬件防火墙默认一般有三个区，firewalld引入这一概念系统默认存在以下区域（根据文档自己理解，如果有误请指正）：</span></span><br><span class="line"><span class="bash">drop：默认丢弃所有包</span></span><br><span class="line"><span class="bash">block：拒绝所有外部连接，允许内部发起的连接</span></span><br><span class="line"><span class="bash">public：指定外部连接可以进入</span></span><br><span class="line"><span class="bash">external：这个不太明白，功能上和上面相同，允许指定的外部连接</span></span><br><span class="line"><span class="bash">dmz：和硬件防火墙一样，受限制的公共连接可以进入</span></span><br><span class="line"><span class="bash">work：工作区，概念和workgoup一样，也是指定的外部连接允许</span></span><br><span class="line"><span class="bash">home：类似家庭组</span></span><br><span class="line"><span class="bash">internal：信任所有连接</span></span><br><span class="line"><span class="bash">对防火墙不算太熟悉，还没想明白public、external、dmz、work、home从功能上都需要自定义允许连接，具体使用上的区别还需高人指点</span></span><br><span class="line"><span class="bash"> </span></span><br><span class="line"><span class="bash">2、安装firewalld</span></span><br><span class="line"><span class="bash">root执行 <span class="comment"># yum install firewalld firewall-config</span></span></span><br><span class="line"><span class="bash"> </span></span><br><span class="line"><span class="bash">3、运行、停止、禁用firewalld</span></span><br><span class="line"><span class="bash">启动：<span class="comment"># systemctl start  firewalld</span></span></span><br><span class="line"><span class="bash">查看状态：<span class="comment"># systemctl status firewalld 或者 firewall-cmd --state</span></span></span><br><span class="line"><span class="bash">停止：<span class="comment"># systemctl disable firewalld</span></span></span><br><span class="line"><span class="bash">禁用：<span class="comment"># systemctl stop firewalld</span></span></span><br><span class="line"><span class="bash"> </span></span><br><span class="line"><span class="bash">4、配置firewalld</span></span><br><span class="line"><span class="bash">查看版本：$ firewall-cmd --version</span></span><br><span class="line"><span class="bash">查看帮助：$ firewall-cmd --<span class="built_in">help</span></span></span><br><span class="line"><span class="bash">查看设置：</span></span><br><span class="line"><span class="bash">                显示状态：$ firewall-cmd --state</span></span><br><span class="line"><span class="bash">                查看区域信息: $ firewall-cmd --get-active-zones</span></span><br><span class="line"><span class="bash">                查看指定接口所属区域：$ firewall-cmd --get-zone-of-interface=eth0</span></span><br><span class="line"><span class="bash">拒绝所有包：<span class="comment"># firewall-cmd --panic-on</span></span></span><br><span class="line"><span class="bash">取消拒绝状态：<span class="comment"># firewall-cmd --panic-off</span></span></span><br><span class="line"><span class="bash">查看是否拒绝：$ firewall-cmd --query-panic</span></span><br><span class="line"><span class="bash"> </span></span><br><span class="line"><span class="bash">更新防火墙规则：<span class="comment"># firewall-cmd --reload</span></span></span><br><span class="line"><span class="bash">                            <span class="comment"># firewall-cmd --complete-reload</span></span></span><br><span class="line"><span class="bash">    两者的区别就是第一个无需断开连接，就是firewalld特性之一动态添加规则，第二个需要断开连接，类似重启服务</span></span><br><span class="line"><span class="bash"> </span></span><br><span class="line"><span class="bash">将接口添加到区域，默认接口都在public</span></span><br><span class="line"><span class="bash"><span class="comment"># firewall-cmd --zone=public --add-interface=eth0</span></span></span><br><span class="line"><span class="bash">永久生效再加上 --permanent 然后reload防火墙</span></span><br><span class="line"><span class="bash"> </span></span><br><span class="line"><span class="bash">设置默认接口区域</span></span><br><span class="line"><span class="bash"><span class="comment"># firewall-cmd --set-default-zone=public</span></span></span><br><span class="line"><span class="bash">立即生效无需重启</span></span><br><span class="line"><span class="bash"> </span></span><br><span class="line"><span class="bash">打开端口（貌似这个才最常用）</span></span><br><span class="line"><span class="bash">查看所有打开的端口：</span></span><br><span class="line"><span class="bash"><span class="comment"># firewall-cmd --zone=dmz --list-ports</span></span></span><br><span class="line"><span class="bash">加入一个端口到区域：</span></span><br><span class="line"><span class="bash"><span class="comment"># firewall-cmd --zone=dmz --add-port=8080/tcp</span></span></span><br><span class="line"><span class="bash">若要永久生效方法同上</span></span><br><span class="line"><span class="bash"> </span></span><br><span class="line"><span class="bash">打开一个服务，类似于将端口可视化，服务需要在配置文件中添加，/etc/firewalld 目录下有services文件夹，这个不详细说了，详情参考文档</span></span><br><span class="line"><span class="bash"><span class="comment"># firewall-cmd --zone=work --add-service=smtp</span></span></span><br><span class="line"><span class="bash"> </span></span><br><span class="line"><span class="bash">移除服务</span></span><br><span class="line"><span class="bash"><span class="comment"># firewall-cmd --zone=work --remove-service=smtp</span></span></span><br><span class="line"><span class="bash"> </span></span><br><span class="line"><span class="bash">还有端口转发功能、自定义复杂规则功能、lockdown，由于还没用到，以后再学习</span></span><br></pre></td></tr></table></figure>
 
-        
-            <div class="donate-container">
-    <div class="donate-button">
-        <button id="donate-button">赞赏</button>
-    </div>
-    <div class="donate-img-container hide" id="donate-img-container">
-        <img id="donate-img" src="" data-src="/img/donate.jpg">
-        <p> 感谢鼓励 </p>
-    </div>
-</div>
-        
-        <br />
-        <div id="comment-container">
-        </div>
-        <div id="disqus_thread"></div>
-
-        <div id="lv-container">
-        </div>
-
-    </div>
-</div>
-
-    </div>
-</div>
-
-
-<footer class="footer">
-    <ul class="list-inline text-center">
-        
-        <li>
-            <a target="_blank" href="https://twitter.com/iconie_alloy">
-                            <span class="fa-stack fa-lg">
-                                <i class="iconfont icon-twitter"></i>
-                            </span>
-            </a>
-        </li>
-        
-        
-        <li>
-            <a target="_blank" href="https://www.zhihu.com/people/ai-er-lan-xue-da">
-                            <span class="fa-stack fa-lg">
-                                 <i class="iconfont icon-zhihu"></i>
-                            </span>
-            </a>
-        </li>
-        
-
-        
-        <li>
-            <a target="_blank" href="http://weibo.com/3286578617">
-                            <span class="fa-stack fa-lg">
-                                  <i class="iconfont icon-weibo"></i>
-                            </span>
-            </a>
-        </li>
-        
-
-        
-        <li>
-            <a target="_blank" href="https://www.facebook.com/xiaotao.nie.5">
-                            <span class="fa-stack fa-lg">
-                                <i class="iconfont icon-facebook"></i>
-                            </span>
-            </a>
-        </li>
-        
-
-        
-        <li>
-            <a target="_blank"  href="https://github.com/AirCloud">
-                            <span class="fa-stack fa-lg">
-                                <i class="iconfont icon-github"></i>
-                            </span>
-            </a>
-        </li>
-        
-
-        
-        <li>
-            <a target="_blank"  href="https://www.linkedin.com/in/小涛-聂-80964aba">
-                            <span class="fa-stack fa-lg">
-                                <i class="iconfont icon-linkedin"></i>
-                            </span>
-            </a>
-        </li>
-        
-
-    </ul>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
     
-    <p>
-        <span>/</span>
-        
-        <span><a href="https://www.10000h.top">10000H</a></span>
-        <span>/</span>
-        
-        <span><a href="https://niexiaotao.com">Xiaotao&#39;s Page</a></span>
-        <span>/</span>
-        
-        <span><a href="#">It helps SEO</a></span>
-        <span>/</span>
-        
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 董沅鑫</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">http://niexiaotao.cn/2016/08/03/centOS7-2搭建nginx环境以及负载均衡/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/centOS/"><i class="fa fa-tags"></i>centOS</a>
+     
+      <a href="/tags/nginx/"><i class="fa fa-tags"></i>nginx</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
     </p>
+    <div id="site-comment"></div>
+  
+</div>
     
-    <p>
-        <span id="busuanzi_container_site_pv">
-            <span id="busuanzi_value_site_pv"></span>PV
-        </span>
-        <span id="busuanzi_container_site_uv">
-            <span id="busuanzi_value_site_uv"></span>UV
-        </span>
-        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
-</footer>
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">博客推荐</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://godbmw.com/" target="_blank">GodBMW</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="http://ruanyifeng.com/" target="_blank">阮一峰的个人网站</a>
+          </span>
+        
+      </div>
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">系列教程</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://godbmw.com/categories/webpack4%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/" target="_blank">webpack4系列教程</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="https://godbmw.com/design-patterns/" target="_blank">设计模式手册</a>
+          </span>
+        
+      </div>
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">抓到我</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://juejin.im/user/5b91fcf06fb9a05d3c7fd4a5" target="_blank">掘金</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="https://segmentfault.com/" target="_blank">思否</a>
+          </span>
+        
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: yuanxin.me@gmail.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2019 <a href="https://github.com/dongyuanxin/theme-ad/" target="_blank">Theme-AD</a>.
+      Created by <a href="https://godbmw.com/" target="_blank">GodBMW</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+        
+          <div>
+            <img src="/images/wechat.png" alt="WeChat">
+            
+              <p>WeChat</p>
+            
+          </div>
+        
+          <div>
+            <img src="/images/alipay.png" alt="AliPay">
+            
+              <p>AliPay</p>
+            
+          </div>
+        
+      </div>
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/2016/08/08/腾讯云北美服务器搭建ShadowSocks代理/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="javascript:void(0);" data-enable="false">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    <a href="javascript:void(0);" id="site-reward">
+      <i class="fa fa-thumbs-up"></i>
+    </a>
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
 
 
 
 
-</body>
 
-<script>
-    // We expose some of the variables needed by the front end
-    window.hexo_search_path = "search.json"
-    window.hexo_root = "/"
-    window.isPost = true
-</script>
-<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-<script src="/js/index.js"></script>
-<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-
-    <script>
-        /**
-         *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-         *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
-        */
-        if( '' || '')
-        var disqus_config = function () {
-            this.page.url = '';  // Replace PAGE_URL with your page's canonical URL variable
-            this.page.identifier = ''; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-        };
-
-        (function() { // DON'T EDIT BELOW THIS LINE
-            var d = document, s = d.createElement('script');
-            s.src = 'https://airclouds-blog.disqus.com/embed.js';
-            s.setAttribute('data-timestamp', +new Date());
-            (d.head || d.body).appendChild(s);
-        })();
-    </script>
-
-
-
+    
+  </body>
 </html>
