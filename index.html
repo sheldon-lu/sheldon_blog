@@ -96,17 +96,17 @@
 
 
 
-  <meta name="description" content="Sheldon的博客 / 静下心前行">
+  <meta name="description" content="Sheldon&apos;s Blog / 静下心前行">
 <meta name="keywords" content="sheldon">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Sheldon&#39;s Blog">
+<meta property="og:title" content="Sheldon Day One">
 <meta property="og:url" content="https://sheldon-lu.github.io/index.html">
-<meta property="og:site_name" content="Sheldon&#39;s Blog">
-<meta property="og:description" content="Sheldon的博客 / 静下心前行">
+<meta property="og:site_name" content="Sheldon Day One">
+<meta property="og:description" content="Sheldon&apos;s Blog / 静下心前行">
 <meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Sheldon&#39;s Blog">
-<meta name="twitter:description" content="Sheldon的博客 / 静下心前行">
+<meta name="twitter:title" content="Sheldon Day One">
+<meta name="twitter:description" content="Sheldon&apos;s Blog / 静下心前行">
 
 
 
@@ -124,7 +124,7 @@
   };
 </script>
 
-  <title>Sheldon's Blog</title>
+  <title>Sheldon Day One</title>
   
 
 
@@ -184,7 +184,7 @@
     <div class="custom-logo-site-title">
       <a href="/sheldon_blog/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Sheldon's Blog</span>
+        <span class="site-title">Sheldon Day One</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -341,16 +341,189 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/Golang并发之原子操作/">
+    <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/Golang并发之sync-WaitGroup/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sheldon Lu">
-      <meta itemprop="description" content="Sheldon的博客 / 静下心前行">
+      <meta itemprop="description" content="Sheldon's Blog / 静下心前行">
       <meta itemprop="image" content="/sheldon_blog/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sheldon's Blog">
+      <meta itemprop="name" content="Sheldon Day One">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/sheldon_blog/passages/Golang并发之sync-WaitGroup/" class="post-title-link" itemprop="url">Golang并发之sync.WaitGroup</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-03-29 15:46:03 / Modified: 15:57:03" itemprop="dateCreated datePublished" datetime="2019-03-29T15:46:03+08:00">2019-03-29</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+            <span id="/sheldon_blog/passages/Golang并发之sync-WaitGroup/" class="leancloud_visitors" data-flag-title="Golang并发之sync.WaitGroup">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Views: </span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> wg sync.WaitGroup</span><br></pre></td></tr></table></figure>
+<h2 id="sync-WaitGroup-Golang内置sync包"><a href="#sync-WaitGroup-Golang内置sync包" class="headerlink" title="sync.WaitGroup/ Golang内置sync包"></a>sync.WaitGroup/ Golang内置sync包</h2><blockquote>
+<p>Wg变量：该类型有三个指针方法，即Add、Done和Wait。</p>
+<p>类型sync.WaitGroup是一个结构体类型。当一个sync.WaitGroup类型的变量被声明之后，其值中的那个计数值将会是0。 </p>
+<p>我们可以通过该值的Add方法增大或减少其中的计数值。 如下： </p>
+<p>wg.Add(1) </p>
+<p>与wg.Add(-1)的执行效果是一致的： </p>
+<p>wg.Done() </p>
+<p>总结:</p>
+<p>1、使用Done方法禁忌与Add方法的一样——不要让相应的计数值变为负数。 </p>
+<p>例如，这段代码中的第5条语句会引发一个运行时恐慌： </p>
+<p>var wg sync.WaitGroup </p>
+<p>wg.Add(2) </p>
+<p>wg.Done() </p>
+<p>wg.Done() </p>
+<p>wg.Done() </p>
+<p>2、当我们调用sync.WaitGroup类型值的Wait方法的时候，它会去检查该值中的计数值。如果这个计数值为0，那么该方法会立即返回，且不会对程序的运行产生任何影响。 但是，如果这个计数值大于0，那么该方法的调用方所属的那个Goroutine就会被阻塞。直到该计数值重新变为0之时，为此而被阻塞的所有Goroutine才会被唤醒。 </p>
+</blockquote>
+<h2 id="代码案例"><a href="#代码案例" class="headerlink" title="代码案例"></a>代码案例</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 协调多个Goroutine的运行。假设，在我们的程序中启用了4个Goroutine，分别是G1、G2、G3和G4。其中，G2、G3和G4是由G1中的代码启用并被用于执行某些特定任务的。G1在启用这3个Goroutine之后要等待这些特定任务的完成。</span></span><br><span class="line"><span class="comment">// 方案1（channel通道）</span></span><br><span class="line">sign := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">byte</span>, <span class="number">3</span>)</span><br><span class="line"><span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="comment">//G2</span></span><br><span class="line">    sign &lt;- <span class="number">2</span></span><br><span class="line">&#125;()</span><br><span class="line"><span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="comment">//G3</span></span><br><span class="line">    sign &lt;- <span class="number">3</span></span><br><span class="line">&#125;()</span><br><span class="line"><span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="comment">//G4</span></span><br><span class="line">    sign &lt;- <span class="number">4</span></span><br><span class="line">&#125;()</span><br><span class="line"><span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">3</span>; i++ &#123;</span><br><span class="line">fmt.Printf(<span class="string">"G%d is ended.\n"</span>, &lt;-sign)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 方案2（sync.WaitGroup）</span></span><br><span class="line"><span class="keyword">var</span> wg sync.WaitGroup</span><br><span class="line">wg.Add(<span class="number">3</span>)</span><br><span class="line"><span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="comment">//G2</span></span><br><span class="line">    wg.Done()</span><br><span class="line">&#125;()</span><br><span class="line"><span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="comment">//G3</span></span><br><span class="line">    wg.Done()</span><br><span class="line">&#125;()</span><br><span class="line"><span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="comment">//G4</span></span><br><span class="line">    wg.Done()</span><br><span class="line">&#125;()</span><br><span class="line">wg.Wait()</span><br><span class="line">fmt.Println(<span class="string">"Finish"</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">     <span class="string">"fmt"</span></span><br><span class="line">     <span class="string">"sync"</span></span><br><span class="line">     <span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">     <span class="keyword">var</span> wg sync.WaitGroup</span><br><span class="line">     <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">5</span>; i = i + <span class="number">1</span> &#123;</span><br><span class="line">          wg.Add(<span class="number">1</span>)</span><br><span class="line">          <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(n <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">               <span class="comment">// defer wg.Done()</span></span><br><span class="line">               <span class="keyword">defer</span> wg.Add(<span class="number">-1</span>)</span><br><span class="line">               EchoNumber(n)</span><br><span class="line">          &#125;(i) <span class="comment">// n = i</span></span><br><span class="line">     &#125;</span><br><span class="line">     wg.Wait()</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">EchoNumber</span><span class="params">(i <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">     time.Sleep(<span class="number">3e9</span>)</span><br><span class="line">     fmt.Println(i)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/Golang并发之原子操作/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sheldon Lu">
+      <meta itemprop="description" content="Sheldon's Blog / 静下心前行">
+      <meta itemprop="image" content="/sheldon_blog/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sheldon Day One">
     </span>
 
     
@@ -386,9 +559,13 @@
                 
               
 
-              <time title="Created: 2019-03-29 14:27:53" itemprop="dateCreated datePublished" datetime="2019-03-29T14:27:53+08:00">2019-03-29</time>
+              <time title="Created: 2019-03-29 14:27:53 / Modified: 15:47:01" itemprop="dateCreated datePublished" datetime="2019-03-29T14:27:53+08:00">2019-03-29</time>
             
 
+            
+              
+
+              
             
           </span>
 
@@ -494,12 +671,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sheldon Lu">
-      <meta itemprop="description" content="Sheldon的博客 / 静下心前行">
+      <meta itemprop="description" content="Sheldon's Blog / 静下心前行">
       <meta itemprop="image" content="/sheldon_blog/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sheldon's Blog">
+      <meta itemprop="name" content="Sheldon Day One">
     </span>
 
     
@@ -535,7 +712,7 @@
                 
               
 
-              <time title="Created: 2019-03-29 10:36:56 / Modified: 10:37:13" itemprop="dateCreated datePublished" datetime="2019-03-29T10:36:56+08:00">2019-03-29</time>
+              <time title="Created: 2019-03-29 10:36:56 / Modified: 15:41:54" itemprop="dateCreated datePublished" datetime="2019-03-29T10:36:56+08:00">2019-03-29</time>
             
 
             
@@ -545,6 +722,24 @@
             
           </span>
 
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/sheldon_blog/categories/Hexo/" itemprop="url" rel="index"><span itemprop="name">Hexo</span></a></span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -647,12 +842,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sheldon Lu">
-      <meta itemprop="description" content="Sheldon的博客 / 静下心前行">
+      <meta itemprop="description" content="Sheldon's Blog / 静下心前行">
       <meta itemprop="image" content="/sheldon_blog/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sheldon's Blog">
+      <meta itemprop="name" content="Sheldon Day One">
     </span>
 
     
@@ -705,11 +900,29 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-03-29 14:22:22" itemprop="dateModified" datetime="2019-03-29T14:22:22+08:00">2019-03-29</time>
+                <time title="Modified: 2019-03-29 15:41:51" itemprop="dateModified" datetime="2019-03-29T15:41:51+08:00">2019-03-29</time>
               
             
           </span>
 
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/sheldon_blog/categories/Hexo/" itemprop="url" rel="index"><span itemprop="name">Hexo</span></a></span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -826,12 +1039,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sheldon Lu">
-      <meta itemprop="description" content="Sheldon的博客 / 静下心前行">
+      <meta itemprop="description" content="Sheldon's Blog / 静下心前行">
       <meta itemprop="image" content="/sheldon_blog/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sheldon's Blog">
+      <meta itemprop="name" content="Sheldon Day One">
     </span>
 
     
@@ -999,7 +1212,7 @@
               <img class="site-author-image" itemprop="image" src="/sheldon_blog/images/avatar.jpg" alt="Sheldon Lu">
             
               <p class="site-author-name" itemprop="name">Sheldon Lu</p>
-              <div class="site-description motion-element" itemprop="description">Sheldon的博客 / 静下心前行</div>
+              <div class="site-description motion-element" itemprop="description">Sheldon's Blog / 静下心前行</div>
           </div>
 
           
@@ -1009,12 +1222,29 @@
                 
                   <a href="/sheldon_blog/archives/">
                 
-                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-count">5</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
               
 
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/sheldon_blog/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
               
 
               
@@ -1030,7 +1260,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">1</span>
+                      
+                    
+                    <span class="site-state-item-count">2</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
