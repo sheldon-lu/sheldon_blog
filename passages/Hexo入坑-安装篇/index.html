@@ -218,17 +218,42 @@
 
   <div class="article-content">
     <div class="markdown-body">
-      <h3 id="准备："><a href="#准备：" class="headerlink" title="准备："></a>准备：</h3><ul>
+      <p>##准备：</p>
+<ul>
 <li><font size="3">有一个github账号，没有的话去注册一个</font>
 </li>
-<li><font size="3">安装了node.js、npm，并了解相关基础知识</font>
+<li><font size="3">安装了git、node.js、npm，并了解相关基础知识</font>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br><span class="line">git --version</span><br></pre></td></tr></table></figure>
 </li>
 <li><font size="3">安装了git for Mac（或者其它git客户端）</font>
 
 </li>
 </ul>
-<h3 id="开始安装："><a href="#开始安装：" class="headerlink" title="开始安装："></a>开始安装：</h3><h5 id="创建github仓库"><a href="#创建github仓库" class="headerlink" title="创建github仓库"></a>创建github仓库</h5><p>​    github上新建一个名为<code>用户名.github.io</code>的项目，例如：sheldon-lu.github.io，</p>
-<p>这个项目名是用来做域名用的，当然也可以去申请一个属于自己的域名</p>
+<p>##安装篇：</p>
+<p>###1. 创建github仓库</p>
+<p>​    github上新建一个名为<code>用户名.github.io</code>的项目，例如：sheldon-lu.github.io，</p>
+<p>这个项目名是用来做域名用的，当然也可以去申请一个属于自己的域名，一般推荐<a href="https://www.GoDaddy.com/" target="_blank" rel="noopener"><code>godaddy</code></a></p>
+<h3 id="2-配置SSH-key免密上传"><a href="#2-配置SSH-key免密上传" class="headerlink" title="2. 配置SSH key免密上传"></a>2. 配置SSH key免密上传</h3><p>不详细讲了，命令如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cd ~/.ssh</span><br><span class="line"><span class="meta">#</span> 检查本机已存在的ssh密钥</span><br><span class="line"><span class="meta">#</span> 如果提示：No such file or directory 说明你是第一次使用git。</span><br><span class="line">ssh-keygen -t rsa -C "邮件地址"</span><br><span class="line"><span class="meta">#</span> 然后连续3次回车，最终会生成一个文件在用户目录下，打开用户目录，找到.ssh\id_rsa.pub文件，记事本打开并复制里面的内容，打开你的github主页，进入个人设置 -&gt; SSH and GPG keys -&gt; New SSH key</span><br><span class="line"><span class="meta">#</span> 测试是否成功，验证命令：</span><br><span class="line">ssh -T git@GitHub.com</span><br><span class="line"><span class="meta">#</span># Hi cnfeat! You've successfully authenticated, but GitHub does not provide shell access.出现这个就是成功了，之后可以测试一下push是否免密上传。</span><br><span class="line"><span class="meta">#</span> 此时你可能还需要配置，这个属于全局config，对于git项目完全可以git clone下来之后进行push等等操作：</span><br><span class="line">git config --global user.name "liuxianan"// 你的github用户名，非昵称</span><br><span class="line">git config --global user.email  "xxx@qq.com"// 填写你的github注册邮箱</span><br></pre></td></tr></table></figure>
+<h3 id="3-Hexo安装及介绍"><a href="#3-Hexo安装及介绍" class="headerlink" title="3. Hexo安装及介绍"></a>3. Hexo安装及介绍</h3><p>官网： <a href="http://hexo.io" target="_blank" rel="noopener">http://hexo.io</a> </p>
+<p>github: <a href="https://github.com/hexojs/hexo" target="_blank" rel="noopener">https://github.com/hexojs/hexo</a> </p>
+<p>由于github pages存放的都是静态文件，博客存放的不只是文章内容，还有文章列表、分类、标签、翻页等动态内容，假如每次写完一篇文章都要手动更新博文目录和相关链接信息，相信谁都会疯掉，所以hexo所做的就是将这些md文件都放在本地，每次写完文章后调用写好的命令来批量完成相关页面的生成，然后再将有改动的页面提交到github。 </p>
+<p>安装之前先来说几个注意事项： </p>
+<ol>
+<li><p>很多命令既可以用Windows的cmd来完成，也可以使用git bash来完成，但是部分命令会有一些问题，为避免不必要的问题，建议全部使用git bash来执行（对于windows用户而言）； </p>
+</li>
+<li><p>hexo不同版本差别比较大，网上很多文章的配置信息都是基于2.x的，所以注意不要被误导； </p>
+</li>
+<li><p>hexo有2种_config.yml文件，一个是根目录下的全局的_config.yml，一个是各个theme下的； </p>
+</li>
+</ol>
+<p>这里给官网上的部署命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mkdir &lt;Your blog&gt; # 创建blog文档文件夹</span><br><span class="line">npm install hexo-cli -g # 安装hexo以及hexo命令</span><br><span class="line"><span class="meta">#</span> 初始化一个blog项目，其中'blog'为你的blog名字，hexo会自动下载一些文件到这个目录，包括node_modules.</span><br><span class="line">hexo init blog</span><br><span class="line">cd blog</span><br><span class="line">npm install</span><br><span class="line">hexo server</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span># 这两个命令是经常会用到的</span><br><span class="line">hexo s -g #生成并本地预览</span><br><span class="line">hexo d -g #生成并上传</span><br></pre></td></tr></table></figure>
+<p>对于mac用户，如果遇到以下报错：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">安装npm install hexo-cli -g时报错</span><br><span class="line">npm install hexo -g</span><br><span class="line">npm WARN locking Error: EACCES, open &apos;/Users/lushenneng/.npm/_locks/hexo-4ded2cf5ea4a8daa.lock&apos;</span><br><span class="line">npm WARN locking at Error (native)</span><br><span class="line">npm WARN locking /Users/lushenneng/.npm/_locks/hexo-4ded2cf5ea4a8daa.lock failed &#123; [Error: EACCES, open &apos;/Users/lushenneng/.npm/_locks/hexo-4ded2cf5ea4a8daa.lock&apos;]</span><br><span class="line">npm WARN locking errno: -13,</span><br><span class="line">npm WARN locking code: &apos;EACCES&apos;,</span><br><span class="line">npm WARN locking path: &apos;/Users/lushenneng/.npm/_locks/hexo-4ded2cf5ea4a8daa.lock&apos; &#125;</span><br><span class="line">npm ERR! Darwin 14.0.0</span><br><span class="line">npm ERR! argv &quot;node&quot; &quot;/usr/bin/npm&quot; &quot;install&quot; &quot;hexo&quot; &quot;-g&quot;</span><br><span class="line">npm ERR! node v0.12.3</span><br><span class="line">npm ERR! npm v2.9.1</span><br><span class="line">npm ERR! Attempt to unlock /usr/lib/node_modules/hexo, which hasn&apos;t been locked</span><br><span class="line">npm ERR!</span><br><span class="line">npm ERR! If you need help, you may report this error at:</span><br><span class="line">npm ERR! https://github.com/npm/npm/issues</span><br><span class="line">npm ERR! Please include the following file with any support request:</span><br><span class="line">npm ERR! /Users/lushenneng/blog/npm-debug.log</span><br></pre></td></tr></table></figure>
+<p>解决：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 可以先用这个命令：</span><br><span class="line">sudo npm install hexo-cli -g</span><br><span class="line"><span class="meta">#</span> 如果还是报错可以用这个命令：</span><br><span class="line">sudo npm install --unsafe-perm --verbose -g hexo</span><br><span class="line"><span class="meta">#</span> 加上sudo一般能解决很多问题</span><br></pre></td></tr></table></figure>
 
     </div>
   </div>
