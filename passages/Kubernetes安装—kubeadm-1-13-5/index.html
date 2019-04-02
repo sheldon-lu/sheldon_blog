@@ -96,18 +96,18 @@
 
 
 
-  <meta name="description" content="Sheldon&apos;s Blog / 静下心前行">
-<meta name="keywords" content="sheldon">
-<meta property="og:type" content="website">
-<meta property="og:title" content="friends">
-<meta property="og:url" content="https://sheldon-lu.github.io/friends/index.html">
+  <meta name="description" content="环境描述 kubernetes version：1.13.5 docker version：18.6.3 Redhat：7.4 linux 内核：4.2.0     x.x.x.1 master-1 kube-apiserver、kube-controller-manager、kube-scheduler、etcd、keepalive     x.x.x.2 master-2 kube-apise">
+<meta name="keywords" content="Kubernetes">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kubernetes安装—kubeadm_1.13.5">
+<meta property="og:url" content="https://sheldon-lu.github.io/passages/Kubernetes安装—kubeadm-1-13-5/index.html">
 <meta property="og:site_name" content="Sheldon">
-<meta property="og:description" content="Sheldon&apos;s Blog / 静下心前行">
+<meta property="og:description" content="环境描述 kubernetes version：1.13.5 docker version：18.6.3 Redhat：7.4 linux 内核：4.2.0     x.x.x.1 master-1 kube-apiserver、kube-controller-manager、kube-scheduler、etcd、keepalive     x.x.x.2 master-2 kube-apise">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-24T03:23:40.572Z">
+<meta property="og:updated_time" content="2019-04-01T23:33:05.154Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="friends">
-<meta name="twitter:description" content="Sheldon&apos;s Blog / 静下心前行">
+<meta name="twitter:title" content="Kubernetes安装—kubeadm_1.13.5">
+<meta name="twitter:description" content="环境描述 kubernetes version：1.13.5 docker version：18.6.3 Redhat：7.4 linux 内核：4.2.0     x.x.x.1 master-1 kube-apiserver、kube-controller-manager、kube-scheduler、etcd、keepalive     x.x.x.2 master-2 kube-apise">
 
 
 
@@ -115,7 +115,7 @@
 
   
   
-  <link rel="canonical" href="https://sheldon-lu.github.io/friends/">
+  <link rel="canonical" href="https://sheldon-lu.github.io/passages/Kubernetes安装—kubeadm-1-13-5/">
 
 
 
@@ -125,7 +125,7 @@
   };
 </script>
 
-  <title>friends | Sheldon</title>
+  <title>Kubernetes安装—kubeadm_1.13.5 | Sheldon</title>
   
 
 
@@ -301,28 +301,6 @@
   
     
 
-    
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
-
-
   
 
   
@@ -349,45 +327,229 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/Kubernetes安装—kubeadm-1-13-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sheldon Lu">
+      <meta itemprop="description" content="Sheldon's Blog / 静下心前行">
+      <meta itemprop="image" content="/sheldon_blog/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sheldon">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-<h1 class="post-title" itemprop="name headline">friends
-
-</h1>
-
-<div class="post-meta">
-  
-  
-
-
-
-</div>
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
+          <h1 class="post-title" itemprop="name headline">Kubernetes安装—kubeadm_1.13.5
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-04-02 07:12:49 / Modified: 07:33:05" itemprop="dateCreated datePublished" datetime="2019-04-02T07:12:49+08:00">2019-04-02</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
           
-        
-      </div>
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/sheldon_blog/passages/Kubernetes安装—kubeadm-1-13-5/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/sheldon_blog/passages/Kubernetes安装—kubeadm-1-13-5/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/sheldon_blog/passages/Kubernetes安装—kubeadm-1-13-5/" class="leancloud_visitors" data-flag-title="Kubernetes安装—kubeadm_1.13.5">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Views: </span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <h2 id="环境描述"><a href="#环境描述" class="headerlink" title="环境描述"></a>环境描述</h2><blockquote>
+<p>kubernetes version：1.13.5</p>
+<p>docker version：18.6.3</p>
+<p>Redhat：7.4</p>
+<p>linux 内核：4.2.0</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">x.x.x.1</th>
+<th style="text-align:center">master-1</th>
+<th>kube-apiserver、kube-controller-manager、kube-scheduler、etcd、keepalive</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>x.x.x.2</strong></td>
+<td style="text-align:center"><strong>master-2</strong></td>
+<td><strong>kube-apiserver、kube-controller-manager、kube-scheduler、etcd、keepalive</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>x.x.x.3</strong></td>
+<td style="text-align:center"><strong>master-3</strong></td>
+<td><strong>kube-apiserver、kube-controller-manager、kube-scheduler、etcd、keepalive</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>x.x.x.4</strong></td>
+<td style="text-align:center"><strong>vip</strong></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>x.x.x.5</strong></td>
+<td style="text-align:center"><strong>node-1</strong></td>
+<td><strong>kubelet</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>x.x.x.6</strong></td>
+<td style="text-align:center"><strong>node-2</strong></td>
+<td><strong>kubelet</strong></td>
+</tr>
+</tbody>
+</table>
+<p>因为担心kubeadm起来的etcd不稳定，而且kubeadm搭建高可用etcd修改初始化文件比较繁琐，这里用到的etcd对于kubernetes来说作为外部etcd集群。即使用二进制安装etcd集群，其余组件用kubeadm来完成安装。</p>
+<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><h3 id="1、安装docker"><a href="#1、安装docker" class="headerlink" title="1、安装docker"></a>1、安装docker</h3><h3 id="2、部署keepalive"><a href="#2、部署keepalive" class="headerlink" title="2、部署keepalive"></a>2、部署keepalive</h3><h2 id="kubernetes部署"><a href="#kubernetes部署" class="headerlink" title="kubernetes部署"></a>kubernetes部署</h2><h3 id="1、etcd二进制部署"><a href="#1、etcd二进制部署" class="headerlink" title="1、etcd二进制部署"></a>1、etcd二进制部署</h3>
       
     </div>
-    
-
-
 
     
+
     
     
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/sheldon_blog/tags/Kubernetes/" rel="tag"># Kubernetes</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/sheldon_blog/passages/Golang并发之sync-WaitGroup/" rel="next" title="Golang并发之sync.WaitGroup">
+                <i class="fa fa-chevron-left"></i> Golang并发之sync.WaitGroup
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
   </div>
 
 
@@ -420,8 +582,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -526,6 +697,23 @@
         </div>
       </div>
 
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#环境描述"><span class="nav-number">1.</span> <span class="nav-text">环境描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境准备"><span class="nav-number">2.</span> <span class="nav-text">环境准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、安装docker"><span class="nav-number">2.1.</span> <span class="nav-text">1、安装docker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、部署keepalive"><span class="nav-number">2.2.</span> <span class="nav-text">2、部署keepalive</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kubernetes部署"><span class="nav-number">3.</span> <span class="nav-text">kubernetes部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、etcd二进制部署"><span class="nav-number">3.1.</span> <span class="nav-text">1、etcd二进制部署</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
       
 
       
@@ -723,38 +911,37 @@
   
   <script>
     
-    function showTime(Counter) {
-      var entries = [];
+    function addCount(Counter) {
       var $visitors = $('.leancloud_visitors');
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
 
-      $visitors.each(function() {
-        entries.push( $(this).attr('id').trim() );
-      });
-
-      Counter('get', '/classes/Counter', { where: JSON.stringify({ url: { '$in': entries } }) })
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
         .done(function({ results }) {
-          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
-
-          if (results.length === 0) {
-            $visitors.find(COUNT_CONTAINER_REF).text(0);
-            return;
-          }
-
-          for (var i = 0; i < results.length; i++) {
-            var item = results[i];
-            var url = item.url;
-            var time = item.time;
-            var element = document.getElementById(url);
-
-            $(element).find(COUNT_CONTAINER_REF).text(time);
-          }
-          for (var i = 0; i < entries.length; i++) {
-            var url = entries[i];
-            var element = document.getElementById(url);
-            var countSpan = $(element).find(COUNT_CONTAINER_REF);
-            if (countSpan.text() == '') {
-              countSpan.text(0);
-            }
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', '/classes/Counter/' + counter.objectId, JSON.stringify({ time: { '__op': 'Increment', 'amount': 1 } }))
+            
+              .done(function() {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.time + 1);
+              })
+            
+              .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+              })
+          } else {
+            
+              Counter('post', '/classes/Counter', JSON.stringify({ title: title, url: url, time: 1 }))
+                .done(function() {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(1);
+                })
+                .fail(function() {
+                  console.log('Failed to create');
+                });
+            
           }
         })
         .fail(function ({ responseJSON }) {
@@ -779,9 +966,7 @@
             });
           };
           
-            if ($('.post-title-link').length >= 1) {
-              showTime(Counter);
-            }
+            addCount(Counter);
           
         });
     });

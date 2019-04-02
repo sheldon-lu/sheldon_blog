@@ -341,6 +341,215 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/Kubernetes安装—kubeadm-1-13-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sheldon Lu">
+      <meta itemprop="description" content="Sheldon's Blog / 静下心前行">
+      <meta itemprop="image" content="/sheldon_blog/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sheldon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/sheldon_blog/passages/Kubernetes安装—kubeadm-1-13-5/" class="post-title-link" itemprop="url">Kubernetes安装—kubeadm_1.13.5</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-04-02 07:12:49 / Modified: 07:33:05" itemprop="dateCreated datePublished" datetime="2019-04-02T07:12:49+08:00">2019-04-02</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/sheldon_blog/passages/Kubernetes安装—kubeadm-1-13-5/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/sheldon_blog/passages/Kubernetes安装—kubeadm-1-13-5/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/sheldon_blog/passages/Kubernetes安装—kubeadm-1-13-5/" class="leancloud_visitors" data-flag-title="Kubernetes安装—kubeadm_1.13.5">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Views: </span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="环境描述"><a href="#环境描述" class="headerlink" title="环境描述"></a>环境描述</h2><blockquote>
+<p>kubernetes version：1.13.5</p>
+<p>docker version：18.6.3</p>
+<p>Redhat：7.4</p>
+<p>linux 内核：4.2.0</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">x.x.x.1</th>
+<th style="text-align:center">master-1</th>
+<th>kube-apiserver、kube-controller-manager、kube-scheduler、etcd、keepalive</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>x.x.x.2</strong></td>
+<td style="text-align:center"><strong>master-2</strong></td>
+<td><strong>kube-apiserver、kube-controller-manager、kube-scheduler、etcd、keepalive</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>x.x.x.3</strong></td>
+<td style="text-align:center"><strong>master-3</strong></td>
+<td><strong>kube-apiserver、kube-controller-manager、kube-scheduler、etcd、keepalive</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>x.x.x.4</strong></td>
+<td style="text-align:center"><strong>vip</strong></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>x.x.x.5</strong></td>
+<td style="text-align:center"><strong>node-1</strong></td>
+<td><strong>kubelet</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>x.x.x.6</strong></td>
+<td style="text-align:center"><strong>node-2</strong></td>
+<td><strong>kubelet</strong></td>
+</tr>
+</tbody>
+</table>
+<p>因为担心kubeadm起来的etcd不稳定，而且kubeadm搭建高可用etcd修改初始化文件比较繁琐，这里用到的etcd对于kubernetes来说作为外部etcd集群。即使用二进制安装etcd集群，其余组件用kubeadm来完成安装。</p>
+<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><h3 id="1、安装docker"><a href="#1、安装docker" class="headerlink" title="1、安装docker"></a>1、安装docker</h3><h3 id="2、部署keepalive"><a href="#2、部署keepalive" class="headerlink" title="2、部署keepalive"></a>2、部署keepalive</h3><h2 id="kubernetes部署"><a href="#kubernetes部署" class="headerlink" title="kubernetes部署"></a>kubernetes部署</h2><h3 id="1、etcd二进制部署"><a href="#1、etcd二进制部署" class="headerlink" title="1、etcd二进制部署"></a>1、etcd二进制部署</h3>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/Golang并发之sync-WaitGroup/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1340,7 +1549,7 @@
                 
                   <a href="/sheldon_blog/archives/">
                 
-                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-count">6</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -1384,7 +1593,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">3</span>
+                      
+                    
+                    <span class="site-state-item-count">4</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
