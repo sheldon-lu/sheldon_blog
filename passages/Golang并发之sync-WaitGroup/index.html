@@ -96,18 +96,18 @@
 
 
 
-  <meta name="description" content="声明1var wg sync.WaitGroup sync.WaitGroup/ Golang内置sync包 Wg变量：该类型有三个指针方法，即Add、Done和Wait。 类型sync.WaitGroup是一个结构体类型。当一个sync.WaitGroup类型的变量被声明之后，其值中的那个计数值将会是0。  我们可以通过该值的Add方法增大或减少其中的计数值。 如下：  wg.Add(1)  与">
+  <meta name="description" content="声明1var wg sync.WaitGroup sync.WaitGroup/ Golang内置sync包 Wg变量：该类型有三个指针方法，即Add、Done和Wait。 类型sync.WaitGroup是一个结构体类型。当一个sync.WaitGroup类型的变量被声明之后，其值中的那个计数值将会是0。  我们可以通过该值的Add方法增大或减少其中的计数值。 如下：">
 <meta name="keywords" content="Golang">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Golang并发之sync.WaitGroup">
 <meta property="og:url" content="https://sheldon-lu.github.io/passages/Golang并发之sync-WaitGroup/index.html">
 <meta property="og:site_name" content="Sheldon">
-<meta property="og:description" content="声明1var wg sync.WaitGroup sync.WaitGroup/ Golang内置sync包 Wg变量：该类型有三个指针方法，即Add、Done和Wait。 类型sync.WaitGroup是一个结构体类型。当一个sync.WaitGroup类型的变量被声明之后，其值中的那个计数值将会是0。  我们可以通过该值的Add方法增大或减少其中的计数值。 如下：  wg.Add(1)  与">
+<meta property="og:description" content="声明1var wg sync.WaitGroup sync.WaitGroup/ Golang内置sync包 Wg变量：该类型有三个指针方法，即Add、Done和Wait。 类型sync.WaitGroup是一个结构体类型。当一个sync.WaitGroup类型的变量被声明之后，其值中的那个计数值将会是0。  我们可以通过该值的Add方法增大或减少其中的计数值。 如下：">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-29T08:03:13.242Z">
+<meta property="og:updated_time" content="2019-04-02T23:20:47.849Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang并发之sync.WaitGroup">
-<meta name="twitter:description" content="声明1var wg sync.WaitGroup sync.WaitGroup/ Golang内置sync包 Wg变量：该类型有三个指针方法，即Add、Done和Wait。 类型sync.WaitGroup是一个结构体类型。当一个sync.WaitGroup类型的变量被声明之后，其值中的那个计数值将会是0。  我们可以通过该值的Add方法增大或减少其中的计数值。 如下：  wg.Add(1)  与">
+<meta name="twitter:description" content="声明1var wg sync.WaitGroup sync.WaitGroup/ Golang内置sync包 Wg变量：该类型有三个指针方法，即Add、Done和Wait。 类型sync.WaitGroup是一个结构体类型。当一个sync.WaitGroup类型的变量被声明之后，其值中的那个计数值将会是0。  我们可以通过该值的Add方法增大或减少其中的计数值。 如下：">
 
 
 
@@ -384,12 +384,24 @@
                 
               
 
-              <time title="Created: 2019-03-29 15:46:03 / Modified: 16:03:13" itemprop="dateCreated datePublished" datetime="2019-03-29T15:46:03+08:00">2019-03-29</time>
+              <time title="Created: 2019-03-29 15:46:03" itemprop="dateCreated datePublished" datetime="2019-03-29T15:46:03+08:00">2019-03-29</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-04-03 07:20:47" itemprop="dateModified" datetime="2019-04-03T07:20:47+08:00">2019-04-03</time>
               
             
           </span>
@@ -469,7 +481,7 @@
 <h2 id="sync-WaitGroup-Golang内置sync包"><a href="#sync-WaitGroup-Golang内置sync包" class="headerlink" title="sync.WaitGroup/ Golang内置sync包"></a>sync.WaitGroup/ Golang内置sync包</h2><blockquote>
 <p>Wg变量：该类型有三个指针方法，即Add、Done和Wait。</p>
 <p>类型sync.WaitGroup是一个结构体类型。当一个sync.WaitGroup类型的变量被声明之后，其值中的那个计数值将会是0。 </p>
-<p>我们可以通过该值的Add方法增大或减少其中的计数值。 如下： </p>
+<p>我们可以通过该值的Add方法增大或减少其中的计数值。 如下： <a id="more"></a></p>
 <p>wg.Add(1) </p>
 <p>与wg.Add(-1)的执行效果是一致的： </p>
 <p>wg.Done() </p>
@@ -478,7 +490,7 @@
 <p>例如，这段代码中的第5条语句会引发一个运行时恐慌： </p>
 <p>var wg sync.WaitGroup </p>
 <p>wg.Add(2) </p>
-<p>wg.Done() <a id="more"></a></p>
+<p>wg.Done() </p>
 <p>wg.Done() </p>
 <p>wg.Done() </p>
 <p>2、当我们调用sync.WaitGroup类型值的Wait方法的时候，它会去检查该值中的计数值。如果这个计数值为0，那么该方法会立即返回，且不会对程序的运行产生任何影响。 但是，如果这个计数值大于0，那么该方法的调用方所属的那个Goroutine就会被阻塞。直到该计数值重新变为0之时，为此而被阻塞的所有Goroutine才会被唤醒。 </p>
@@ -629,7 +641,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">2</span>
+                      
+                    
+                    <span class="site-state-item-count">3</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
