@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/sheldon_blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/sheldon_blog/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/sheldon_blog/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/sheldon_blog/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/sheldon_blog/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/sheldon_blog/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/sheldon_blog/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="更新19.4.5一、etcd 单点问题默认kubeadm创建的集群会在内部启动一个单点的 etcd，当然大部分情况下 etcd 还是很稳定的，但是一但 etcd 由于某种原因挂掉，这个问题会非常严重，会导致整个集群不可用。具体原因是 etcd 存储着 kubernetes 各种元数据信息；包括 kubectl get pod等等基础命令实际上全部是调用 RESTful API 从 etcd 中获取">
+<meta name="keywords" content="Kubernetes">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kubernetes_填坑记">
+<meta property="og:url" content="https://sheldon-lu.github.io/passages/Kubernetes-填坑/index.html">
+<meta property="og:site_name" content="Sheldon">
+<meta property="og:description" content="更新19.4.5一、etcd 单点问题默认kubeadm创建的集群会在内部启动一个单点的 etcd，当然大部分情况下 etcd 还是很稳定的，但是一但 etcd 由于某种原因挂掉，这个问题会非常严重，会导致整个集群不可用。具体原因是 etcd 存储着 kubernetes 各种元数据信息；包括 kubectl get pod等等基础命令实际上全部是调用 RESTful API 从 etcd 中获取">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-04-05T12:35:27.237Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kubernetes_填坑记">
+<meta name="twitter:description" content="更新19.4.5一、etcd 单点问题默认kubeadm创建的集群会在内部启动一个单点的 etcd，当然大部分情况下 etcd 还是很稳定的，但是一但 etcd 由于某种原因挂掉，这个问题会非常严重，会导致整个集群不可用。具体原因是 etcd 存储着 kubernetes 各种元数据信息；包括 kubectl get pod等等基础命令实际上全部是调用 RESTful API 从 etcd 中获取">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://sheldon-lu.github.io/passages/Kubernetes-填坑/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Kubernetes_填坑记 | Sheldon</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/sheldon_blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sheldon</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/sheldon_blog/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/sheldon_blog/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/sheldon_blog/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/sheldon_blog/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/sheldon_blog/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/Kubernetes-填坑/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sheldon Lu">
+      <meta itemprop="description" content="Sheldon's Blog / 静下心前行">
+      <meta itemprop="image" content="/sheldon_blog/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sheldon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Kubernetes_填坑记
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-04-04 15:37:45" itemprop="dateCreated datePublished" datetime="2019-04-04T15:37:45+08:00">2019-04-04</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-04-05 20:35:27" itemprop="dateModified" datetime="2019-04-05T20:35:27+08:00">2019-04-05</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/sheldon_blog/categories/Kubernetes/" itemprop="url" rel="index"><span itemprop="name">Kubernetes</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/sheldon_blog/passages/Kubernetes-填坑/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/sheldon_blog/passages/Kubernetes-填坑/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/sheldon_blog/passages/Kubernetes-填坑/" class="leancloud_visitors" data-flag-title="Kubernetes_填坑记">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Views: </span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="更新19-4-5"><a href="#更新19-4-5" class="headerlink" title="更新19.4.5"></a>更新19.4.5</h2><h3 id="一、etcd-单点问题"><a href="#一、etcd-单点问题" class="headerlink" title="一、etcd 单点问题"></a>一、etcd 单点问题</h3><p>默认<code>kubeadm</code>创建的集群会在内部启动一个单点的 etcd，当然大部分情况下 etcd 还是很稳定的，<strong>但是一但 etcd 由于某种原因挂掉，这个问题会非常严重，会导致整个集群不可用</strong>。具体原因是 etcd 存储着 kubernetes 各种元数据信息；包括 <code>kubectl get pod</code>等等基础命令实际上全部是调用 RESTful API 从 etcd 中获取的信息；<strong>所以一但 etcd 挂掉以后，基本等同于<code>kubectl</code>命令不可用，集群各节点也会因无法从 etcd 获取数据而出现无法调度，最终挂掉</strong>。</p>
+<p><strong>解决办法：是在使用<code>kubeadm</code>创建集群时使用 –external-etcd-endpoints 参数指定外部 etcd 集群，此时<code>kubeadm</code> 将不会在内部创建 etcd，转而使用外部我们指定的 etcd 集群，如果外部 etcd 集群配置了 SSL 加密，那么还需要配合 –external-etcd-cafile、–external-etcd-certfile、–external-etcd-keyfile 三个参数指定 etcd 的 CA证书、CA签发的使用证书和私钥文件，命令如下</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 非 SSL</span><br><span class="line">kubeadm init --external-etcd-endpoints http://x.x.x.1:2379</span><br><span class="line"># etcd SSL</span><br><span class="line">kubeadm init --external-etcd-endpoints https://x.x.x.1:2379 --external-etcd-cafile /path/to/ca --external-etcd-certfile /path/to/cert --external-etcd-keyfile /path/to/privatekey</span><br></pre></td></tr></table></figure>
+<h3 id="二、etcd-不可与-master-同在"><a href="#二、etcd-不可与-master-同在" class="headerlink" title="二、etcd 不可与 master 同在"></a>二、etcd 不可与 master 同在</h3><p>‘愿上帝与你同在’……这个坑是由于<code>kubeadm</code>的 check 机制的 bug 造成的，目前还没有修复；表现为 <strong>当 etcd 与 master 在同一节点时，kubeadm init 会失败，同时报错信息提示’已经存在了 /var/lib/etcd 目录，或者 2379 端口被占用’</strong>；因为默认<code>kubeadm</code>会创建 etcd，而默认的 etcd 会占用这个目录和 2379 端口，<strong>即使你加了<code>--external-etcd-endpoints</code>参数，<code>kubeadm</code>仍然会检测这两项条件是否满足，不满足则禁止 init 操作</strong></p>
+<p><strong>解决办法：就是要么外部的 etcd 更换数据目录(/var/lib/etcd)和端口，要么干脆不要和 master 放在同一主机即可</strong></p>
+<h3 id="三、巨大的日志"><a href="#三、巨大的日志" class="headerlink" title="三、巨大的日志"></a>三、巨大的日志</h3><p>熟悉的小伙伴应该清楚，基本上每个 kubernetes 组件都会有个通用的参数 <code>--v</code>；这个参数用于控制 kubernetes 各个组件的日志级别，在早期(alpha)的 kubeadm 版本中，如果不进行调整，默认创建集群所有组件日志级别全部为 <code>--v=4</code> 即最高级别输出，这会导致在业务量大的时候磁盘空间以 <strong>‘我去尼玛’</strong> 的速度增长，尤其是 <code>kube-proxy</code> 组件的容器，会疯狂吃掉你的磁盘空间，然后剩下懵逼的你不知为何。在后续的版本中(beta)发现日志级别已经降到了 <code>--v=2</code>，不过对于完全不怎么看日志的我来说还是无卵用……</p>
+<p><strong>解决办法有两种方案:</strong></p>
+<p><strong>1、如果已经 –v=4 跑起来了(检查方法就是随便 describe 一个 kube-proxy 的容器，看下 command 字段就能看到)，并且无法停止重建集群，那么最简单的办法就是使用<code>kubectl edit ds xxx</code>方式编译一下相关 ds 文件等，然后手动杀掉相关 pod，让 kubernetes 自动重建即可，如果命令行用着不爽也可以通过 dashboard 更改</strong></p>
+<p><strong>2、如果还没开始搭建，或者可以停掉重建，那么只需在<code>kubeadm init</code>之前<code>export KUBE_COMPONENT_LOGLEVEL=&#39;--v=0&#39;</code>即可</strong></p>
+<h3 id="四、新节点加入-dns-要你命"><a href="#四、新节点加入-dns-要你命" class="headerlink" title="四、新节点加入 dns 要你命"></a>四、新节点加入 dns 要你命</h3><p>当 kubeadm 创建好集群以后，如果有需要增加新节点，那么在 <code>kubeadm join</code> 之后务必检查 <code>kube-dns</code> 组件，dns 在某些(weave 启动不完整或不正常)情况下，会由于新节点加入而挂掉，此时整个集群 dns 失效，<strong>所以最好 join 完观察一会 dns 状态，如果发现不正常马上杀掉 dns pod，让 kubernetes 自动重建；如果情况允许最好全部 join 完成后直接干掉 dns 让 kubernetes 重建一下</strong></p>
+<h3 id="五、单点的-dns-浪起来让你怕（更新-19-4-5）"><a href="#五、单点的-dns-浪起来让你怕（更新-19-4-5）" class="headerlink" title="五、单点的 dns 浪起来让你怕（更新-19.4.5）"></a>五、单点的 dns 浪起来让你怕（更新-19.4.5）</h3><p>kubeadm 创建的 dns 默认也是单点的，而 dns 至关重要，只要一挂瞬间整个集群全部 <code>game over</code>；<strong>不过暂时还是没有发现能在 init 时候创建多个 dns 的方法；不过在集群创建后可以通过<code>kubectl edit deploy kube-dns</code>的方式修改其副本数量，让其创建多个副本即可</strong>，<strong><em>目前新版本kubernetes所使用的dns已经不是单pod三container，而是启动两个pod的coredns，解决单点问题</em></strong></p>
+<h3 id="六、coredns一直处于ContainerCreating状态"><a href="#六、coredns一直处于ContainerCreating状态" class="headerlink" title="六、coredns一直处于ContainerCreating状态"></a>六、coredns一直处于ContainerCreating状态</h3><blockquote>
+<p>Node加入集群中后一直处于NotReady状态，查看kube-system的状态，发现coredns一直处于ContainerCreating状态，flannel启动正常</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@master1 ~]# kubectl get nodes</span><br><span class="line">NAME              STATUS     ROLES    AGE     VERSION</span><br><span class="line">master1.rsq.com   NotReady   master   16h     v1.13.0</span><br><span class="line">node01.rsq.com    NotReady   &lt;none&gt;   16h     v1.13.0</span><br><span class="line">node02.rsq.com    NotReady   &lt;none&gt;   8m39s   v1.13.0</span><br></pre></td></tr></table></figure>
+<p>查看kubelet服务状态，看最后几行的报错</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">systemctl status kubelet</span><br><span class="line"></span><br><span class="line">● kubelet.service - kubelet: The Kubernetes Node Agent</span><br><span class="line">   Loaded: loaded (/etc/systemd/system/kubelet.service; enabled; vendor preset: disabled)</span><br><span class="line">  Drop-In: /etc/systemd/system/kubelet.service.d</span><br><span class="line">           └─10-kubeadm.conf</span><br><span class="line">   Active: active (running) since Wed 2018-12-12 09:24:44 CST; 6min ago</span><br><span class="line">     Docs: https://kubernetes.io/docs/</span><br><span class="line"> Main PID: 123631 (kubelet)</span><br><span class="line">   Memory: 35.2M</span><br><span class="line">   CGroup: /system.slice/kubelet.service</span><br><span class="line">           └─123631 /usr/bin/kubelet --bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf --config=/var/lib/kubelet/config.yaml --cgrou...</span><br><span class="line"></span><br><span class="line">Dec 12 09:30:57 master1.rsq.com kubelet[123631]: E1212 09:30:57.187292  123631 pod_workers.go:190] Error syncing pod cea84a11-fd24-11e8-a282-000c291e37c2 ("coredns-86c58d9df4-fzs9l_kube-...</span><br><span class="line">Dec 12 09:30:57 master1.rsq.com kubelet[123631]: E1212 09:30:57.187480  123631 pod_workers.go:190] Error syncing pod cea7ebef-fd24-11e8-a282-000c291e37c2 ("coredns-86c58d9df4-hrwvk_kube-...</span><br><span class="line">Dec 12 09:30:59 master1.rsq.com kubelet[123631]: E1212 09:30:59.187419  123631 pod_workers.go:190] Error syncing pod cea84a11-fd24-11e8-a282-000c291e37c2 ("coredns-86c58d9df4-fzs9l_kube-...</span><br><span class="line">Dec 12 09:30:59 master1.rsq.com kubelet[123631]: E1212 09:30:59.187607  123631 pod_workers.go:190] Error syncing pod cea7ebef-fd24-11e8-a282-000c291e37c2 ("coredns-86c58d9df4-hrwvk_kube-...</span><br><span class="line">Dec 12 09:31:00 master1.rsq.com kubelet[123631]: W1212 09:31:00.454147  123631 cni.go:203] Unable to update cni config: No networks found in /etc/cni/net.d</span><br><span class="line">Dec 12 09:31:00 master1.rsq.com kubelet[123631]: E1212 09:31:00.454242  123631 kubelet.go:2192] Container runtime network not ready: NetworkReady=false reason:NetworkPluginNot...initialized</span><br><span class="line">Dec 12 09:31:01 master1.rsq.com kubelet[123631]: E1212 09:31:01.188877  123631 pod_workers.go:190] Error syncing pod cea7ebef-fd24-11e8-a282-000c291e37c2 ("coredns-86c58d9df4-hrwvk_kube-...</span><br><span class="line">Dec 12 09:31:01 master1.rsq.com kubelet[123631]: E1212 09:31:01.189259  123631 pod_workers.go:190] Error syncing pod cea84a11-fd24-11e8-a282-000c291e37c2 ("coredns-86c58d9df4-fzs9l_kube-...</span><br><span class="line">Dec 12 09:31:03 master1.rsq.com kubelet[123631]: E1212 09:31:03.187200  123631 pod_workers.go:190] Error syncing pod cea84a11-fd24-11e8-a282-000c291e37c2 ("coredns-86c58d9df4-fzs9l_kube-...</span><br><span class="line">Dec 12 09:31:03 master1.rsq.com kubelet[123631]: E1212 09:31:03.187730  123631 pod_workers.go:190] Error syncing pod cea7ebef-fd24-11e8-a282-000c291e37c2 ("coredns-86c58d9df4-hrwvk_kube-...</span><br><span class="line">Hint: Some lines were ellipsized, use -l to show in full.</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 附加</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 报错10.244.0.1 网络已存在（更新）</span></span><br></pre></td></tr></table></figure>
+<p>产生问题原因：</p>
+<p>一直报网络NotReady，我就感觉flannel组件出了问题， 最后网上搜了一些资料解决<br>参考博客：<a href="http://www.cnblogs.com/effortsing/p/10014611.html" target="_blank" rel="noopener">coreDNS一直处于创建中解决</a><br>解决办法：所有节点执行（我只在master节点先执行就解决问题了）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rm -rf /var/lib/cni/flannel/* &amp;&amp; rm -rf /var/lib/cni/networks/cbr0/* &amp;&amp; ip link delete cni0</span><br><span class="line">rm -rf /var/lib/cni/networks/cni0/*</span><br></pre></td></tr></table></figure>
+<p>删除flannel组件，重新下载</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker rmi quay.io/coreos/flannel:v0.10.0-amd64</span><br><span class="line">kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml</span><br></pre></td></tr></table></figure>
+<p>查看节点状态已经处于Ready状态</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">kubectl get nodes</span><br><span class="line">NAME              STATUS   ROLES    AGE   VERSION</span><br><span class="line">master1.rsq.com   Ready    master   16h   v1.13.0</span><br><span class="line">node01.rsq.com    Ready    &lt;none&gt;   16h   v1.13.0</span><br><span class="line">node02.rsq.com    Ready    &lt;none&gt;   39m   v1.13.0</span><br></pre></td></tr></table></figure>
+<h3 id="七、kubeadm-join报错"><a href="#七、kubeadm-join报错" class="headerlink" title="七、kubeadm join报错"></a>七、kubeadm join报错</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">在部署服务过程中，初始化之后重启了master节点，然后node节点在join进群的时候报错，提示证书是否过期等问题，报错信息如下：</span><br><span class="line"></span><br><span class="line">[root@node01 ~]# kubeadm join 10.0.0.100:6443 --token qxl5b3.5b78nwu3gm1r4u6o --discovery-token-ca-cert-hash sha256:3e20fa8054cbc9000cf3d3586a05a01d8af5721b577856e93c7e243877393d21 --ignore-preflight-errors=Swap</span><br><span class="line">[preflight] Running pre-flight checks</span><br><span class="line">[WARNING Swap]: running with swap on is not supported. Please disable swap</span><br><span class="line">	[WARNING SystemVerification]: this Docker version is not on the list of validated versions: 18.09.0. Latest validated version: 18.06</span><br><span class="line">[discovery] Trying to connect to API Server "10.0.0.100:6443"</span><br><span class="line">[discovery] Created cluster-info discovery client, requesting info from "https://10.0.0.100:6443"</span><br><span class="line">[discovery] Failed to request cluster info, will try again: [Get https://10.0.0.100:6443/api/v1/namespaces/kube-public/configmaps/cluster-info: dial tcp 10.0.0.100:6443: connect: connection refused]</span><br><span class="line">[discovery] Failed to request cluster info, will try again: [Get https://10.0.0.100:6443/api/v1/namespaces/kube-public/configmaps/cluster-info: dial tcp 10.0.0.100:6443: connect: connection refused]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>产生原因：有可能是时间不同步造成的，在初始化后重启master，重启后会报错</p>
+</blockquote>
+<p>找了好多资料，没有找到可行的，最后kubeadm reset完美解决<br>参考博文： <a href="https://www.cnblogs.com/justmine/p/8886675.html" target="_blank" rel="noopener">k8s踩坑记 - kubeadm join 之 token 失效</a><br>reset之后重新初始化</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubeadm reset	</span><br><span class="line">kubeadm init --kubernetes-version=v1.13.0 --pod-network-cidr=10.244.0.0/16 --service-cidr=10.96.0.0/12 --token-ttl=0 --ignore-preflight-errors=Swap</span><br></pre></td></tr></table></figure>
+<p>创建所需文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p $HOME/.kube</span><br><span class="line">cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</span><br><span class="line">chown $(id -u):$(id -g) $HOME/.kube/config</span><br></pre></td></tr></table></figure>
+<p>查看节点</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@master1 ~]# kubectl get nodes</span><br><span class="line">NAME              STATUS     ROLES    AGE     VERSION</span><br><span class="line">master1.rsq.com   NotReady   master   2m49s   v1.13.0</span><br></pre></td></tr></table></figure>
+<h3 id="八、Etcd二进制安装目录也会报错哦"><a href="#八、Etcd二进制安装目录也会报错哦" class="headerlink" title="八、Etcd二进制安装目录也会报错哦"></a>八、Etcd二进制安装目录也会报错哦</h3><p><strong>etcd服务启动后报错etcd cluster ID mismatch：</strong>检查service配置cluster选项有无问题，若无问题，则可能是此前的etcd bootstrap加速启动缓存残留导致，坑爹的是<code>rm -rf /var/lib/etcd/*</code>删除完了之后还是报错，必须<code>rm -rf /var/lib/etcd/</code>才能彻底清除，删除完成后记得再创建该路径mkdir /var/lib/etcd，否则会有类似报错：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">etcd.service: Failed at step CHDIR spawning /usr/local/bin/etcd: No such file or directory</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/sheldon_blog/tags/Kubernetes/" rel="tag"># Kubernetes</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/sheldon_blog/passages/Kubernetes安装—kubeadm-1-13-5/" rel="next" title="Kubernetes安装—kubeadm_1.13.5">
+                <i class="fa fa-chevron-left"></i> Kubernetes安装—kubeadm_1.13.5
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/sheldon_blog/images/avatar.jpg" alt="Sheldon Lu">
+            
+              <p class="site-author-name" itemprop="name">Sheldon Lu</p>
+              <div class="site-description motion-element" itemprop="description">Sheldon's Blog / 静下心前行</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/sheldon_blog/archives/">
+                
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/sheldon_blog/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/sheldon_blog/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/sheldon-lu" title="GitHub &rarr; https://github.com/sheldon-lu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#更新19-4-5"><span class="nav-number">1.</span> <span class="nav-text">更新19.4.5</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、etcd-单点问题"><span class="nav-number">1.1.</span> <span class="nav-text">一、etcd 单点问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、etcd-不可与-master-同在"><span class="nav-number">1.2.</span> <span class="nav-text">二、etcd 不可与 master 同在</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、巨大的日志"><span class="nav-number">1.3.</span> <span class="nav-text">三、巨大的日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、新节点加入-dns-要你命"><span class="nav-number">1.4.</span> <span class="nav-text">四、新节点加入 dns 要你命</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、单点的-dns-浪起来让你怕（更新-19-4-5）"><span class="nav-number">1.5.</span> <span class="nav-text">五、单点的 dns 浪起来让你怕（更新-19.4.5）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、coredns一直处于ContainerCreating状态"><span class="nav-number">1.6.</span> <span class="nav-text">六、coredns一直处于ContainerCreating状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#七、kubeadm-join报错"><span class="nav-number">1.7.</span> <span class="nav-text">七、kubeadm join报错</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#八、Etcd二进制安装目录也会报错哦"><span class="nav-number">1.8.</span> <span class="nav-text">八、Etcd二进制安装目录也会报错哦</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sheldon Lu</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.0.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/sheldon_blog/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/sheldon_blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/sheldon_blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/sheldon_blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/sheldon_blog/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/sheldon_blog/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/sheldon_blog/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/sheldon_blog/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/sheldon_blog/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/sheldon_blog/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'wcykO4AM4RdvFXlzAJAOVgGz-gzGzoHsz',
+    appKey: '1okhim5n5Pq6KwHuFKmTRC9t',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn'
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $('.leancloud_visitors');
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', '/classes/Counter/' + counter.objectId, JSON.stringify({ time: { '__op': 'Increment', 'amount': 1 } }))
+            
+              .done(function() {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.time + 1);
+              })
+            
+              .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+              })
+          } else {
+            
+              Counter('post', '/classes/Counter', JSON.stringify({ title: title, url: url, time: 1 }))
+                .done(function() {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(1);
+                })
+                .fail(function() {
+                  console.log('Failed to create');
+                });
+            
+          }
+        })
+        .fail(function ({ responseJSON }) {
+          console.log('LeanCloud Counter Error: ' + responseJSON.code + ' ' + responseJSON.error);
+        });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + 'wcykO4AM4RdvFXlzAJAOVgGz-gzGzoHsz')
+        .done(function({ api_server }) {
+          var Counter = function(method, url, data) {
+            return $.ajax({
+              method: method,
+              url: 'https://' + api_server + '/1.1' + url,
+              headers: {
+                'X-LC-Id': 'wcykO4AM4RdvFXlzAJAOVgGz-gzGzoHsz',
+                'X-LC-Key': '1okhim5n5Pq6KwHuFKmTRC9t',
+                'Content-Type': 'application/json',
+              },
+              data: data
+            });
+          };
+          
+            addCount(Counter);
+          
+        });
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
