@@ -108,7 +108,7 @@
 <meta property="og:site_name" content="Sheldon_Lu">
 <meta property="og:description" content="更新19.4.5一、etcd 单点问题默认kubeadm创建的集群会在内部启动一个单点的 etcd，当然大部分情况下 etcd 还是很稳定的，但是一但 etcd 由于某种原因挂掉，这个问题会非常严重，会导致整个集群不可用。具体原因是 etcd 存储着 kubernetes 各种元数据信息；包括 kubectl get pod等等基础命令实际上全部是调用 RESTful API 从 etcd 中获取">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-06T08:55:28.381Z">
+<meta property="og:updated_time" content="2019-04-06T09:09:15.993Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kubernetes_填坑">
 <meta name="twitter:description" content="更新19.4.5一、etcd 单点问题默认kubeadm创建的集群会在内部启动一个单点的 etcd，当然大部分情况下 etcd 还是很稳定的，但是一但 etcd 由于某种原因挂掉，这个问题会非常严重，会导致整个集群不可用。具体原因是 etcd 存储着 kubernetes 各种元数据信息；包括 kubectl get pod等等基础命令实际上全部是调用 RESTful API 从 etcd 中获取">
@@ -435,7 +435,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-04-06 16:55:28" itemprop="dateModified" datetime="2019-04-06T16:55:28+08:00">2019-04-06</time>
+                <time title="Modified: 2019-04-06 17:09:15" itemprop="dateModified" datetime="2019-04-06T17:09:15+08:00">2019-04-06</time>
               
             
           </span>
@@ -850,7 +850,7 @@ var div = $('.post-body');
 //暂时储存目录的内容
 var toc=$('.post-toc-wrap')
 function password() {
-  if('sss'){
+  if(''){
   //将文章内容删除
     div.remove();
  //将目录删除 
@@ -886,8 +886,8 @@ function password() {
     $(document).keyup(function(event){
       if(event.keyCode ==13&&$('.password').length>0){
         //console.log($('.password').val())
-        //console.log('sss')
-        if ($('.password').val() == 'sss') {
+        //console.log('')
+        if ($('.password').val() == '') {
         //恢复文章内容
           (div).appendTo($(".post-header"))
           //恢复目录
@@ -927,7 +927,7 @@ var div = $('.post-body');
 //暂时储存目录的内容
 var toc=$('.post-toc-wrap')
 function password() {
-  if('sss'){
+  if(''){
   //将文章内容删除
     div.remove();
  //将目录删除 
@@ -963,8 +963,8 @@ function password() {
     $(document).keyup(function(event){
       if(event.keyCode ==13&&$('.password').length>0){
         //console.log($('.password').val())
-        //console.log('sss')
-        if ($('.password').val() == 'sss') {
+        //console.log('')
+        if ($('.password').val() == '') {
         //恢复文章内容
           (div).appendTo($(".post-header"))
           //恢复目录
