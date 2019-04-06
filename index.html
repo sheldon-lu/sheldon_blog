@@ -643,7 +643,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-04-06 17:09:15" itemprop="dateModified" datetime="2019-04-06T17:09:15+08:00">2019-04-06</time>
+                <time title="Modified: 2019-04-06 21:12:27" itemprop="dateModified" datetime="2019-04-06T21:12:27+08:00">2019-04-06</time>
               
             
           </span>
@@ -748,7 +748,7 @@
 
       
         
-          <h2 id="更新19-4-5"><a href="#更新19-4-5" class="headerlink" title="更新19.4.5"></a>更新19.4.5</h2><h3 id="一、etcd-单点问题"><a href="#一、etcd-单点问题" class="headerlink" title="一、etcd 单点问题"></a>一、etcd 单点问题</h3><p>默认<code>kubeadm</code>创建的集群会在内部启动一个单点的 etcd，当然大部分情况下 etcd 还是很稳定的，<strong>但是一但 etcd 由于某种原因挂掉，这个问题会非常严重，会导致整个集群不可用</strong>。具体原因是 etcd 存储着 kubernetes 各种元数据信息；包括 <code>kubectl get pod</code>等等基础命令实际上全部是调用 RESTful API 从 etcd 中获取的信息；<strong>所以一但 etcd 挂掉以后，基本等同于<code>kubectl</code>命令不可用，集群各节点也会因无法从 etcd 获取数据而出现无法调度，最终挂掉</strong>。
+          <h2 id="更新19-4-5"><a href="#更新19-4-5" class="headerlink" title="更新19.4.5"></a>更新19.4.5</h2><h3 id="一、etcd-单点问题"><a href="#一、etcd-单点问题" class="headerlink" title="一、etcd 单点问题"></a>一、etcd 单点问题
           <!--noindex-->
           
             <div class="post-button text-center">
@@ -760,7 +760,7 @@
           <!--/noindex-->
         
       
-    </p></div>
+    </h3></div>
 
     
 
@@ -875,7 +875,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-04-06 10:48:12" itemprop="dateModified" datetime="2019-04-06T10:48:12+08:00">2019-04-06</time>
+                <time title="Modified: 2019-04-06 21:12:36" itemprop="dateModified" datetime="2019-04-06T21:12:36+08:00">2019-04-06</time>
               
             
           </span>
@@ -984,45 +984,7 @@
 <p>kubernetes version：1.13.5</p>
 <p>docker version：18.6.3</p>
 <p>Redhat：7.6</p>
-<p>linux 内核：4.2.0</p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">x.x.x.1</th>
-<th style="text-align:center">master-1</th>
-<th>kube-apiserver、kube-controller-manager、kube-scheduler、etcd、keepalive、docker</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left"><strong>x.x.x.2</strong></td>
-<td style="text-align:center"><strong>master-2</strong></td>
-<td><strong>kube-apiserver、kube-controller-manager、kube-scheduler、etcd、keepalive、docker</strong></td>
-</tr>
-<tr>
-<td style="text-align:left"><strong>x.x.x.3</strong></td>
-<td style="text-align:center"><strong>master-3</strong></td>
-<td><strong>kube-apiserver、kube-controller-manager、kube-scheduler、etcd、keepalive、docker</strong></td>
-</tr>
-<tr>
-<td style="text-align:left"><strong>x.x.x.4</strong></td>
-<td style="text-align:center"><strong>vip</strong></td>
-<td></td>
-</tr>
-<tr>
-<td style="text-align:left"><strong>x.x.x.5</strong></td>
-<td style="text-align:center"><strong>node-1</strong></td>
-<td><strong>kubelet、docker</strong></td>
-</tr>
-<tr>
-<td style="text-align:left"><strong>x.x.x.6</strong></td>
-<td style="text-align:center"><strong>node-2</strong></td>
-<td><strong>kubelet、docker</strong></td>
-</tr>
-</tbody>
-</table>
-<p>因为担心kubeadm起来的etcd不稳定，这里用到的etcd对于kubernetes来说作为外部etcd集群。即使用二进制安装etcd集群，其余组件用kubeadm来完成安装。
+<p>linux 内核：4.2.0
           <!--noindex-->
           
             <div class="post-button text-center">
@@ -1034,7 +996,7 @@
           <!--/noindex-->
         
       
-    </p></div>
+    </p></blockquote></div>
 
     
 
@@ -1149,7 +1111,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-04-03 07:20:47" itemprop="dateModified" datetime="2019-04-03T07:20:47+08:00">2019-04-03</time>
+                <time title="Modified: 2019-04-06 21:11:59" itemprop="dateModified" datetime="2019-04-06T21:11:59+08:00">2019-04-06</time>
               
             
           </span>
@@ -1255,10 +1217,7 @@
       
         
           <h2 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> wg sync.WaitGroup</span><br></pre></td></tr></table></figure>
-<h2 id="sync-WaitGroup-Golang内置sync包"><a href="#sync-WaitGroup-Golang内置sync包" class="headerlink" title="sync.WaitGroup/ Golang内置sync包"></a>sync.WaitGroup/ Golang内置sync包</h2><blockquote>
-<p>Wg变量：该类型有三个指针方法，即Add、Done和Wait。</p>
-<p>类型sync.WaitGroup是一个结构体类型。当一个sync.WaitGroup类型的变量被声明之后，其值中的那个计数值将会是0。 </p>
-<p>我们可以通过该值的Add方法增大或减少其中的计数值。 如下：
+<h2 id="sync-WaitGroup-Golang内置sync包"><a href="#sync-WaitGroup-Golang内置sync包" class="headerlink" title="sync.WaitGroup/ Golang内置sync包"></a>sync.WaitGroup/ Golang内置sync包
           <!--noindex-->
           
             <div class="post-button text-center">
@@ -1270,7 +1229,7 @@
           <!--/noindex-->
         
       
-    </p></blockquote></div>
+    </h2></div>
 
     
 
@@ -2062,7 +2021,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-04-06 21:02:06" itemprop="dateModified" datetime="2019-04-06T21:02:06+08:00">2019-04-06</time>
+                <time title="Modified: 2019-04-06 21:12:13" itemprop="dateModified" datetime="2019-04-06T21:12:13+08:00">2019-04-06</time>
               
             
           </span>
@@ -2150,9 +2109,7 @@
       
         
           <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post
           <!--noindex-->
           
             <div class="post-button text-center">

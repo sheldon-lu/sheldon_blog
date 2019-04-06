@@ -100,18 +100,18 @@
 
 
 
-  <meta name="description" content="更新19.4.5一、etcd 单点问题默认kubeadm创建的集群会在内部启动一个单点的 etcd，当然大部分情况下 etcd 还是很稳定的，但是一但 etcd 由于某种原因挂掉，这个问题会非常严重，会导致整个集群不可用。具体原因是 etcd 存储着 kubernetes 各种元数据信息；包括 kubectl get pod等等基础命令实际上全部是调用 RESTful API 从 etcd 中获取">
+  <meta name="description" content="更新19.4.5一、etcd 单点问题">
 <meta name="keywords" content="Kubernetes,kubernetes_problem">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Kubernetes_填坑">
 <meta property="og:url" content="https://sheldon-lu.github.io/passages/Kubernetes-填坑/index.html">
 <meta property="og:site_name" content="Sheldon_Lu">
-<meta property="og:description" content="更新19.4.5一、etcd 单点问题默认kubeadm创建的集群会在内部启动一个单点的 etcd，当然大部分情况下 etcd 还是很稳定的，但是一但 etcd 由于某种原因挂掉，这个问题会非常严重，会导致整个集群不可用。具体原因是 etcd 存储着 kubernetes 各种元数据信息；包括 kubectl get pod等等基础命令实际上全部是调用 RESTful API 从 etcd 中获取">
+<meta property="og:description" content="更新19.4.5一、etcd 单点问题">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-06T09:09:15.993Z">
+<meta property="og:updated_time" content="2019-04-06T13:12:27.733Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kubernetes_填坑">
-<meta name="twitter:description" content="更新19.4.5一、etcd 单点问题默认kubeadm创建的集群会在内部启动一个单点的 etcd，当然大部分情况下 etcd 还是很稳定的，但是一但 etcd 由于某种原因挂掉，这个问题会非常严重，会导致整个集群不可用。具体原因是 etcd 存储着 kubernetes 各种元数据信息；包括 kubectl get pod等等基础命令实际上全部是调用 RESTful API 从 etcd 中获取">
+<meta name="twitter:description" content="更新19.4.5一、etcd 单点问题">
 
 
 
@@ -435,7 +435,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-04-06 17:09:15" itemprop="dateModified" datetime="2019-04-06T17:09:15+08:00">2019-04-06</time>
+                <time title="Modified: 2019-04-06 21:12:27" itemprop="dateModified" datetime="2019-04-06T21:12:27+08:00">2019-04-06</time>
               
             
           </span>
@@ -539,7 +539,7 @@
       
 
       
-        <h2 id="更新19-4-5"><a href="#更新19-4-5" class="headerlink" title="更新19.4.5"></a>更新19.4.5</h2><h3 id="一、etcd-单点问题"><a href="#一、etcd-单点问题" class="headerlink" title="一、etcd 单点问题"></a>一、etcd 单点问题</h3><p>默认<code>kubeadm</code>创建的集群会在内部启动一个单点的 etcd，当然大部分情况下 etcd 还是很稳定的，<strong>但是一但 etcd 由于某种原因挂掉，这个问题会非常严重，会导致整个集群不可用</strong>。具体原因是 etcd 存储着 kubernetes 各种元数据信息；包括 <code>kubectl get pod</code>等等基础命令实际上全部是调用 RESTful API 从 etcd 中获取的信息；<strong>所以一但 etcd 挂掉以后，基本等同于<code>kubectl</code>命令不可用，集群各节点也会因无法从 etcd 获取数据而出现无法调度，最终挂掉</strong>。<a id="more"></a></p>
+        <h2 id="更新19-4-5"><a href="#更新19-4-5" class="headerlink" title="更新19.4.5"></a>更新19.4.5</h2><h3 id="一、etcd-单点问题"><a href="#一、etcd-单点问题" class="headerlink" title="一、etcd 单点问题"></a>一、etcd 单点问题<a id="more"></a></h3><p>默认<code>kubeadm</code>创建的集群会在内部启动一个单点的 etcd，当然大部分情况下 etcd 还是很稳定的，<strong>但是一但 etcd 由于某种原因挂掉，这个问题会非常严重，会导致整个集群不可用</strong>。具体原因是 etcd 存储着 kubernetes 各种元数据信息；包括 <code>kubectl get pod</code>等等基础命令实际上全部是调用 RESTful API 从 etcd 中获取的信息；<strong>所以一但 etcd 挂掉以后，基本等同于<code>kubectl</code>命令不可用，集群各节点也会因无法从 etcd 获取数据而出现无法调度，最终挂掉</strong>。</p>
 <p><strong>解决办法：是在使用<code>kubeadm</code>创建集群时使用 –external-etcd-endpoints 参数指定外部 etcd 集群，此时<code>kubeadm</code> 将不会在内部创建 etcd，转而使用外部我们指定的 etcd 集群，如果外部 etcd 集群配置了 SSL 加密，那么还需要配合 –external-etcd-cafile、–external-etcd-certfile、–external-etcd-keyfile 三个参数指定 etcd 的 CA证书、CA签发的使用证书和私钥文件，命令如下</strong></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 非 SSL</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> kubeadm init --external-etcd-endpoints http://x.x.x.1:2379</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> etcd SSL</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> kubeadm init --external-etcd-endpoints https://x.x.x.1:2379 --external-etcd-cafile /path/to/ca --external-etcd-certfile /path/to/cert --external-etcd-keyfile /path/to/privatekey</span></span><br></pre></td></tr></table></figure>
 <h3 id="二、etcd-不可与-master-同在"><a href="#二、etcd-不可与-master-同在" class="headerlink" title="二、etcd 不可与 master 同在"></a>二、etcd 不可与 master 同在</h3><p>‘愿上帝与你同在’……这个坑是由于<code>kubeadm</code>的 check 机制的 bug 造成的，目前还没有修复；表现为 <strong>当 etcd 与 master 在同一节点时，kubeadm init 会失败，同时报错信息提示’已经存在了 /var/lib/etcd 目录，或者 2379 端口被占用’</strong>；因为默认<code>kubeadm</code>会创建 etcd，而默认的 etcd 会占用这个目录和 2379 端口，<strong>即使你加了<code>--external-etcd-endpoints</code>参数，<code>kubeadm</code>仍然会检测这两项条件是否满足，不满足则禁止 init 操作</strong></p>
