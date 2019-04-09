@@ -580,6 +580,628 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/Golang-问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sheldon Lu">
+      <meta itemprop="description" content="静下心来写点东西">
+      <meta itemprop="image" content="/sheldon_blog/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sheldon_Lu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/sheldon_blog/passages/Golang-问题/" class="post-title-link" itemprop="url">Golang_问题</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-04-09 14:54:28 / Modified: 15:12:11" itemprop="dateCreated datePublished" datetime="2019-04-09T14:54:28+08:00">2019-04-09</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/sheldon_blog/passages/Golang-问题/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/sheldon_blog/passages/Golang-问题/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/sheldon_blog/passages/Golang-问题/" class="leancloud_visitors" data-flag-title="Golang_问题">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Views: </span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article">1.3k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">1 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>（持续更新）</p>
+<h2 id="一、gorm遇到invalid-connection报错"><a href="#一、gorm遇到invalid-connection报错" class="headerlink" title="一、gorm遇到invalid connection报错"></a>一、gorm遇到invalid connection报错</h2><blockquote>
+<p>(/data/dcops_workspace/src/x.x.x.x/xxxx/model/containerappid_info.go:76)<br>[2019-04-09 14:41:40]  invalid connection</p>
+<p>现象：今天使用gorm时，总遇到invalid connection报错，导致服务<strong>过一段时间</strong>调一下接口就会重启</p>
+<p>网上查了文档看了gorm的mysql连接池的参数：</p>
+<p>dcosdb.DB().SetMaxIdleConns(10)  // SetMaxIdleConns设置idle connection pool的最大连接数。如果MaxOpenConns的值 &gt; 0，但是小于这里设置的MaxIdleConns，则MaxIdleConns将自动降到与MaxOpenConns的限制相同。如果 &lt;= 0, 则没有空闲连接会被保留。<strong><em>最大空闲连接数</em></strong></p>
+<p>dcosdb.DB().SetMaxOpenConns(100)  //SetMaxOpenConns用于设置Database最大可以打开的连接数。如果 &lt;= 0, 则没有连接限制。且默认值为0（无限制）。<strong><em>数据库最大连接数</em></strong></p>
+<p>dcosdb.DB().SetConnMaxLifetime(time.Second <em> 5)  // SetConnMaxLifetime用于设置连接可被重新使用的最大时间间隔。如果超时，则连接会在重新使用前被关闭。如果 d &lt;= 0, 则连接将被永久保留。**</em>连接最长存活期，超过这个时间连接将不再被复用***</p>
+<p>原因是：程序在重复使用数据库tcp连接池中的某个连接时，该命中连接可能已被服务器过期丢弃，而客户端这边认为该连接为过期，还有效。此时会报错 invalid connection。随后将该连接重连接池中丢弃</p>
+<p>原因参考：<a href="https://blog.csdn.net/dghpgyss/article/details/86480837" target="_blank" rel="noopener">https://blog.csdn.net/dghpgyss/article/details/86480837</a></p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 发现我把dcosdb.DB().SetConnMaxLifetime(time.Second * 5)这个参数设置成了dcosdb.DB().SetConnMaxLifetime(time.Hour)导致了每次连接丢弃，但是客户端不知道。服务端主动关闭了连接，因为服务端对连接的保持超时时间到了也关闭的，所以可以设置客户端连接超时时间小于服务端DB.SetConnMaxLifetime(time.Second)</span></span><br><span class="line"><span class="comment">// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.</span></span><br><span class="line">dcosdb.DB().SetConnMaxLifetime(time.Second * <span class="number">5</span>)</span><br><span class="line"><span class="comment">// dcosdb.DB().SetConnMaxLifetime(time.Hour) 设置成了1小时</span></span><br></pre></td></tr></table></figure>
+<h2 id="二、"><a href="#二、" class="headerlink" title="二、"></a>二、</h2>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/Docker的一些东西/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sheldon Lu">
+      <meta itemprop="description" content="静下心来写点东西">
+      <meta itemprop="image" content="/sheldon_blog/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sheldon_Lu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/sheldon_blog/passages/Docker的一些东西/" class="post-title-link" itemprop="url">Docker的一些东西</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-04-07 13:34:50 / Modified: 13:36:52" itemprop="dateCreated datePublished" datetime="2019-04-07T13:34:50+08:00">2019-04-07</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/sheldon_blog/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/sheldon_blog/passages/Docker的一些东西/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/sheldon_blog/passages/Docker的一些东西/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/sheldon_blog/passages/Docker的一些东西/" class="leancloud_visitors" data-flag-title="Docker的一些东西">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Views: </span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article">6</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">1 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><h3 id="指北"><a href="#指北" class="headerlink" title="指北"></a>指北</h3>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/记一点Haproxy参数的文档/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sheldon Lu">
+      <meta itemprop="description" content="静下心来写点东西">
+      <meta itemprop="image" content="/sheldon_blog/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sheldon_Lu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/sheldon_blog/passages/记一点Haproxy参数的文档/" class="post-title-link" itemprop="url">记一点Haproxy参数的文档</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-04-07 13:31:23 / Modified: 13:33:52" itemprop="dateCreated datePublished" datetime="2019-04-07T13:31:23+08:00">2019-04-07</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/sheldon_blog/passages/记一点Haproxy参数的文档/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/sheldon_blog/passages/记一点Haproxy参数的文档/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/sheldon_blog/passages/记一点Haproxy参数的文档/" class="leancloud_visitors" data-flag-title="记一点Haproxy参数的文档">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Views: </span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article">945</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">1 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Haproxy的一些配置参数，/etc/haproxy/haproxy.cfg</p>
+<blockquote>
+<p>主要是配置项的超时参数，如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> <span class="comment"># 反映连接haproxy集群报错，查看应用服务器进程大量的端口连接处于colse_wait状态。</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> <span class="comment"># 这个haproxy的redis集群类似配置已经好几组了，配置都相同问啥别的都好好的这个却有问题。</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> <span class="comment"># 自己尝试使用redis-cli连接（haproxy做的redis分片集群），确实能够正常连接操作，但是连接状态马上就会变成close_wait状态，重新执行命令这个close_wait状态会恢复ESTABLISHED，但是细心看端口号已经变化，也就是redis-cli发生了重新连接。于是问题清晰了：用户客户端工具建立链接后，没有自动重连来保持连接，导致超时，服务器主动断开连接，客户端再次链接的时候socket已经损坏不可用了，导致报错</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> <span class="comment"># 解决办法：调整haproxy的超时参数：</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> timeout connect 5s</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> timeout queue   5s</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> timeout client 30s</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> timeout server 30s</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> timeout client-fin 30s</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> timeout server-fin 30s</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> timeout tunnel  1h</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> <span class="comment"># 参数解释：</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> timeout connect      连接尝试成功连接到server的超时时间</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> timeout queue        在队列等待连接槽释放的超时时间</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> timeout server       server端非活动状态超时时间</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> timeout client       客户端非活动状态超时时间</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> timeout server-fin   半关闭状态连接，server端非活动超时时间</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> timeout client-fin   半关闭状态连接，client端非活动超时时间</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> timeout tunnel       客户端和服务器端通道非活动超时时间</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"></span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/Kubernetes-填坑/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1944,224 +2566,13 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sheldon Lu">
-      <meta itemprop="description" content="静下心来写点东西">
-      <meta itemprop="image" content="/sheldon_blog/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sheldon_Lu">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/sheldon_blog/passages/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2019-03-24 10:27:21" itemprop="dateCreated datePublished" datetime="2019-03-24T10:27:21+08:00">2019-03-24</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-04-06 21:12:13" itemprop="dateModified" datetime="2019-04-06T21:12:13+08:00">2019-04-06</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-            
-                <span class="post-meta-item-text">Comments: </span>
-                <a href="/sheldon_blog/passages/hello-world/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/sheldon_blog/passages/hello-world/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-            <span id="/sheldon_blog/passages/hello-world/" class="leancloud_visitors" data-flag-title="Hello World">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Views: </span>
-              
-                <span class="leancloud-visitors-count"></span>
-            </span>
-          
-
-          
-
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Symbols count in article: </span>
-                
-                <span title="Symbols count in article">430</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Reading time &asymp;</span>
-                
-                <span title="Reading time">1 mins.</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/sheldon_blog/passages/hello-world/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </h3></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/sheldon_blog/page/2/">2</a><a class="extend next" rel="next" href="/sheldon_blog/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
+
 
 
           </div>
@@ -2203,7 +2614,7 @@
                 
                   <a href="/sheldon_blog/archives/">
                 
-                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-count">11</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2226,7 +2637,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">3</span>
+                      
+                    
+                    <span class="site-state-item-count">4</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -2253,7 +2666,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">5</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
