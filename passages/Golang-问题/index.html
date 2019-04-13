@@ -100,18 +100,18 @@
 
 
 
-  <meta name="description" content="（持续更新） 一、gorm遇到invalid connection报错 (/data/dcops_workspace/src/x.x.x.x/xxxx/model/containerappid_info.go:76)[2019-04-09 14:41:40]  invalid connection 现象：今天使用gorm时，总遇到invalid connection报错，导致服务过一段时间调一下接">
+  <meta name="description" content="（持续更新） 一、gorm遇到invalid connection报错 (/data/dcops_workspace/src/x.x.x.x/xxxx/model/containerappid_info.go:76)[2019-04-09 14:41:40]  invalid connection 现象：今天使用gorm时，总遇到invalid connection报错，导致过一段时间调一下接口服">
 <meta name="keywords" content="Golang">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Golang_问题">
 <meta property="og:url" content="https://sheldon-lu.github.io/passages/Golang-问题/index.html">
 <meta property="og:site_name" content="Sheldon_Lu">
-<meta property="og:description" content="（持续更新） 一、gorm遇到invalid connection报错 (/data/dcops_workspace/src/x.x.x.x/xxxx/model/containerappid_info.go:76)[2019-04-09 14:41:40]  invalid connection 现象：今天使用gorm时，总遇到invalid connection报错，导致服务过一段时间调一下接">
+<meta property="og:description" content="（持续更新） 一、gorm遇到invalid connection报错 (/data/dcops_workspace/src/x.x.x.x/xxxx/model/containerappid_info.go:76)[2019-04-09 14:41:40]  invalid connection 现象：今天使用gorm时，总遇到invalid connection报错，导致过一段时间调一下接口服">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-09T07:12:11.278Z">
+<meta property="og:updated_time" content="2019-04-13T00:20:04.732Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang_问题">
-<meta name="twitter:description" content="（持续更新） 一、gorm遇到invalid connection报错 (/data/dcops_workspace/src/x.x.x.x/xxxx/model/containerappid_info.go:76)[2019-04-09 14:41:40]  invalid connection 现象：今天使用gorm时，总遇到invalid connection报错，导致服务过一段时间调一下接">
+<meta name="twitter:description" content="（持续更新） 一、gorm遇到invalid connection报错 (/data/dcops_workspace/src/x.x.x.x/xxxx/model/containerappid_info.go:76)[2019-04-09 14:41:40]  invalid connection 现象：今天使用gorm时，总遇到invalid connection报错，导致过一段时间调一下接口服">
 
 
 
@@ -418,12 +418,24 @@
                 
               
 
-              <time title="Created: 2019-04-09 14:54:28 / Modified: 15:12:11" itemprop="dateCreated datePublished" datetime="2019-04-09T14:54:28+08:00">2019-04-09</time>
+              <time title="Created: 2019-04-09 14:54:28" itemprop="dateCreated datePublished" datetime="2019-04-09T14:54:28+08:00">2019-04-09</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-04-13 08:20:04" itemprop="dateModified" datetime="2019-04-13T08:20:04+08:00">2019-04-13</time>
               
             
           </span>
@@ -512,7 +524,7 @@
         <p>（持续更新）</p>
 <h2 id="一、gorm遇到invalid-connection报错"><a href="#一、gorm遇到invalid-connection报错" class="headerlink" title="一、gorm遇到invalid connection报错"></a>一、gorm遇到invalid connection报错</h2><blockquote>
 <p>(/data/dcops_workspace/src/x.x.x.x/xxxx/model/containerappid_info.go:76)<br>[2019-04-09 14:41:40]  invalid connection</p>
-<p>现象：今天使用gorm时，总遇到invalid connection报错，导致服务<strong>过一段时间</strong>调一下接口就会重启</p>
+<p>现象：今天使用gorm时，总遇到invalid connection报错，导致<strong>过一段时间</strong>调一下接口服务容器就会重启</p>
 <p>网上查了文档看了gorm的mysql连接池的参数：</p>
 <p>dcosdb.DB().SetMaxIdleConns(10)  // SetMaxIdleConns设置idle connection pool的最大连接数。如果MaxOpenConns的值 &gt; 0，但是小于这里设置的MaxIdleConns，则MaxIdleConns将自动降到与MaxOpenConns的限制相同。如果 &lt;= 0, 则没有空闲连接会被保留。<strong><em>最大空闲连接数</em></strong></p>
 <p>dcosdb.DB().SetMaxOpenConns(100)  //SetMaxOpenConns用于设置Database最大可以打开的连接数。如果 &lt;= 0, 则没有连接限制。且默认值为0（无限制）。<strong><em>数据库最大连接数</em></strong></p>
@@ -645,7 +657,7 @@
                 
                   <a href="/sheldon_blog/archives/">
                 
-                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-count">14</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -707,7 +719,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">9</span>
+                      
+                    
+                    <span class="site-state-item-count">10</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>

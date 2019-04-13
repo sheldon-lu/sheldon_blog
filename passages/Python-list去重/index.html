@@ -100,18 +100,18 @@
 
 
 
-  <meta name="description" content="Python_list去重记录一下集中方法怎么快速的对列表进行去重呢，去重之后原来的顺序会不会改变呢？1.以下的几种情况结果是一样的，去重之后顺序会改变:">
+  <meta name="description" content="Python_list去重集中记录一下方法怎么快速的对列表进行去重呢，去重之后原来的顺序会不会改变呢？1.以下的几种情况结果是一样的，去重之后顺序会改变:">
 <meta name="keywords" content="Python,Python_碎片化">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python_list去重">
 <meta property="og:url" content="https://sheldon-lu.github.io/passages/Python-list去重/index.html">
 <meta property="og:site_name" content="Sheldon_Lu">
-<meta property="og:description" content="Python_list去重记录一下集中方法怎么快速的对列表进行去重呢，去重之后原来的顺序会不会改变呢？1.以下的几种情况结果是一样的，去重之后顺序会改变:">
+<meta property="og:description" content="Python_list去重集中记录一下方法怎么快速的对列表进行去重呢，去重之后原来的顺序会不会改变呢？1.以下的几种情况结果是一样的，去重之后顺序会改变:">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-11T04:12:55.378Z">
+<meta property="og:updated_time" content="2019-04-13T00:19:27.384Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python_list去重">
-<meta name="twitter:description" content="Python_list去重记录一下集中方法怎么快速的对列表进行去重呢，去重之后原来的顺序会不会改变呢？1.以下的几种情况结果是一样的，去重之后顺序会改变:">
+<meta name="twitter:description" content="Python_list去重集中记录一下方法怎么快速的对列表进行去重呢，去重之后原来的顺序会不会改变呢？1.以下的几种情况结果是一样的，去重之后顺序会改变:">
 
 
 
@@ -418,12 +418,24 @@
                 
               
 
-              <time title="Created: 2019-04-11 12:06:31 / Modified: 12:12:55" itemprop="dateCreated datePublished" datetime="2019-04-11T12:06:31+08:00">2019-04-11</time>
+              <time title="Created: 2019-04-11 12:06:31" itemprop="dateCreated datePublished" datetime="2019-04-11T12:06:31+08:00">2019-04-11</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-04-13 08:19:27" itemprop="dateModified" datetime="2019-04-13T08:19:27+08:00">2019-04-13</time>
               
             
           </span>
@@ -527,8 +539,8 @@
       
 
       
-        <h2 id="Python-list去重记录一下集中方法"><a href="#Python-list去重记录一下集中方法" class="headerlink" title="Python_list去重记录一下集中方法"></a>Python_list去重记录一下集中方法</h2><h3 id="怎么快速的对列表进行去重呢，去重之后原来的顺序会不会改变呢？"><a href="#怎么快速的对列表进行去重呢，去重之后原来的顺序会不会改变呢？" class="headerlink" title="怎么快速的对列表进行去重呢，去重之后原来的顺序会不会改变呢？"></a>怎么快速的对列表进行去重呢，去重之后原来的顺序会不会改变呢？</h3><h4 id="1-以下的几种情况结果是一样的，去重之后顺序会改变"><a href="#1-以下的几种情况结果是一样的，去重之后顺序会改变" class="headerlink" title="1.以下的几种情况结果是一样的，去重之后顺序会改变:"></a>1.以下的几种情况结果是一样的，去重之后顺序会改变:<a id="more"></a></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ids = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">1</span>]</span><br><span class="line">news_ids = []</span><br><span class="line"><span class="keyword">for</span> id <span class="keyword">in</span> ids:</span><br><span class="line">    <span class="keyword">if</span> id <span class="keyword">not</span> <span class="keyword">in</span> news_ids:</span><br><span class="line">        news_ids.append(id)</span><br><span class="line"><span class="keyword">print</span> news_ids</span><br></pre></td></tr></table></figure>
-<h4 id="或用set"><a href="#或用set" class="headerlink" title="或用set"></a>或用set</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ids = [<span class="number">1</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">1</span>]</span><br><span class="line">ids = list(set(ids))</span><br></pre></td></tr></table></figure>
+        <h2 id="Python-list去重集中记录一下方法"><a href="#Python-list去重集中记录一下方法" class="headerlink" title="Python_list去重集中记录一下方法"></a>Python_list去重集中记录一下方法</h2><h3 id="怎么快速的对列表进行去重呢，去重之后原来的顺序会不会改变呢？"><a href="#怎么快速的对列表进行去重呢，去重之后原来的顺序会不会改变呢？" class="headerlink" title="怎么快速的对列表进行去重呢，去重之后原来的顺序会不会改变呢？"></a>怎么快速的对列表进行去重呢，去重之后原来的顺序会不会改变呢？</h3><h4 id="1-以下的几种情况结果是一样的，去重之后顺序会改变"><a href="#1-以下的几种情况结果是一样的，去重之后顺序会改变" class="headerlink" title="1.以下的几种情况结果是一样的，去重之后顺序会改变:"></a>1.以下的几种情况结果是一样的，去重之后顺序会改变:<a id="more"></a></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 最常用</span></span><br><span class="line">ids = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">1</span>]</span><br><span class="line">news_ids = []</span><br><span class="line"><span class="keyword">for</span> id <span class="keyword">in</span> ids:</span><br><span class="line">    <span class="keyword">if</span> id <span class="keyword">not</span> <span class="keyword">in</span> news_ids:</span><br><span class="line">        news_ids.append(id)</span><br><span class="line"><span class="keyword">print</span> news_ids</span><br></pre></td></tr></table></figure>
+<h4 id="或用set"><a href="#或用set" class="headerlink" title="或用set"></a>或用set</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用set如果列表里面有字典活着其他数据结构，貌似不会去重。</span></span><br><span class="line">ids = [<span class="number">1</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">1</span>]</span><br><span class="line">ids = list(set(ids))</span><br></pre></td></tr></table></figure>
 <h4 id="或使用itertools-grouby"><a href="#或使用itertools-grouby" class="headerlink" title="或使用itertools.grouby"></a>或使用itertools.grouby</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line">ids = [<span class="number">1</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">1</span>]</span><br><span class="line">ids.sort()</span><br><span class="line">it = itertools.groupby(ids)</span><br><span class="line"><span class="keyword">for</span> k, g <span class="keyword">in</span> it:</span><br><span class="line">    <span class="keyword">print</span> k</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>关于itertools.groupby的原理可以看这里：</p>
@@ -594,6 +606,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/sheldon_blog/passages/Python-问题小结-1/" rel="prev" title="Python_问题小结(1)">
+                Python_问题小结(1) <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -668,7 +684,7 @@
                 
                   <a href="/sheldon_blog/archives/">
                 
-                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-count">14</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -730,7 +746,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">9</span>
+                      
+                    
+                    <span class="site-state-item-count">10</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -789,7 +807,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Python-list去重记录一下集中方法"><span class="nav-number">1.</span> <span class="nav-text">Python_list去重记录一下集中方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#怎么快速的对列表进行去重呢，去重之后原来的顺序会不会改变呢？"><span class="nav-number">1.1.</span> <span class="nav-text">怎么快速的对列表进行去重呢，去重之后原来的顺序会不会改变呢？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-以下的几种情况结果是一样的，去重之后顺序会改变"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.以下的几种情况结果是一样的，去重之后顺序会改变:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#或用set"><span class="nav-number">1.1.2.</span> <span class="nav-text">或用set</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#或使用itertools-grouby"><span class="nav-number">1.1.3.</span> <span class="nav-text">或使用itertools.grouby</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-怎么能不改变原来的顺序呢？-要用到reduce-关于reduce的介绍-http-docs-python-org-2-library-functions-html-reduce"><span class="nav-number">1.1.4.</span> <span class="nav-text">2.怎么能不改变原来的顺序呢？(要用到reduce 关于reduce的介绍　 http://docs.python.org/2/library/functions.html#reduce)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#去列表去重，不改变原来的顺序，还可以使用一个空列表把原列表里面不重复的数据”装起来”，例如："><span class="nav-number">1.1.5.</span> <span class="nav-text">去列表去重，不改变原来的顺序，还可以使用一个空列表把原列表里面不重复的数据”装起来”，例如：</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Python-list去重集中记录一下方法"><span class="nav-number">1.</span> <span class="nav-text">Python_list去重集中记录一下方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#怎么快速的对列表进行去重呢，去重之后原来的顺序会不会改变呢？"><span class="nav-number">1.1.</span> <span class="nav-text">怎么快速的对列表进行去重呢，去重之后原来的顺序会不会改变呢？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-以下的几种情况结果是一样的，去重之后顺序会改变"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.以下的几种情况结果是一样的，去重之后顺序会改变:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#或用set"><span class="nav-number">1.1.2.</span> <span class="nav-text">或用set</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#或使用itertools-grouby"><span class="nav-number">1.1.3.</span> <span class="nav-text">或使用itertools.grouby</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-怎么能不改变原来的顺序呢？-要用到reduce-关于reduce的介绍-http-docs-python-org-2-library-functions-html-reduce"><span class="nav-number">1.1.4.</span> <span class="nav-text">2.怎么能不改变原来的顺序呢？(要用到reduce 关于reduce的介绍　 http://docs.python.org/2/library/functions.html#reduce)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#去列表去重，不改变原来的顺序，还可以使用一个空列表把原列表里面不重复的数据”装起来”，例如："><span class="nav-number">1.1.5.</span> <span class="nav-text">去列表去重，不改变原来的顺序，还可以使用一个空列表把原列表里面不重复的数据”装起来”，例如：</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
