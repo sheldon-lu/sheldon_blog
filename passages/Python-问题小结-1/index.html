@@ -100,18 +100,18 @@
 
 
 
-  <meta name="description" content="环境：未特别注明的话，均为Python 3.6.5，IDE：VS code  『1』TypeError: unbound method 问题今天执行了下之前写的Python接口文件，源码如下: 12345678910__author__ = &apos;Administrator&apos;#coding:utf-8from readData import dictionaryreadIt = &amp;#123;&amp;#12">
+  <meta name="description" content="环境：未特别注明的话，均为Python 3.6.5，IDE：VS code  『1』TypeError: unbound method 问题今天执行了下之前写的Python接口文件，源码如下:">
 <meta name="keywords" content="Python,Python_problem">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python_问题小结(1)">
 <meta property="og:url" content="https://sheldon-lu.github.io/passages/Python-问题小结-1/index.html">
 <meta property="og:site_name" content="Sheldon_Lu">
-<meta property="og:description" content="环境：未特别注明的话，均为Python 3.6.5，IDE：VS code  『1』TypeError: unbound method 问题今天执行了下之前写的Python接口文件，源码如下: 12345678910__author__ = &apos;Administrator&apos;#coding:utf-8from readData import dictionaryreadIt = &amp;#123;&amp;#12">
+<meta property="og:description" content="环境：未特别注明的话，均为Python 3.6.5，IDE：VS code  『1』TypeError: unbound method 问题今天执行了下之前写的Python接口文件，源码如下:">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-13T00:39:55.095Z">
+<meta property="og:updated_time" content="2019-04-13T00:42:18.770Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python_问题小结(1)">
-<meta name="twitter:description" content="环境：未特别注明的话，均为Python 3.6.5，IDE：VS code  『1』TypeError: unbound method 问题今天执行了下之前写的Python接口文件，源码如下: 12345678910__author__ = &apos;Administrator&apos;#coding:utf-8from readData import dictionaryreadIt = &amp;#123;&amp;#12">
+<meta name="twitter:description" content="环境：未特别注明的话，均为Python 3.6.5，IDE：VS code  『1』TypeError: unbound method 问题今天执行了下之前写的Python接口文件，源码如下:">
 
 
 
@@ -435,7 +435,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-04-13 08:39:55" itemprop="dateModified" datetime="2019-04-13T08:39:55+08:00">2019-04-13</time>
+                <time title="Modified: 2019-04-13 08:42:18" itemprop="dateModified" datetime="2019-04-13T08:42:18+08:00">2019-04-13</time>
               
             
           </span>
@@ -542,7 +542,7 @@
         <blockquote>
 <p>环境：未特别注明的话，均为Python 3.6.5，IDE：VS code</p>
 </blockquote>
-<h2 id="『1』TypeError-unbound-method-问题"><a href="#『1』TypeError-unbound-method-问题" class="headerlink" title="『1』TypeError: unbound method 问题"></a>『1』TypeError: unbound method 问题</h2><p>今天执行了下之前写的Python接口文件，源码如下:</p>
+<h2 id="『1』TypeError-unbound-method-问题"><a href="#『1』TypeError-unbound-method-问题" class="headerlink" title="『1』TypeError: unbound method 问题"></a>『1』TypeError: unbound method 问题</h2><p>今天执行了下之前写的Python接口文件，源码如下:<a id="more"></a></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">__author__ = <span class="string">'Administrator'</span></span><br><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">from</span> readData <span class="keyword">import</span> dictionary</span><br><span class="line">readIt = &#123;&#125;</span><br><span class="line">readIt = dictionary.onlyCellValue(<span class="string">"E:\python\API\eadData.xls"</span>, <span class="string">"Sheet1"</span>, <span class="number">1</span>)</span><br><span class="line"><span class="keyword">print</span> readIt</span><br><span class="line"><span class="keyword">for</span> key <span class="keyword">in</span> readIt:</span><br><span class="line">    temp_list = readIt[key]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, len(temp_list)):</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"第"</span>+(i+<span class="number">1</span>)+<span class="string">"个参数为"</span>+temp_list[i]</span><br></pre></td></tr></table></figure>
 <p>在运行时报错：TypeError: unbound method onlyCellValue() must be called with dictionary instance as first argument (got str instance instead)，后经在网上查看，发现时由于调用其他类时，未在后面添加括号，添加括号后，运行正常。这是由于未添加括号情况下，未被认为是类的实例，故报此错；</p>
 <blockquote>

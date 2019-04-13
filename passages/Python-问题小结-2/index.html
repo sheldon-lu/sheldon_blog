@@ -108,7 +108,7 @@
 <meta property="og:site_name" content="Sheldon_Lu">
 <meta property="og:description" content="环境：未特别注明的话，均为Python 3.6.5，IDE：VS code 遇到的都是基础问题，分了两篇。 担心一篇写多了会看不下去  『1』关于python无法显示中文的问题：SyntaxError: Non-ASCII character ‘\xe4’ in file test.py on line 3, but no encoding declared。python：2.7.15 解决办法">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-13T00:21:02.238Z">
+<meta property="og:updated_time" content="2019-04-13T00:42:32.366Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python_问题小结(2)">
 <meta name="twitter:description" content="环境：未特别注明的话，均为Python 3.6.5，IDE：VS code 遇到的都是基础问题，分了两篇。 担心一篇写多了会看不下去  『1』关于python无法显示中文的问题：SyntaxError: Non-ASCII character ‘\xe4’ in file test.py on line 3, but no encoding declared。python：2.7.15 解决办法">
@@ -418,7 +418,7 @@
                 
               
 
-              <time title="Created: 2019-04-13 08:00:04 / Modified: 08:21:02" itemprop="dateCreated datePublished" datetime="2019-04-13T08:00:04+08:00">2019-04-13</time>
+              <time title="Created: 2019-04-13 08:00:04 / Modified: 08:42:32" itemprop="dateCreated datePublished" datetime="2019-04-13T08:00:04+08:00">2019-04-13</time>
             
 
             
@@ -533,7 +533,7 @@
 <p>担心一篇写多了会看不下去</p>
 </blockquote>
 <h2 id="『1』关于python无法显示中文的问题：SyntaxError-Non-ASCII-character-‘-xe4’-in-file-test-py-on-line-3-but-no-encoding-declared。"><a href="#『1』关于python无法显示中文的问题：SyntaxError-Non-ASCII-character-‘-xe4’-in-file-test-py-on-line-3-but-no-encoding-declared。" class="headerlink" title="『1』关于python无法显示中文的问题：SyntaxError: Non-ASCII character ‘\xe4’ in file test.py on line 3, but no encoding declared。"></a>『1』关于python无法显示中文的问题：SyntaxError: Non-ASCII character ‘\xe4’ in file test.py on line 3, but no encoding declared。</h2><p>python：2.7.15</p>
-<p>解决办法：  在以后的每一个需要显示汉字的python文件中， 可以采用如下方法在 #!/usr/bin/python的下一行加上一句话来定义编码格式， 我以utf-8编码为例。</p>
+<p>解决办法：  在以后的每一个需要显示汉字的python文件中， 可以采用如下方法在 #!/usr/bin/python的下一行加上一句话来定义编码格式， 我以utf-8编码为例。<a id="more"></a></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">### 第一种：</span></span><br><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### 第二种：</span></span><br><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment">#-*-coding:utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### 第三种：</span></span><br><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment">#vim: set fileencoding:utf-8</span></span><br></pre></td></tr></table></figure>
 <h2 id="『2』有时候在去数据的时候会遇到数据内有中文，但是取出来的是unicode码，用了很多方法也转不了中文"><a href="#『2』有时候在去数据的时候会遇到数据内有中文，但是取出来的是unicode码，用了很多方法也转不了中文" class="headerlink" title="『2』有时候在去数据的时候会遇到数据内有中文，但是取出来的是unicode码，用了很多方法也转不了中文"></a>『2』有时候在去数据的时候会遇到数据内有中文，但是取出来的是unicode码，用了很多方法也转不了中文</h2><p>解决:</p>
 <p>“反编码”我自己起的名字，大概意思就是我得到一串字符，是unicode码，如：‘\u53eb\u6211’，进行反编码后得到其对应的汉字。</p>
