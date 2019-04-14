@@ -374,7 +374,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/Golang并发之原子操作/">
+    <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/Golang并发之sync-WaitGroup/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sheldon Lu">
@@ -394,7 +394,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/sheldon_blog/passages/Golang并发之原子操作/" class="post-title-link" itemprop="url">Golang并发之原子操作</a>
+                <a href="/sheldon_blog/passages/Golang并发之sync-WaitGroup/" class="post-title-link" itemprop="url">Golang并发之sync.WaitGroup</a>
               
             
           </h1>
@@ -420,7 +420,7 @@
                 
               
 
-              <time title="Created: 2019-03-29 14:27:53" itemprop="dateCreated datePublished" datetime="2019-03-29T14:27:53+08:00">2019-03-29</time>
+              <time title="Created: 2019-03-18 15:46:03" itemprop="dateCreated datePublished" datetime="2019-03-18T15:46:03+08:00">2019-03-18</time>
             
 
             
@@ -437,7 +437,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-04-13 09:04:05" itemprop="dateModified" datetime="2019-04-13T09:04:05+08:00">2019-04-13</time>
+                <time title="Modified: 2019-04-14 12:39:19" itemprop="dateModified" datetime="2019-04-14T12:39:19+08:00">2019-04-14</time>
               
             
           </span>
@@ -473,8 +473,8 @@
                 </span>
             
                 <span class="post-meta-item-text">Comments: </span>
-                <a href="/sheldon_blog/passages/Golang并发之原子操作/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/sheldon_blog/passages/Golang并发之原子操作/" itemprop="commentCount"></span>
+                <a href="/sheldon_blog/passages/Golang并发之sync-WaitGroup/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/sheldon_blog/passages/Golang并发之sync-WaitGroup/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -482,7 +482,7 @@
 
           
           
-            <span id="/sheldon_blog/passages/Golang并发之原子操作/" class="leancloud_visitors" data-flag-title="Golang并发之原子操作">
+            <span id="/sheldon_blog/passages/Golang并发之sync-WaitGroup/" class="leancloud_visitors" data-flag-title="Golang并发之sync.WaitGroup">
               <span class="post-meta-divider">|</span>
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
@@ -507,7 +507,7 @@
                 
                   <span class="post-meta-item-text">Symbols count in article: </span>
                 
-                <span title="Symbols count in article">9k</span>
+                <span title="Symbols count in article">1.7k</span>
               
 
               
@@ -521,7 +521,7 @@
                 
                   <span class="post-meta-item-text">Reading time &asymp;</span>
                 
-                <span title="Reading time">8 mins.</span>
+                <span title="Reading time">2 mins.</span>
               
             </div>
           
@@ -542,15 +542,12 @@
 
       
         
-          <p><strong><em>转自：<a href="http://ifeve.com/go-concurrency-atomic/" target="_blank" rel="noopener">http://ifeve.com/go-concurrency-atomic/</a></em></strong></p>
-<blockquote>
-<p>原理多，代码量偏少。</p>
-</blockquote>
-<p>我们已经知道，原子操作即是进行过程中不能被中断的操作。也就是说，针对某个值的原子操作在被进行的过程当中，CPU绝不会再去进行其它的针对该值的操作。无论这些其它的操作是否为原子操作都会是这样。为了实现这样的严谨性，原子操作仅会由一个独立的CPU指令代表和完成。只有这样才能够在并发环境下保证原子操作的绝对安全。<br>Go语言提供的原子操作都是非侵入式的。它们由标准库代码包sync/atomic中的众多函数代表。我们可以通过调用这些函数对几种简单的类型的值进行原子操作。这些类型包括int32、int64、uint32、uint64、uintptr和unsafe.Pointer类型，共6个。这些函数提供的原子操作共有5种，即：增或减、比较并交换、载入、存储和交换。它们分别提供了不同的功能，且适用的场景也有所区别。下面，我们就根据这些种类对Go语言提供的原子操作进行逐一的讲解。
+          <h2 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> wg sync.WaitGroup</span><br></pre></td></tr></table></figure>
+<h2 id="sync-WaitGroup-Golang内置sync包"><a href="#sync-WaitGroup-Golang内置sync包" class="headerlink" title="sync.WaitGroup/ Golang内置sync包"></a>sync.WaitGroup/ Golang内置sync包
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/sheldon_blog/passages/Golang并发之原子操作/#more" rel="contents">
+              <a class="btn" href="/sheldon_blog/passages/Golang并发之sync-WaitGroup/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -558,7 +555,7 @@
           <!--/noindex-->
         
       
-    </p></div>
+    </h2></div>
 
     
 
@@ -656,12 +653,24 @@
                 
               
 
-              <time title="Created: 2019-03-29 10:36:56 / Modified: 15:41:54" itemprop="dateCreated datePublished" datetime="2019-03-29T10:36:56+08:00">2019-03-29</time>
+              <time title="Created: 2019-03-16 10:36:56" itemprop="dateCreated datePublished" datetime="2019-03-16T10:36:56+08:00">2019-03-16</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-04-14 12:38:57" itemprop="dateModified" datetime="2019-04-14T12:38:57+08:00">2019-04-14</time>
               
             
           </span>
@@ -869,7 +878,7 @@
                 
               
 
-              <time title="Created: 2019-03-27 16:52:40" itemprop="dateCreated datePublished" datetime="2019-03-27T16:52:40+08:00">2019-03-27</time>
+              <time title="Created: 2019-03-15 16:52:40" itemprop="dateCreated datePublished" datetime="2019-03-15T16:52:40+08:00">2019-03-15</time>
             
 
             
@@ -886,7 +895,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-04-03 07:21:20" itemprop="dateModified" datetime="2019-04-03T07:21:20+08:00">2019-04-03</time>
+                <time title="Modified: 2019-04-14 12:38:39" itemprop="dateModified" datetime="2019-04-14T12:38:39+08:00">2019-04-14</time>
               
             
           </span>
@@ -1047,221 +1056,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sheldon Lu">
-      <meta itemprop="description" content="静下心来写点东西">
-      <meta itemprop="image" content="/sheldon_blog/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sheldon_Lu">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/sheldon_blog/passages/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2019-03-24 10:27:21" itemprop="dateCreated datePublished" datetime="2019-03-24T10:27:21+08:00">2019-03-24</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-04-06 21:12:13" itemprop="dateModified" datetime="2019-04-06T21:12:13+08:00">2019-04-06</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-            
-                <span class="post-meta-item-text">Comments: </span>
-                <a href="/sheldon_blog/passages/hello-world/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/sheldon_blog/passages/hello-world/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-            <span id="/sheldon_blog/passages/hello-world/" class="leancloud_visitors" data-flag-title="Hello World">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Views: </span>
-              
-                <span class="leancloud-visitors-count"></span>
-            </span>
-          
-
-          
-
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Symbols count in article: </span>
-                
-                <span title="Symbols count in article">430</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Reading time &asymp;</span>
-                
-                <span title="Reading time">1 mins.</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/sheldon_blog/passages/hello-world/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </h3></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1310,7 +1104,7 @@
                 
                   <a href="/sheldon_blog/archives/">
                 
-                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-count">13</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
