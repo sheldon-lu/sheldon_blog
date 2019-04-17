@@ -580,6 +580,234 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/Kubernetes安装-kubeadm1-13-5-非外部etcd/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sheldon Lu">
+      <meta itemprop="description" content="静下心来写点东西">
+      <meta itemprop="image" content="/sheldon_blog/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sheldon_Lu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/sheldon_blog/passages/Kubernetes安装-kubeadm1-13-5-非外部etcd/" class="post-title-link" itemprop="url">Kubernetes安装-kubeadm1.13.5(非外部etcd)</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-04-17 23:09:10 / Modified: 23:30:00" itemprop="dateCreated datePublished" datetime="2019-04-17T23:09:10+08:00">2019-04-17</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/sheldon_blog/categories/Kubernetes/" itemprop="url" rel="index"><span itemprop="name">Kubernetes</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/sheldon_blog/passages/Kubernetes安装-kubeadm1-13-5-非外部etcd/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/sheldon_blog/passages/Kubernetes安装-kubeadm1-13-5-非外部etcd/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/sheldon_blog/passages/Kubernetes安装-kubeadm1-13-5-非外部etcd/" class="leancloud_visitors" data-flag-title="Kubernetes安装-kubeadm1.13.5(非外部etcd)">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Views: </span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article">12k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">11 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>之前写过一篇kubernetes安装的，用到的是外部的etcd，即etcd单独二进制安装，kubeadm初始化指定即可；</p>
+<p>本篇用的纯kubeadm安装高可用集群，master组件静态pod</p>
+</blockquote>
+<h2 id="环境描述"><a href="#环境描述" class="headerlink" title="环境描述"></a>环境描述</h2><blockquote>
+<p>kubernetes version：1.13.5</p>
+<p>docker version：18.6.3</p>
+<p>Redhat：7.6</p>
+</blockquote>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/sheldon_blog/passages/Kubernetes安装-kubeadm1-13-5-非外部etcd/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/Python-set集合操作/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1103,12 +1331,24 @@
                 
               
 
-              <time title="Created: 2019-04-16 21:13:45 / Modified: 21:22:02" itemprop="dateCreated datePublished" datetime="2019-04-16T21:13:45+08:00">2019-04-16</time>
+              <time title="Created: 2019-04-15 21:13:45" itemprop="dateCreated datePublished" datetime="2019-04-15T21:13:45+08:00">2019-04-15</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-04-17 23:26:44" itemprop="dateModified" datetime="2019-04-17T23:26:44+08:00">2019-04-17</time>
               
             
           </span>
@@ -2211,7 +2451,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/Kubernetes安装—kubeadm-1-13-5/">
+    <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/Kubernetes安装-kubeadm-1-13-5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sheldon Lu">
@@ -2231,7 +2471,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/sheldon_blog/passages/Kubernetes安装—kubeadm-1-13-5/" class="post-title-link" itemprop="url">Kubernetes安装—kubeadm_1.13.5</a>
+                <a href="/sheldon_blog/passages/Kubernetes安装-kubeadm-1-13-5/" class="post-title-link" itemprop="url">Kubernetes安装-kubeadm_1.13.5</a>
               
             
           </h1>
@@ -2274,7 +2514,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-04-06 21:14:23" itemprop="dateModified" datetime="2019-04-06T21:14:23+08:00">2019-04-06</time>
+                <time title="Modified: 2019-04-17 23:12:41" itemprop="dateModified" datetime="2019-04-17T23:12:41+08:00">2019-04-17</time>
               
             
           </span>
@@ -2310,8 +2550,8 @@
                 </span>
             
                 <span class="post-meta-item-text">Comments: </span>
-                <a href="/sheldon_blog/passages/Kubernetes安装—kubeadm-1-13-5/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/sheldon_blog/passages/Kubernetes安装—kubeadm-1-13-5/" itemprop="commentCount"></span>
+                <a href="/sheldon_blog/passages/Kubernetes安装-kubeadm-1-13-5/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/sheldon_blog/passages/Kubernetes安装-kubeadm-1-13-5/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -2319,7 +2559,7 @@
 
           
           
-            <span id="/sheldon_blog/passages/Kubernetes安装—kubeadm-1-13-5/" class="leancloud_visitors" data-flag-title="Kubernetes安装—kubeadm_1.13.5">
+            <span id="/sheldon_blog/passages/Kubernetes安装-kubeadm-1-13-5/" class="leancloud_visitors" data-flag-title="Kubernetes安装-kubeadm_1.13.5">
               <span class="post-meta-divider">|</span>
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
@@ -2358,7 +2598,7 @@
                 
                   <span class="post-meta-item-text">Reading time &asymp;</span>
                 
-                <span title="Reading time">15 mins.</span>
+                <span title="Reading time">16 mins.</span>
               
             </div>
           
@@ -2383,12 +2623,11 @@
 <p>kubernetes version：1.13.5</p>
 <p>docker version：18.6.3</p>
 <p>Redhat：7.6</p>
-<p>linux 内核：4.2.0</p>
 </blockquote>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/sheldon_blog/passages/Kubernetes安装—kubeadm-1-13-5/#more" rel="contents">
+              <a class="btn" href="/sheldon_blog/passages/Kubernetes安装-kubeadm-1-13-5/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -2397,222 +2636,6 @@
         
       
     </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/记一点Haproxy参数的文档/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sheldon Lu">
-      <meta itemprop="description" content="静下心来写点东西">
-      <meta itemprop="image" content="/sheldon_blog/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sheldon_Lu">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/sheldon_blog/passages/记一点Haproxy参数的文档/" class="post-title-link" itemprop="url">记一点Haproxy参数的文档</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2019-04-01 13:31:23" itemprop="dateCreated datePublished" datetime="2019-04-01T13:31:23+08:00">2019-04-01</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-04-14 12:40:18" itemprop="dateModified" datetime="2019-04-14T12:40:18+08:00">2019-04-14</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-            
-                <span class="post-meta-item-text">Comments: </span>
-                <a href="/sheldon_blog/passages/记一点Haproxy参数的文档/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/sheldon_blog/passages/记一点Haproxy参数的文档/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-            <span id="/sheldon_blog/passages/记一点Haproxy参数的文档/" class="leancloud_visitors" data-flag-title="记一点Haproxy参数的文档">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Views: </span>
-              
-                <span class="leancloud-visitors-count"></span>
-            </span>
-          
-
-          
-
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Symbols count in article: </span>
-                
-                <span title="Symbols count in article">945</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Reading time &asymp;</span>
-                
-                <span title="Reading time">1 mins.</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Haproxy的一些配置参数，/etc/haproxy/haproxy.cfg</p>
-<blockquote>
-<p>主要是配置项的超时参数，如下：
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/sheldon_blog/passages/记一点Haproxy参数的文档/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </p></blockquote></div>
 
     
 
@@ -2697,7 +2720,7 @@
                 
                   <a href="/sheldon_blog/archives/">
                 
-                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-count">17</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2765,7 +2788,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">12</span>
+                      
+                    
+                    <span class="site-state-item-count">13</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
