@@ -580,7 +580,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/Kubernetes安装-kubeadm1-13-5-非外部etcd/">
+    <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/Kubernetes-Istio-Gateway-Ingress-Controller/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sheldon Lu">
@@ -600,7 +600,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/sheldon_blog/passages/Kubernetes安装-kubeadm1-13-5-非外部etcd/" class="post-title-link" itemprop="url">Kubernetes安装-kubeadm1.13.5(非外部etcd)</a>
+                <a href="/sheldon_blog/passages/Kubernetes-Istio-Gateway-Ingress-Controller/" class="post-title-link" itemprop="url">Kubernetes_Istio-Gateway_Ingress-Controller</a>
               
             
           </h1>
@@ -626,7 +626,7 @@
                 
               
 
-              <time title="Created: 2019-04-17 23:09:10 / Modified: 23:46:47" itemprop="dateCreated datePublished" datetime="2019-04-17T23:09:10+08:00">2019-04-17</time>
+              <time title="Created: 2019-07-01 22:37:27 / Modified: 23:42:56" itemprop="dateCreated datePublished" datetime="2019-07-01T22:37:27+08:00">2019-07-01</time>
             
 
             
@@ -667,8 +667,8 @@
                 </span>
             
                 <span class="post-meta-item-text">Comments: </span>
-                <a href="/sheldon_blog/passages/Kubernetes安装-kubeadm1-13-5-非外部etcd/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/sheldon_blog/passages/Kubernetes安装-kubeadm1-13-5-非外部etcd/" itemprop="commentCount"></span>
+                <a href="/sheldon_blog/passages/Kubernetes-Istio-Gateway-Ingress-Controller/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/sheldon_blog/passages/Kubernetes-Istio-Gateway-Ingress-Controller/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -676,7 +676,755 @@
 
           
           
-            <span id="/sheldon_blog/passages/Kubernetes安装-kubeadm1-13-5-非外部etcd/" class="leancloud_visitors" data-flag-title="Kubernetes安装-kubeadm1.13.5(非外部etcd)">
+            <span id="/sheldon_blog/passages/Kubernetes-Istio-Gateway-Ingress-Controller/" class="leancloud_visitors" data-flag-title="Kubernetes_Istio-Gateway_Ingress-Controller">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Views: </span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article">8.7k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">8 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>最近在istio，然后想总结下ingress-controller和istio-gateway的区别。</p>
+<p>在Kubernetes环境中，Kubernetes Ingress用于配置需要在集群外部公开的服务。</p>
+<p>但是在Istio服务网格中，更好的方法是使用新的配置模型，即Istio Gateway；Gateway允许将Istio流量管理的功能应用于进入集群的流量。</p>
+<p>这里的ingress为nginx ingress</p>
+</blockquote>
+<p>通过灰度发布，来看一下ingress与istio的实现方式的差异</p>
+<h3 id="环境准备："><a href="#环境准备：" class="headerlink" title="环境准备："></a>环境准备：</h3><blockquote>
+<p>kubernetes环境     1.13.5</p>
+<p>部署istio                 1.1.1</p>
+</blockquote>
+<h3 id="Istio："><a href="#Istio：" class="headerlink" title="Istio："></a>Istio：</h3><blockquote>
+<p>部署两个服务：</p>
+<p>old</p>
+</blockquote>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">old-nginx</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  replicas:</span> <span class="number">2</span></span><br><span class="line"><span class="attr">  selector:</span></span><br><span class="line"><span class="attr">    matchLabels:</span></span><br><span class="line"><span class="attr">      run:</span> <span class="string">old-nginx</span></span><br><span class="line"><span class="attr">  template:</span></span><br><span class="line"><span class="attr">    metadata:</span></span><br><span class="line"><span class="attr">      labels:</span></span><br><span class="line"><span class="attr">        run:</span> <span class="string">old-nginx</span></span><br><span class="line"><span class="attr">    spec:</span></span><br><span class="line"><span class="attr">      containers:</span></span><br><span class="line"><span class="attr">      - image:</span> <span class="string">registry.cn-hangzhou.aliyuncs.com/xxxxx/old-nginx</span></span><br><span class="line"><span class="attr">        imagePullPolicy:</span> <span class="string">Always</span></span><br><span class="line"><span class="attr">        name:</span> <span class="string">old-nginx</span></span><br><span class="line"><span class="attr">        ports:</span></span><br><span class="line"><span class="attr">        - containerPort:</span> <span class="number">80</span></span><br><span class="line"><span class="attr">          protocol:</span> <span class="string">TCP</span></span><br><span class="line"><span class="attr">      restartPolicy:</span> <span class="string">Always</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">old-nginx</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  ports:</span></span><br><span class="line"><span class="attr">  - port:</span> <span class="number">80</span></span><br><span class="line"><span class="attr">    protocol:</span> <span class="string">TCP</span></span><br><span class="line"><span class="attr">    targetPort:</span> <span class="number">80</span></span><br><span class="line"><span class="attr">  selector:</span></span><br><span class="line"><span class="attr">    run:</span> <span class="string">old-nginx</span></span><br><span class="line"><span class="attr">  sessionAffinity:</span> <span class="string">None</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">NodePort</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>new</p>
+</blockquote>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">new-nginx</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  replicas:</span> <span class="number">1</span></span><br><span class="line"><span class="attr">  selector:</span></span><br><span class="line"><span class="attr">    matchLabels:</span></span><br><span class="line"><span class="attr">      run:</span> <span class="string">new-nginx</span></span><br><span class="line"><span class="attr">  template:</span></span><br><span class="line"><span class="attr">    metadata:</span></span><br><span class="line"><span class="attr">      labels:</span></span><br><span class="line"><span class="attr">        run:</span> <span class="string">new-nginx</span></span><br><span class="line"><span class="attr">    spec:</span></span><br><span class="line"><span class="attr">      containers:</span></span><br><span class="line"><span class="attr">      - image:</span> <span class="string">registry.cn-hangzhou.aliyuncs.com/xxxxx/new-nginx</span></span><br><span class="line"><span class="attr">        imagePullPolicy:</span> <span class="string">Always</span></span><br><span class="line"><span class="attr">        name:</span> <span class="string">new-nginx</span></span><br><span class="line"><span class="attr">        ports:</span></span><br><span class="line"><span class="attr">        - containerPort:</span> <span class="number">80</span></span><br><span class="line"><span class="attr">          protocol:</span> <span class="string">TCP</span></span><br><span class="line"><span class="attr">      restartPolicy:</span> <span class="string">Always</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">new-nginx</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  ports:</span></span><br><span class="line"><span class="attr">  - port:</span> <span class="number">80</span></span><br><span class="line"><span class="attr">    protocol:</span> <span class="string">TCP</span></span><br><span class="line"><span class="attr">    targetPort:</span> <span class="number">80</span></span><br><span class="line"><span class="attr">  selector:</span></span><br><span class="line"><span class="attr">    run:</span> <span class="string">new-nginx</span></span><br><span class="line"><span class="attr">  sessionAffinity:</span> <span class="string">None</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">NodePort</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>输出</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> kubectl get svc</span><br><span class="line">NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE</span><br><span class="line">kubernetes   ClusterIP   172.19.0.1      &lt;none&gt;        443/TCP        9h</span><br><span class="line">new-nginx    NodePort    172.19.8.168    &lt;none&gt;        80:31904/TCP   4h</span><br><span class="line">old-nginx    NodePort    172.19.12.148   &lt;none&gt;        80:31545/TCP   4h</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>测试两个服务</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> kubectl run -it --rm bash --image=appropriate/curl --restart=Never curl 172.19.8.168</span><br><span class="line">new</span><br><span class="line"><span class="meta">$</span> kubectl run -it --rm bash --image=appropriate/curl --restart=Never curl 172.19.12.148</span><br><span class="line">old</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>创建Gateway对象/用的istio官方yaml</p>
+</blockquote>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">networking.istio.io/v1alpha3</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Gateway</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">helloworld-gateway</span> <span class="comment"># name</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  selector:</span></span><br><span class="line"><span class="attr">    istio:</span> <span class="string">ingressgateway</span>  <span class="comment"># use istio default controller</span></span><br><span class="line"><span class="attr">  servers:</span></span><br><span class="line"><span class="attr">  - port:</span></span><br><span class="line"><span class="attr">      number:</span> <span class="number">80</span></span><br><span class="line"><span class="attr">      name:</span> <span class="string">http</span></span><br><span class="line"><span class="attr">      protocol:</span> <span class="string">HTTP</span></span><br><span class="line"><span class="attr">    hosts:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">"*"</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>确定Istio入口IP和port</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> kubectl get svc istio-ingressgateway -n istio-system</span><br><span class="line">NAME                   TYPE           CLUSTER-IP      EXTERNAL-IP    PORT(S)                                      AGE</span><br><span class="line">istio-ingressgateway   LoadBalancer   172.19.14.182   (pending)   80:31380/TCP,443:31390/TCP,31400:31400/...   10h</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>确认<code>EXTERNAL-IP</code>设置了值</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export INGRESS_HOST= $(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='&#123;.status.loadBalancer.ingress[0].ip&#125;')</span><br><span class="line">export INGRESS_PORT= $(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='&#123;.spec.ports[?(@.name=="http")].port&#125;')</span><br><span class="line">export SECURE_INGRESS_PORT= $(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='&#123;.spec.ports[?(@.name=="https")].port&#125;')</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>满足特定规则：</p>
+<p>例如，我们希望请求头中带有user且值为new的客户端请求才能访问new service</p>
+<p>我们可以创建一个对应的<code>VirtualService</code>为通过<code>Gateway</code>进入的流量配置路由</p>
+</blockquote>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">networking.istio.io/v1alpha3</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">VirtualService</span>   <span class="comment"># istio route rule </span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">helloworld</span>     <span class="comment"># name</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  gateways:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">helloworld-gateway</span> <span class="comment"># link Gateway</span></span><br><span class="line"><span class="attr">  hosts:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">'*'</span></span><br><span class="line"><span class="attr">  http:</span></span><br><span class="line"><span class="attr">  - match:</span></span><br><span class="line"><span class="attr">    - headers:</span></span><br><span class="line"><span class="attr">        user:</span></span><br><span class="line"><span class="attr">          exact:</span> <span class="string">new</span>       <span class="comment"># match headers -&gt; user (-&gt; exact -&gt;) new  [headers: user: new]</span></span><br><span class="line"><span class="attr">    route:</span>                 <span class="comment"># 会访问new-nginx，满足头部要求即可</span></span><br><span class="line"><span class="attr">    - destination:</span></span><br><span class="line"><span class="attr">        host:</span> <span class="string">new-nginx</span></span><br><span class="line"><span class="attr">        port:</span></span><br><span class="line"><span class="attr">          number:</span> <span class="number">80</span></span><br><span class="line"><span class="attr">  - route:</span>                 <span class="comment"># 否则就访问old-nginx</span></span><br><span class="line"><span class="attr">    - destination:</span></span><br><span class="line"><span class="attr">        host:</span> <span class="string">old-nginx</span></span><br><span class="line"><span class="attr">        port:</span></span><br><span class="line"><span class="attr">          number:</span> <span class="number">80</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>客户端测试</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> curl -H "user: new" http://$INGRESS_HOST:$INGRESS_PORT</span><br><span class="line">new</span><br><span class="line"><span class="meta">$</span> curl -H "user: new" http://$INGRESS_HOST:$INGRESS_PORT</span><br><span class="line">new</span><br><span class="line"><span class="meta">$</span> curl -H "user: new" http://$INGRESS_HOST:$INGRESS_PORT</span><br><span class="line">new</span><br><span class="line"><span class="meta">$</span> curl http://$INGRESS_HOST:$INGRESS_PORT</span><br><span class="line">old</span><br><span class="line"><span class="meta">$</span> curl http://$INGRESS_HOST:$INGRESS_PORT</span><br><span class="line">old</span><br><span class="line"><span class="meta">$</span> curl http://$INGRESS_HOST:$INGRESS_PORT</span><br><span class="line">old</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在满足特定规则和权重：</p>
+<p>例如，我们希望请求头中带有user且值为new的客户端请求有50%的比例访问new service，那么我们可以创建一个这样的<code>VirtualService</code></p>
+</blockquote>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">networking.istio.io/v1alpha3</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">VirtualService</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">helloworld</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  gateways:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">helloworld-gateway</span></span><br><span class="line"><span class="attr">  hosts:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">'*'</span></span><br><span class="line"><span class="attr">  http:</span></span><br><span class="line"><span class="attr">  - match:</span></span><br><span class="line"><span class="attr">    - headers:</span></span><br><span class="line"><span class="attr">        user:</span></span><br><span class="line"><span class="attr">          exact:</span> <span class="string">new</span>          <span class="comment"># 这里跟上面的一样，符合头部 user: new就会访问到这一层</span></span><br><span class="line"><span class="attr">    route:</span></span><br><span class="line"><span class="attr">    - destination:</span></span><br><span class="line"><span class="attr">        host:</span> <span class="string">new-nginx</span></span><br><span class="line"><span class="attr">        port:</span></span><br><span class="line"><span class="attr">          number:</span> <span class="number">80</span></span><br><span class="line"><span class="attr">      weight:</span> <span class="number">50</span>              </span><br><span class="line">                             <span class="comment"># 另外因为这里设置了两个访问规则，即首先符合头部，然后会有50%的几率会访问到new-nginx，另外50%会访问到old-nginx</span></span><br><span class="line"><span class="attr">    - destination:</span></span><br><span class="line"><span class="attr">        host:</span> <span class="string">old-nginx</span></span><br><span class="line"><span class="attr">        port:</span></span><br><span class="line"><span class="attr">          number:</span> <span class="number">80</span></span><br><span class="line"><span class="attr">      weight:</span> <span class="number">50</span></span><br><span class="line"><span class="attr">  - route:</span>                    <span class="comment"># 如果不匹配头部，那就全部访问到old-nginx</span></span><br><span class="line"><span class="attr">    - destination:</span></span><br><span class="line"><span class="attr">        host:</span> <span class="string">old-nginx</span></span><br><span class="line"><span class="attr">        port:</span></span><br><span class="line"><span class="attr">          number:</span> <span class="number">80</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>客户端测试</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> curl -H "user: new" http://$INGRESS_HOST:$INGRESS_PORT</span><br><span class="line">new</span><br><span class="line"><span class="meta">$</span> curl -H "user: new" http://$INGRESS_HOST:$INGRESS_PORT</span><br><span class="line">old</span><br><span class="line"><span class="meta">$</span> curl -H "user: new" http://$INGRESS_HOST:$INGRESS_PORT</span><br><span class="line">new</span><br><span class="line"><span class="meta">$</span> curl -H "user: new" http://$INGRESS_HOST:$INGRESS_PORT</span><br><span class="line">new</span><br><span class="line"><span class="meta">$</span> curl -H "user: new" http://$INGRESS_HOST:$INGRESS_PORT</span><br><span class="line">old</span><br><span class="line"><span class="meta">$</span> curl -H "user: new" http://$INGRESS_HOST:$INGRESS_PORT</span><br><span class="line">new</span><br><span class="line"><span class="meta">$</span> curl -H "user: new" http://$INGRESS_HOST:$INGRESS_PORT</span><br><span class="line">old</span><br><span class="line"><span class="meta">$</span> curl http://$INGRESS_HOST:$INGRESS_PORT</span><br><span class="line">old</span><br><span class="line"><span class="meta">$</span> curl http://$INGRESS_HOST:$INGRESS_PORT</span><br><span class="line">old</span><br><span class="line"><span class="meta">$</span> curl http://$INGRESS_HOST:$INGRESS_PORT</span><br><span class="line">old</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>权重随机访问：</p>
+<p>例如，我们仅仅希望20%的客户端请求访问new service，那么我们可以创建一个这样的<code>VirtualService</code></p>
+</blockquote>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">networking.istio.io/v1alpha3</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">VirtualService</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">helloworld</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  gateways:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">helloworld-gateway</span></span><br><span class="line"><span class="attr">  hosts:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">'*'</span></span><br><span class="line"><span class="attr">  http:</span></span><br><span class="line"><span class="attr">  - route:</span>                        </span><br><span class="line">  <span class="comment"># 这条virtual Service 设置了权重来几率性访问nginx；20%new-nginx，80% old-nginx</span></span><br><span class="line"><span class="attr">    - destination:</span></span><br><span class="line"><span class="attr">        host:</span> <span class="string">new-nginx</span></span><br><span class="line"><span class="attr">        port:</span></span><br><span class="line"><span class="attr">          number:</span> <span class="number">80</span></span><br><span class="line"><span class="attr">      weight:</span> <span class="number">20</span></span><br><span class="line"><span class="attr">    - destination:</span></span><br><span class="line"><span class="attr">        host:</span> <span class="string">old-nginx</span></span><br><span class="line"><span class="attr">        port:</span></span><br><span class="line"><span class="attr">          number:</span> <span class="number">80</span></span><br><span class="line"><span class="attr">      weight:</span> <span class="number">80</span></span><br></pre></td></tr></table></figure>
+<p>客户端测试</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> curl http://$INGRESS_HOST:$INGRESS_PORT</span><br><span class="line">old</span><br><span class="line"><span class="meta">$</span> curl http://$INGRESS_HOST:$INGRESS_PORT</span><br><span class="line">old</span><br><span class="line"><span class="meta">$</span> curl http://$INGRESS_HOST:$INGRESS_PORT</span><br><span class="line">old</span><br><span class="line"><span class="meta">$</span> curl http://$INGRESS_HOST:$INGRESS_PORT</span><br><span class="line">old</span><br><span class="line"><span class="meta">$</span> curl http://$INGRESS_HOST:$INGRESS_PORT</span><br><span class="line">new</span><br></pre></td></tr></table></figure>
+<h3 id="Nginx-Ingress"><a href="#Nginx-Ingress" class="headerlink" title="Nginx Ingress"></a>Nginx Ingress</h3><blockquote>
+<p>不支持权重，貌似能够支持headers头</p>
+</blockquote>
+<p>Nginx:</p>
+<blockquote>
+<p>使用$http_ 获取http请求的header，根据配置中是否为完整或者正则匹配，匹配foo的值</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">    ....</span><br><span class="line">    if ($http_foo = "bar") &#123;  //完全匹配</span><br><span class="line">    #if ($http_foo ~ "bar") &#123;  //正则匹配</span><br><span class="line">           proxy_pass http://default-new-nginx-80;</span><br><span class="line">           break;</span><br><span class="line">    &#125;</span><br><span class="line">    proxy_pass http://default-old-nginx-80;</span><br><span class="line">    ....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>使用$cookie_获取http请求的cookie，根据配置中是否为完整或者正则匹配，匹配foo的值</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">    ....</span><br><span class="line">    if ($cookie_foo ~ "^bar") &#123;  //正则匹配</span><br><span class="line">    # if ($cookie_foo = "bar") &#123;  //完全匹配</span><br><span class="line">         proxy_pass http://default-new-nginx-80;</span><br><span class="line">         break;</span><br><span class="line">    &#125;</span><br><span class="line">    proxy_pass http://default-old-nginx-80;</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>使用$arg_获取http的请求参数，根据配置中是否为完整或者正则匹配，匹配foo的值</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">    ....</span><br><span class="line">    if ($arg_foo ~ "^bar") &#123;  //正则匹配</span><br><span class="line">    # if ($arg_foo = "bar") &#123;  //完全匹配</span><br><span class="line">         proxy_pass http://default-new-nginx-80;</span><br><span class="line">         break;</span><br><span class="line">    &#125;</span><br><span class="line">    proxy_pass http://default-old-nginx-80;</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<p>这里用到的两个服务为istio用的两个服务：</p>
+<blockquote>
+<p>应用部署完毕后，我们看要怎么配置ingress才能够正确的刷新到ngixn.conf，在nginx-ingress-controller中，它支持 nginx.ingress.kubernetes.io/configuration-snippet 这样一个注解允许我们在location里配置自定义需求。同时结合nginx-ingress-controller的upstream命名方式namespace-serviceName-port的方式配置注解信息。如下ingress yaml所示:</p>
+</blockquote>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Ingress</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  annotations:</span></span><br><span class="line">    <span class="string">nginx.ingress.kubernetes.io/configuration-snippet:</span> <span class="string">|</span></span><br><span class="line"><span class="string">       if ($http_foo ~ "^.*bar$") &#123;</span></span><br><span class="line"><span class="string">         proxy_pass http://default-new-nginx-80;</span></span><br><span class="line"><span class="string">         break;</span></span><br><span class="line"><span class="string">       &#125;</span></span><br><span class="line"><span class="string"></span><span class="attr">  name:</span> <span class="string">gray-release</span></span><br><span class="line"><span class="attr">  namespace:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  rules:</span></span><br><span class="line"><span class="attr">    - host:</span> <span class="string">www.example.com</span></span><br><span class="line"><span class="attr">      http:</span></span><br><span class="line"><span class="attr">        paths:</span></span><br><span class="line"><span class="attr">          - backend:</span></span><br><span class="line"><span class="attr">              serviceName:</span> <span class="string">old-nginx</span></span><br><span class="line"><span class="attr">              servicePort:</span> <span class="number">80</span></span><br><span class="line"><span class="attr">            path:</span> <span class="string">/</span></span><br><span class="line"><span class="attr">          - backend:</span></span><br><span class="line"><span class="attr">              serviceName:</span> <span class="string">new-nginx</span></span><br><span class="line"><span class="attr">              servicePort:</span> <span class="number">80</span></span><br><span class="line"><span class="attr">            path:</span> <span class="string">/</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>输出</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"> curl -H "Host: www.example.com"  http://172.16.0.9</span><br><span class="line">old</span><br><span class="line"> curl -H "Host: www.example.com"  http://172.16.0.9</span><br><span class="line">old</span><br><span class="line"> curl -H "Host: www.example.com"  http://172.16.0.9</span><br><span class="line">old</span><br><span class="line"> curl -H "Host: www.example.com" -H "foo: bar" http://172.16.0.9</span><br><span class="line">new</span><br><span class="line"> curl -H "Host: www.example.com" -H "foo: bar" http://172.16.0.9</span><br><span class="line">new</span><br><span class="line"> curl -H "Host: www.example.com" -H "foo: bar" http://172.16.0.9</span><br><span class="line">new</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/Kubernetes-1-13-5部署ingress/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sheldon Lu">
+      <meta itemprop="description" content="静下心来写点东西">
+      <meta itemprop="image" content="/sheldon_blog/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sheldon_Lu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/sheldon_blog/passages/Kubernetes-1-13-5部署ingress/" class="post-title-link" itemprop="url">Kubernetes_1.13.5_ingress</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-06-14 09:23:38" itemprop="dateCreated datePublished" datetime="2019-06-14T09:23:38+08:00">2019-06-14</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-07-01 22:20:33" itemprop="dateModified" datetime="2019-07-01T22:20:33+08:00">2019-07-01</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/sheldon_blog/passages/Kubernetes-1-13-5部署ingress/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/sheldon_blog/passages/Kubernetes-1-13-5部署ingress/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/sheldon_blog/passages/Kubernetes-1-13-5部署ingress/" class="leancloud_visitors" data-flag-title="Kubernetes_1.13.5_ingress">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Views: </span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article">0</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">1 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/Kubernetes部署mysql-opreator/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sheldon Lu">
+      <meta itemprop="description" content="静下心来写点东西">
+      <meta itemprop="image" content="/sheldon_blog/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sheldon_Lu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/sheldon_blog/passages/Kubernetes部署mysql-opreator/" class="post-title-link" itemprop="url">Kubernetes部署mysql-opreator</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-06-13 11:04:31" itemprop="dateCreated datePublished" datetime="2019-06-13T11:04:31+08:00">2019-06-13</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-07-01 22:24:44" itemprop="dateModified" datetime="2019-07-01T22:24:44+08:00">2019-07-01</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/sheldon_blog/categories/Kubernetes/" itemprop="url" rel="index"><span itemprop="name">Kubernetes</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/sheldon_blog/passages/Kubernetes部署mysql-opreator/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/sheldon_blog/passages/Kubernetes部署mysql-opreator/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/sheldon_blog/passages/Kubernetes部署mysql-opreator/" class="leancloud_visitors" data-flag-title="Kubernetes部署mysql-opreator">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Views: </span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article">0</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">1 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/Kubernetes安装-kubeadm-1-13-5-非外部etcd/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sheldon Lu">
+      <meta itemprop="description" content="静下心来写点东西">
+      <meta itemprop="image" content="/sheldon_blog/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sheldon_Lu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/sheldon_blog/passages/Kubernetes安装-kubeadm-1-13-5-非外部etcd/" class="post-title-link" itemprop="url">Kubernetes安装-kubeadm_1.13.5(非外部etcd)</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-04-17 23:09:10" itemprop="dateCreated datePublished" datetime="2019-04-17T23:09:10+08:00">2019-04-17</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-07-01 22:21:23" itemprop="dateModified" datetime="2019-07-01T22:21:23+08:00">2019-07-01</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/sheldon_blog/categories/Kubernetes/" itemprop="url" rel="index"><span itemprop="name">Kubernetes</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/sheldon_blog/passages/Kubernetes安装-kubeadm-1-13-5-非外部etcd/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/sheldon_blog/passages/Kubernetes安装-kubeadm-1-13-5-非外部etcd/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/sheldon_blog/passages/Kubernetes安装-kubeadm-1-13-5-非外部etcd/" class="leancloud_visitors" data-flag-title="Kubernetes安装-kubeadm_1.13.5(非外部etcd)">
               <span class="post-meta-divider">|</span>
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
@@ -748,7 +1496,7 @@
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/sheldon_blog/passages/Kubernetes安装-kubeadm1-13-5-非外部etcd/#more" rel="contents">
+              <a class="btn" href="/sheldon_blog/passages/Kubernetes安装-kubeadm-1-13-5-非外部etcd/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -1570,12 +2318,24 @@
                 
               
 
-              <time title="Created: 2019-04-13 08:00:04 / Modified: 08:42:32" itemprop="dateCreated datePublished" datetime="2019-04-13T08:00:04+08:00">2019-04-13</time>
+              <time title="Created: 2019-04-13 08:00:04" itemprop="dateCreated datePublished" datetime="2019-04-13T08:00:04+08:00">2019-04-13</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-06-27 15:59:11" itemprop="dateModified" datetime="2019-06-27T15:59:11+08:00">2019-06-27</time>
               
             
           </span>
@@ -1645,7 +2405,7 @@
                 
                   <span class="post-meta-item-text">Symbols count in article: </span>
                 
-                <span title="Symbols count in article">2.8k</span>
+                <span title="Symbols count in article">3.3k</span>
               
 
               
@@ -1684,6 +2444,7 @@
 <p>环境：未特别注明的话，均为Python 3.6.5，IDE：VS code</p>
 <p>遇到的都是基础问题，分了两篇。</p>
 <p>担心一篇写多了会看不下去</p>
+<p><a href="https://blog.csdn.net/xinzechen/article/details/89446322" target="_blank" rel="noopener">https://blog.csdn.net/xinzechen/article/details/89446322</a>  vscode的问题</p>
 </blockquote>
 <h2 id="『1』关于python无法显示中文的问题：SyntaxError-Non-ASCII-character-‘-xe4’-in-file-test-py-on-line-3-but-no-encoding-declared。"><a href="#『1』关于python无法显示中文的问题：SyntaxError-Non-ASCII-character-‘-xe4’-in-file-test-py-on-line-3-but-no-encoding-declared。" class="headerlink" title="『1』关于python无法显示中文的问题：SyntaxError: Non-ASCII character ‘\xe4’ in file test.py on line 3, but no encoding declared。"></a>『1』关于python无法显示中文的问题：SyntaxError: Non-ASCII character ‘\xe4’ in file test.py on line 3, but no encoding declared。</h2><p>python：2.7.15</p>
 <p>解决办法：  在以后的每一个需要显示汉字的python文件中， 可以采用如下方法在 #!/usr/bin/python的下一行加上一句话来定义编码格式， 我以utf-8编码为例。
@@ -1970,708 +2731,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/Docker的问题总结/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sheldon Lu">
-      <meta itemprop="description" content="静下心来写点东西">
-      <meta itemprop="image" content="/sheldon_blog/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sheldon_Lu">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/sheldon_blog/passages/Docker的问题总结/" class="post-title-link" itemprop="url">Docker的问题总结</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2019-04-07 13:34:50" itemprop="dateCreated datePublished" datetime="2019-04-07T13:34:50+08:00">2019-04-07</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-04-13 09:13:30" itemprop="dateModified" datetime="2019-04-13T09:13:30+08:00">2019-04-13</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/sheldon_blog/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-            
-                <span class="post-meta-item-text">Comments: </span>
-                <a href="/sheldon_blog/passages/Docker的问题总结/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/sheldon_blog/passages/Docker的问题总结/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-            <span id="/sheldon_blog/passages/Docker的问题总结/" class="leancloud_visitors" data-flag-title="Docker的问题总结">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Views: </span>
-              
-                <span class="leancloud-visitors-count"></span>
-            </span>
-          
-
-          
-
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Symbols count in article: </span>
-                
-                <span title="Symbols count in article">1.7k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Reading time &asymp;</span>
-                
-                <span title="Reading time">2 mins.</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="问题："><a href="#问题：" class="headerlink" title="问题："></a>问题：</h3><h4 id="1、Docker18-06-1-ce安装-RHEL7-后启动失败-原因-xfsprogs版本过低"><a href="#1、Docker18-06-1-ce安装-RHEL7-后启动失败-原因-xfsprogs版本过低" class="headerlink" title="1、Docker18.06.1-ce安装(RHEL7)后启动失败, 原因(xfsprogs版本过低)"></a>1、Docker18.06.1-ce安装(RHEL7)后启动失败, 原因(xfsprogs版本过低)</h4><p>* 问题分析: </p>
-<blockquote>
-<p>使用/usr/bin/dockerd启动测试发现是文件系统无法创建
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/sheldon_blog/passages/Docker的问题总结/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </p></blockquote></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/Kubernetes-填坑/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sheldon Lu">
-      <meta itemprop="description" content="静下心来写点东西">
-      <meta itemprop="image" content="/sheldon_blog/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sheldon_Lu">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/sheldon_blog/passages/Kubernetes-填坑/" class="post-title-link" itemprop="url">Kubernetes_填坑</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2019-04-04 15:37:45" itemprop="dateCreated datePublished" datetime="2019-04-04T15:37:45+08:00">2019-04-04</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-04-06 21:12:27" itemprop="dateModified" datetime="2019-04-06T21:12:27+08:00">2019-04-06</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/sheldon_blog/categories/Kubernetes/" itemprop="url" rel="index"><span itemprop="name">Kubernetes</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-            
-                <span class="post-meta-item-text">Comments: </span>
-                <a href="/sheldon_blog/passages/Kubernetes-填坑/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/sheldon_blog/passages/Kubernetes-填坑/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-            <span id="/sheldon_blog/passages/Kubernetes-填坑/" class="leancloud_visitors" data-flag-title="Kubernetes_填坑">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Views: </span>
-              
-                <span class="leancloud-visitors-count"></span>
-            </span>
-          
-
-          
-
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Symbols count in article: </span>
-                
-                <span title="Symbols count in article">9.7k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Reading time &asymp;</span>
-                
-                <span title="Reading time">9 mins.</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="更新19-4-5"><a href="#更新19-4-5" class="headerlink" title="更新19.4.5"></a>更新19.4.5</h2><h3 id="一、etcd-单点问题"><a href="#一、etcd-单点问题" class="headerlink" title="一、etcd 单点问题"></a>一、etcd 单点问题
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/sheldon_blog/passages/Kubernetes-填坑/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </h3></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/Kubernetes安装-kubeadm-1-13-5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sheldon Lu">
-      <meta itemprop="description" content="静下心来写点东西">
-      <meta itemprop="image" content="/sheldon_blog/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sheldon_Lu">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/sheldon_blog/passages/Kubernetes安装-kubeadm-1-13-5/" class="post-title-link" itemprop="url">Kubernetes安装-kubeadm_1.13.5</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2019-04-02 07:12:49" itemprop="dateCreated datePublished" datetime="2019-04-02T07:12:49+08:00">2019-04-02</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-04-17 23:12:41" itemprop="dateModified" datetime="2019-04-17T23:12:41+08:00">2019-04-17</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/sheldon_blog/categories/Kubernetes/" itemprop="url" rel="index"><span itemprop="name">Kubernetes</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-            
-                <span class="post-meta-item-text">Comments: </span>
-                <a href="/sheldon_blog/passages/Kubernetes安装-kubeadm-1-13-5/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/sheldon_blog/passages/Kubernetes安装-kubeadm-1-13-5/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-            <span id="/sheldon_blog/passages/Kubernetes安装-kubeadm-1-13-5/" class="leancloud_visitors" data-flag-title="Kubernetes安装-kubeadm_1.13.5">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Views: </span>
-              
-                <span class="leancloud-visitors-count"></span>
-            </span>
-          
-
-          
-
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Symbols count in article: </span>
-                
-                <span title="Symbols count in article">17k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Reading time &asymp;</span>
-                
-                <span title="Reading time">16 mins.</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="环境描述"><a href="#环境描述" class="headerlink" title="环境描述"></a>环境描述</h2><blockquote>
-<p>kubernetes version：1.13.5</p>
-<p>docker version：18.6.3</p>
-<p>Redhat：7.6</p>
-</blockquote>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/sheldon_blog/passages/Kubernetes安装-kubeadm-1-13-5/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2720,7 +2779,7 @@
                 
                   <a href="/sheldon_blog/archives/">
                 
-                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-count">20</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2790,7 +2849,13 @@
                     
                       
                     
-                    <span class="site-state-item-count">13</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>

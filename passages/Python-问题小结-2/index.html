@@ -100,18 +100,18 @@
 
 
 
-  <meta name="description" content="环境：未特别注明的话，均为Python 3.6.5，IDE：VS code 遇到的都是基础问题，分了两篇。 担心一篇写多了会看不下去  『1』关于python无法显示中文的问题：SyntaxError: Non-ASCII character ‘\xe4’ in file test.py on line 3, but no encoding declared。python：2.7.15 解决办法">
+  <meta name="description" content="环境：未特别注明的话，均为Python 3.6.5，IDE：VS code 遇到的都是基础问题，分了两篇。 担心一篇写多了会看不下去 https://blog.csdn.net/xinzechen/article/details/89446322  vscode的问题  『1』关于python无法显示中文的问题：SyntaxError: Non-ASCII character ‘\xe4’ in">
 <meta name="keywords" content="Python,Python_problem">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python_问题小结(2)">
 <meta property="og:url" content="https://sheldon-lu.github.io/passages/Python-问题小结-2/index.html">
 <meta property="og:site_name" content="Sheldon_Lu">
-<meta property="og:description" content="环境：未特别注明的话，均为Python 3.6.5，IDE：VS code 遇到的都是基础问题，分了两篇。 担心一篇写多了会看不下去  『1』关于python无法显示中文的问题：SyntaxError: Non-ASCII character ‘\xe4’ in file test.py on line 3, but no encoding declared。python：2.7.15 解决办法">
+<meta property="og:description" content="环境：未特别注明的话，均为Python 3.6.5，IDE：VS code 遇到的都是基础问题，分了两篇。 担心一篇写多了会看不下去 https://blog.csdn.net/xinzechen/article/details/89446322  vscode的问题  『1』关于python无法显示中文的问题：SyntaxError: Non-ASCII character ‘\xe4’ in">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-13T00:42:32.366Z">
+<meta property="og:updated_time" content="2019-06-27T07:59:11.985Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python_问题小结(2)">
-<meta name="twitter:description" content="环境：未特别注明的话，均为Python 3.6.5，IDE：VS code 遇到的都是基础问题，分了两篇。 担心一篇写多了会看不下去  『1』关于python无法显示中文的问题：SyntaxError: Non-ASCII character ‘\xe4’ in file test.py on line 3, but no encoding declared。python：2.7.15 解决办法">
+<meta name="twitter:description" content="环境：未特别注明的话，均为Python 3.6.5，IDE：VS code 遇到的都是基础问题，分了两篇。 担心一篇写多了会看不下去 https://blog.csdn.net/xinzechen/article/details/89446322  vscode的问题  『1』关于python无法显示中文的问题：SyntaxError: Non-ASCII character ‘\xe4’ in">
 
 
 
@@ -418,12 +418,24 @@
                 
               
 
-              <time title="Created: 2019-04-13 08:00:04 / Modified: 08:42:32" itemprop="dateCreated datePublished" datetime="2019-04-13T08:00:04+08:00">2019-04-13</time>
+              <time title="Created: 2019-04-13 08:00:04" itemprop="dateCreated datePublished" datetime="2019-04-13T08:00:04+08:00">2019-04-13</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-06-27 15:59:11" itemprop="dateModified" datetime="2019-06-27T15:59:11+08:00">2019-06-27</time>
               
             
           </span>
@@ -493,7 +505,7 @@
                 
                   <span class="post-meta-item-text">Symbols count in article: </span>
                 
-                <span title="Symbols count in article">2.8k</span>
+                <span title="Symbols count in article">3.3k</span>
               
 
               
@@ -531,13 +543,14 @@
 <p>环境：未特别注明的话，均为Python 3.6.5，IDE：VS code</p>
 <p>遇到的都是基础问题，分了两篇。</p>
 <p>担心一篇写多了会看不下去</p>
+<p><a href="https://blog.csdn.net/xinzechen/article/details/89446322" target="_blank" rel="noopener">https://blog.csdn.net/xinzechen/article/details/89446322</a>  vscode的问题</p>
 </blockquote>
 <h2 id="『1』关于python无法显示中文的问题：SyntaxError-Non-ASCII-character-‘-xe4’-in-file-test-py-on-line-3-but-no-encoding-declared。"><a href="#『1』关于python无法显示中文的问题：SyntaxError-Non-ASCII-character-‘-xe4’-in-file-test-py-on-line-3-but-no-encoding-declared。" class="headerlink" title="『1』关于python无法显示中文的问题：SyntaxError: Non-ASCII character ‘\xe4’ in file test.py on line 3, but no encoding declared。"></a>『1』关于python无法显示中文的问题：SyntaxError: Non-ASCII character ‘\xe4’ in file test.py on line 3, but no encoding declared。</h2><p>python：2.7.15</p>
 <p>解决办法：  在以后的每一个需要显示汉字的python文件中， 可以采用如下方法在 #!/usr/bin/python的下一行加上一句话来定义编码格式， 我以utf-8编码为例。<a id="more"></a></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">### 第一种：</span></span><br><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### 第二种：</span></span><br><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment">#-*-coding:utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### 第三种：</span></span><br><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment">#vim: set fileencoding:utf-8</span></span><br></pre></td></tr></table></figure>
 <h2 id="『2』有时候在去数据的时候会遇到数据内有中文，但是取出来的是unicode码，用了很多方法也转不了中文"><a href="#『2』有时候在去数据的时候会遇到数据内有中文，但是取出来的是unicode码，用了很多方法也转不了中文" class="headerlink" title="『2』有时候在去数据的时候会遇到数据内有中文，但是取出来的是unicode码，用了很多方法也转不了中文"></a>『2』有时候在去数据的时候会遇到数据内有中文，但是取出来的是unicode码，用了很多方法也转不了中文</h2><p>解决:</p>
 <p>“反编码”我自己起的名字，大概意思就是我得到一串字符，是unicode码，如：‘\u53eb\u6211’，进行反编码后得到其对应的汉字。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">f=<span class="string">'\u53eb\u6211'</span></span><br><span class="line"><span class="keyword">print</span> f</span><br><span class="line">print(f.decode(<span class="string">'unicode-escape'</span>))<span class="number">123</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">f=<span class="string">'\u53eb\u6211'</span></span><br><span class="line"><span class="keyword">print</span> f</span><br><span class="line">print(f.decode(<span class="string">'unicode-escape'</span>))</span><br><span class="line"></span><br><span class="line">list_words为列表类型</span><br><span class="line">str(list_words).decode( <span class="string">'string_escape'</span> )</span><br><span class="line"></span><br><span class="line"><span class="comment">#encoding=utf-8</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"> </span><br><span class="line">list_words = [ <span class="string">'你'</span>, <span class="string">'我'</span>, <span class="string">'他'</span> ]</span><br><span class="line">print( list_words )                                        </span><br><span class="line">print( str(list_words).decode( <span class="string">'string_escape'</span> ) )         <span class="comment"># 正常显示汉字（可靠性不高，原因尚不明确）</span></span><br><span class="line"> </span><br><span class="line">list_words_result = json.dumps( list_words, encoding=<span class="string">'UTF-8'</span>, ensure_ascii=<span class="literal">False</span> )   <span class="comment"># 正常显示汉字 （经实验可靠性较高）</span></span><br></pre></td></tr></table></figure>
 <p>结果为: </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">\u53eb\u6211 </span><br><span class="line">叫我</span><br></pre></td></tr></table></figure>
 <h2 id="『3』在编译时会出现这样的错：IndentationError-expected-an-indented-block"><a href="#『3』在编译时会出现这样的错：IndentationError-expected-an-indented-block" class="headerlink" title="『3』在编译时会出现这样的错：IndentationError:expected an indented block"></a>『3』在编译时会出现这样的错：<strong>IndentationError:expected an indented block</strong></h2><p>说明此处需要缩进，你只要在出现错误的那一行，按空格或Tab（但不能混用）键缩进就行。</p>
@@ -693,7 +706,7 @@
                 
                   <a href="/sheldon_blog/archives/">
                 
-                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-count">20</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -763,7 +776,13 @@
                     
                       
                     
-                    <span class="site-state-item-count">13</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
