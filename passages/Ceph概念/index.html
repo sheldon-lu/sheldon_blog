@@ -103,8 +103,8 @@
   <meta name="description" content="介绍Ceph是一个统一的分布式存储系统，最早起源于Sage就读博士期间的工作（最早的成果于2004年发表），随后贡献给开源社区。其设计初衷是提供较好的性能、可靠性和可扩展性。在经过多年的发展之后，目前已得到众多云计算厂商的支持并被广泛应用。RedHat及OpenStack都可与Ceph整合以支持虚拟机镜像的后端存储。   Ceph的优势可以概括为以下四个方面：  高性能   摒弃了传统的集中式存储">
 <meta name="keywords" content="Ceph">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ceph相关概念">
-<meta property="og:url" content="https://sheldon-lu.github.io/passages/ceph/index.html">
+<meta property="og:title" content="Ceph相关概念">
+<meta property="og:url" content="https://sheldon-lu.github.io/passages/Ceph概念/index.html">
 <meta property="og:site_name" content="Sheldon_Lu">
 <meta property="og:description" content="介绍Ceph是一个统一的分布式存储系统，最早起源于Sage就读博士期间的工作（最早的成果于2004年发表），随后贡献给开源社区。其设计初衷是提供较好的性能、可靠性和可扩展性。在经过多年的发展之后，目前已得到众多云计算厂商的支持并被广泛应用。RedHat及OpenStack都可与Ceph整合以支持虚拟机镜像的后端存储。   Ceph的优势可以概括为以下四个方面：  高性能   摒弃了传统的集中式存储">
 <meta property="og:locale" content="zh-Hans">
@@ -136,9 +136,9 @@
 <meta property="og:image" content="https://sheldon-lu.github.io/passages/images/ceph_message.png">
 <meta property="og:image" content="https://sheldon-lu.github.io/passages/images/ceph_message_2.png">
 <meta property="og:image" content="https://sheldon-lu.github.io/passages/images/ceph_message_3.png">
-<meta property="og:updated_time" content="2019-09-03T14:46:15.991Z">
+<meta property="og:updated_time" content="2019-09-03T15:00:32.781Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ceph相关概念">
+<meta name="twitter:title" content="Ceph相关概念">
 <meta name="twitter:description" content="介绍Ceph是一个统一的分布式存储系统，最早起源于Sage就读博士期间的工作（最早的成果于2004年发表），随后贡献给开源社区。其设计初衷是提供较好的性能、可靠性和可扩展性。在经过多年的发展之后，目前已得到众多云计算厂商的支持并被广泛应用。RedHat及OpenStack都可与Ceph整合以支持虚拟机镜像的后端存储。   Ceph的优势可以概括为以下四个方面：  高性能   摒弃了传统的集中式存储">
 <meta name="twitter:image" content="https://sheldon-lu.github.io/passages/images/Ceph架构图.png">
 
@@ -148,7 +148,7 @@
 
   
   
-  <link rel="canonical" href="https://sheldon-lu.github.io/passages/ceph/">
+  <link rel="canonical" href="https://sheldon-lu.github.io/passages/Ceph概念/">
 
 
 
@@ -158,7 +158,7 @@
   };
 </script>
 
-  <title>ceph相关概念 | Sheldon_Lu</title>
+  <title>Ceph相关概念 | Sheldon_Lu</title>
   
 
 
@@ -403,7 +403,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/ceph/">
+    <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph概念/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sheldon Lu">
@@ -420,7 +420,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">ceph相关概念
+          <h1 class="post-title" itemprop="name headline">Ceph相关概念
 
               
             
@@ -464,7 +464,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-09-03 22:46:15" itemprop="dateModified" datetime="2019-09-03T22:46:15+08:00">2019-09-03</time>
+                <time title="Modified: 2019-09-03 23:00:32" itemprop="dateModified" datetime="2019-09-03T23:00:32+08:00">2019-09-03</time>
               
             
           </span>
@@ -500,8 +500,8 @@
                 </span>
             
                 <span class="post-meta-item-text">Comments: </span>
-                <a href="/sheldon_blog/passages/ceph/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/sheldon_blog/passages/ceph/" itemprop="commentCount"></span>
+                <a href="/sheldon_blog/passages/Ceph概念/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/sheldon_blog/passages/Ceph概念/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -509,7 +509,7 @@
 
           
           
-            <span id="/sheldon_blog/passages/ceph/" class="leancloud_visitors" data-flag-title="ceph相关概念">
+            <span id="/sheldon_blog/passages/Ceph概念/" class="leancloud_visitors" data-flag-title="Ceph相关概念">
               <span class="post-meta-divider">|</span>
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
@@ -575,7 +575,7 @@
 <ul>
 <li>摒弃了传统的集中式存储元数据寻址的方案，采用CRUSH算法，数据分布均衡，并行度高</li>
 <li>考虑了容灾域的隔离，能够实现各类负载的副本放置规则，例如跨机房、机架感知等</li>
-<li>能够支持上千个存储节点的规模。支持TB到PB级的数据  </li>
+<li>能够支持上千个存储节点的规模。支持TB到PB级的数据  <a id="more"></a></li>
 </ul>
 </li>
 <li><p>高可用  </p>
@@ -685,7 +685,7 @@
 <p>这里的Ceph除了管理网段外，设了两个网段，一个用于客户端读写传输数据，另一个用于各OSD节点之间同步数据和发送心跳信息等。这样做的好处是可以分担网卡的IO压力。否则在数据清洗时，客户端的读写速度会变得极为缓慢。  </p>
 <h2 id="MDS"><a href="#MDS" class="headerlink" title="MDS"></a>MDS</h2><p>Mds是Ceph集群中的元数据服务器，而通常情况它都不是必须的，因为只有在使用CephFS的时候才需要它，而目前云计算中用到的更广泛的是另外两种存储方式。  </p>
 <p>Mds虽然是元数据服务器，但是它不负责存储元数据，元数据也是被切成对象存在各个OSD节点中，如下图：  </p>
-<p><img src="../images/Ceph&#32;Architecture.png" alt="Ceph Architecture">  </p>
+<p><img src="../images/Ceph Architecture.png" alt="Ceph Architecture">  </p>
 <p>在创建CephFS时，要至少创建两个Pool，一个用于存储数据，另一个用于存放元数据。Mds只是负责接收用户的元数据查询请求，然后从OSD中把数据取出来映射进自己的内存中供客户访问。所以Mds其实类似一个代理缓存服务器，替OSD分担了用户的访问压力，如下图：  </p>
 <p><img src="../images/Mds.png" alt="Mds">  </p>
 <h2 id="Ceph-各概念之间的关系"><a href="#Ceph-各概念之间的关系" class="headerlink" title="Ceph 各概念之间的关系"></a>Ceph 各概念之间的关系</h2><h3 id="存储数据与Object的关系"><a href="#存储数据与Object的关系" class="headerlink" title="存储数据与Object的关系"></a>存储数据与Object的关系</h3><p>当用户要将数据存储到Ceph集群时，存储数据都会被分割成多个Object，每个Object都有一个Object ID，每个Object的大小是可以设置的，默认为4MB。Object可以看做是Ceph存储的最小存储单元。 </p>
@@ -1018,8 +1018,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/sheldon_blog/passages/ceph集群安装/" rel="next" title="ceph集群安装">
-                <i class="fa fa-chevron-left"></i> ceph集群安装
+              <a href="/sheldon_blog/passages/Ceph集群安装/" rel="next" title="Ceph集群安装">
+                <i class="fa fa-chevron-left"></i> Ceph集群安装
               </a>
             
           </div>
@@ -1028,8 +1028,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/sheldon_blog/passages/block/" rel="prev" title="ceph-block">
-                ceph-block <i class="fa fa-chevron-right"></i>
+              <a href="/sheldon_blog/passages/Ceph单节点安装/" rel="prev" title="Ceph单节点安装">
+                Ceph单节点安装 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -1105,7 +1105,7 @@
                 
                   <a href="/sheldon_blog/archives/">
                 
-                    <span class="site-state-item-count">24</span>
+                    <span class="site-state-item-count">23</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
