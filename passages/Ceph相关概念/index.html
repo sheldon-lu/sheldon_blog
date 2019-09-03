@@ -108,39 +108,39 @@
 <meta property="og:site_name" content="Sheldon_Lu">
 <meta property="og:description" content="介绍Ceph是一个统一的分布式存储系统，最早起源于Sage就读博士期间的工作（最早的成果于2004年发表），随后贡献给开源社区。其设计初衷是提供较好的性能、可靠性和可扩展性。在经过多年的发展之后，目前已得到众多云计算厂商的支持并被广泛应用。RedHat及OpenStack都可与Ceph整合以支持虚拟机镜像的后端存储。   Ceph的优势可以概括为以下四个方面：">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://sheldon-lu.github.io/Users/lushenneng/Ceph/images/Ceph架构图.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/Users/lushenneng/Ceph/images/Ceph基本组件.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/Users/lushenneng/Ceph/images/Ceph数据存储过程.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/Users/lushenneng/Ceph/images/OSDs.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/Users/lushenneng/Ceph/images/pools.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/Users/lushenneng/Ceph/images/Ceph读写流程.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/Users/lushenneng/Ceph/images/OSD进程.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/Users/lushenneng/Ceph/images/journal.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/Users/lushenneng/Ceph/images/推荐架构.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/Users/lushenneng/Ceph/images/Ceph%20Architecture.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/Users/lushenneng/Ceph/images/Mds.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/Users/lushenneng/Ceph/images/关系图.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/Users/lushenneng/Ceph/images/CRUSH架构图.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/Users/lushenneng/Ceph/images/ceph_bucket.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/Users/lushenneng/Ceph/images/rados_io_1.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/Users/lushenneng/Ceph/images/ceph_io_2.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/Users/lushenneng/Ceph/images/ceph_io_3.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/Users/lushenneng/Ceph/images/ceph_io_4.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/Users/lushenneng/Ceph/images/ceph_rbd_io.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/Users/lushenneng/Ceph/images/ceph_rbd_io1.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/Users/lushenneng/Ceph/images/ceph_recory_1.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/Users/lushenneng/Ceph/images/ceph_recory_2.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/Users/lushenneng/Ceph/images/ceph_heartbeat_1.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/Users/lushenneng/Ceph/images/ceph_heartbeat_osd.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/Users/lushenneng/Ceph/images/ceph_heartbeat_mon.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/Users/lushenneng/Ceph/images/ceph_message.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/Users/lushenneng/Ceph/images/ceph_message_2.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/Users/lushenneng/Ceph/images/ceph_message_3.png">
-<meta property="og:updated_time" content="2019-09-03T15:39:52.330Z">
+<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/Ceph架构图.png">
+<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/Ceph基本组件.png">
+<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/Ceph数据存储过程.png">
+<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/OSDs.png">
+<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/pools.png">
+<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/Ceph读写流程.png">
+<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/OSD进程.png">
+<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/journal.png">
+<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/推荐架构.png">
+<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/Ceph%20Architecture.png">
+<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/Mds.png">
+<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/关系图.png">
+<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/CRUSH架构图.png">
+<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/ceph_bucket.png">
+<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/rados_io_1.png">
+<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/ceph_io_2.png">
+<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/ceph_io_3.png">
+<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/ceph_io_4.png">
+<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/ceph_rbd_io.png">
+<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/ceph_rbd_io1.png">
+<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/ceph_recory_1.png">
+<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/ceph_recory_2.png">
+<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/ceph_heartbeat_1.png">
+<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/ceph_heartbeat_osd.png">
+<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/ceph_heartbeat_mon.png">
+<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/ceph_message.png">
+<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/ceph_message_2.png">
+<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/ceph_message_3.png">
+<meta property="og:updated_time" content="2019-09-03T15:46:17.832Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ceph相关概念">
 <meta name="twitter:description" content="介绍Ceph是一个统一的分布式存储系统，最早起源于Sage就读博士期间的工作（最早的成果于2004年发表），随后贡献给开源社区。其设计初衷是提供较好的性能、可靠性和可扩展性。在经过多年的发展之后，目前已得到众多云计算厂商的支持并被广泛应用。RedHat及OpenStack都可与Ceph整合以支持虚拟机镜像的后端存储。   Ceph的优势可以概括为以下四个方面：">
-<meta name="twitter:image" content="https://sheldon-lu.github.io/Users/lushenneng/Ceph/images/Ceph架构图.png">
+<meta name="twitter:image" content="https://sheldon-lu.github.io/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/Ceph架构图.png">
 
 
 
@@ -447,7 +447,7 @@
                 
               
 
-              <time title="Created: 2019-09-03 23:30:48 / Modified: 23:39:52" itemprop="dateCreated datePublished" datetime="2019-09-03T23:30:48+08:00">2019-09-03</time>
+              <time title="Created: 2019-09-03 23:30:48 / Modified: 23:46:17" itemprop="dateCreated datePublished" datetime="2019-09-03T23:30:48+08:00">2019-09-03</time>
             
 
             
@@ -585,11 +585,11 @@
 </li>
 </ol>
 <h1 id="Ceph基本结构"><a href="#Ceph基本结构" class="headerlink" title="Ceph基本结构"></a>Ceph基本结构</h1><p>Ceph的基本组成结构如下图：  </p>
-<p><img src="/Users/lushenneng/Ceph/images/Ceph架构图.png" alt="Ceph架构图"></p>
+<p><img src="/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/Ceph架构图.png" alt="Ceph架构图"></p>
 <p>Ceph的底层是<strong>RADOS</strong>，RADOS本身也是分布式存储系统，Ceph所有的存储功能都是基于RADOS实现的。RADOS采用C++开发，所提供的原生Librados API包括C和C++两种。Ceph的上层应用调用本机上的librados API，再由后者通过socket与RADOS集群中的其他节点通信并完成各种操作。  </p>
 <p>RADOS GateWay、RBD其作用是在librados库的基础上提供抽象层次更高、更便于应用或客户端使用的上层接口。其中RADOS GW是一个提供与Amazon S3和Swift兼容的RESTful API的gateway，以供相应的对象存储应用开发使用。RBD则提供了一个标准的块设备接口，常用于在虚拟化的场景下为虚拟机创建volume。目前，RedHat已经将RBD驱动集成在KVM/QEMU中，以提供虚拟机访问性能。这两种方式目前在云计算中应用的比较多。  </p>
 <p>CephFS则提供了POSIX接口，用户可直接通过客户端挂载使用。它是内核态的程序，所有无需调用用户空间的librados库。它通过内核中的net模块来与RADOS进行交互。  </p>
-<h1 id="Ceph基本组件及概念"><a href="#Ceph基本组件及概念" class="headerlink" title="Ceph基本组件及概念"></a>Ceph基本组件及概念</h1><h2 id="Ceph基本组件"><a href="#Ceph基本组件" class="headerlink" title="Ceph基本组件"></a>Ceph基本组件</h2><p><img src="/Users/lushenneng/Ceph/images/Ceph基本组件.png" alt="Ceph基本组件">  </p>
+<h1 id="Ceph基本组件及概念"><a href="#Ceph基本组件及概念" class="headerlink" title="Ceph基本组件及概念"></a>Ceph基本组件及概念</h1><h2 id="Ceph基本组件"><a href="#Ceph基本组件" class="headerlink" title="Ceph基本组件"></a>Ceph基本组件</h2><p><img src="/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/Ceph基本组件.png" alt="Ceph基本组件">  </p>
 <p>如上图所示，Ceph主要有三个基本进程：  </p>
 <ul>
 <li>OSD  </li>
@@ -638,7 +638,7 @@
 <p>全称Ceph File System，是Ceph对外提供的文件系统服务。  </p>
 <h1 id="Ceph-核心组件"><a href="#Ceph-核心组件" class="headerlink" title="Ceph 核心组件"></a>Ceph 核心组件</h1><p>Ceph的核心组件包括Ceph OSD、Ceph Monitor和Ceph MSD。</p>
 <h2 id="OSD"><a href="#OSD" class="headerlink" title="OSD"></a>OSD</h2><p>首先介绍下Ceph数据的存储过程，如下图：  </p>
-<p><img src="/Users/lushenneng/Ceph/images/Ceph数据存储过程.png" alt="Ceph数据存储过程">  </p>
+<p><img src="/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/Ceph数据存储过程.png" alt="Ceph数据存储过程">  </p>
 <p>无论使用哪种存储方式（对象、块、文件系统），存储的数据都会被切分成对象（Objects）。Objects size大小可以由管理员调整，通常为2M或者4M。每个对象都会有一个唯一的OID，有ino和ono生成：ino是文件的File ID，用于全局唯一标示每一个文件，而ono是分片的编号。例如，一个文件FileID是A，它被切成两个对象，一个编号为0，另一个编号为1，那么这两个对象的OID则为A0和A1。OID的好处是可以唯一标示每一个不同的对象，并且存储了对象与文件的从属关系。由于Ceph的所有数据都虚拟成了整齐划一的对象，所以在读写时效率都会比较高。  </p>
 <p>但是对象并不会直接存储进OSD中，因为对象的size很小，在一个大规模的集群中可能有几百到几千万个对象。如此多的对象光是遍历寻址速度都会很缓慢；而且如果将对象直接通过某种固定映射的哈希算法映射到osd上，当这个osd损坏时，对象无法自动迁移到其他osd上面（因为映射函数不允许）。为了解决这些问题，Ceph引入了归置组的概念，即PG。  </p>
 <p>PG是一个逻辑概念，Linux系统中可以直接看到对象，但是无法直接看到PG。它在数据寻址时类似于数据库中的索引：每个对象都会固定映射进一个PG中，所以当我们寻找一个对象时，只需要先找到对象所属的PG，然后遍历这个PG就可以了，无需遍历所有对象。而且在数据迁移时，也是一PG作为基本单位进行迁移，Ceph不会直接操作对象。  </p>
@@ -646,32 +646,32 @@
 <p>最后PG会根据管理员设置的副本数量进行复制，然后通过CRUSH算法存储到不同的OSD节点上（其实是把PG中的所有对象存储到节点上），第一个osd节点即为主节点，其余均为从节点。  </p>
 <p>下面是一段Ceph中的伪代码，简要描述了Ceph的数据存储流程：  </p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">locator = object_name</span><br><span class="line">obj_hash = hash(locator)</span><br><span class="line">pg = obj_hash % num_pg</span><br><span class="line">osds_for_pg = crush(pg) <span class="comment"># return a list of osds</span></span><br><span class="line">primary = osds_for_pg[<span class="number">0</span>]</span><br><span class="line">replicas = osds_for_og[<span class="number">1</span>:]</span><br></pre></td></tr></table></figure>
-<p><img src="/Users/lushenneng/Ceph/images/OSDs.png" alt="OSDs">  </p>
+<p><img src="/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/OSDs.png" alt="OSDs">  </p>
 <p>上图中更好地诠释了Ceph数据流的存储过程，数据无论是从三个接口哪一种写入的，最终都要切分成对象存储到底层的RADOS中。逻辑上通过算法先映射到PG上，最终存储进OSD节点里。图中除了之前介绍过的概念之外多了个pools的概念。  </p>
-<p><img src="/Users/lushenneng/Ceph/images/pools.png" alt="pools">  </p>
+<p><img src="/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/pools.png" alt="pools">  </p>
 <p>Pool是管理员自定义的命名空间，像其他的命名空间一样，用来隔离对象与PG。我们在调用API存储，即使用对象存储时，需要指定对象要存储进哪一个POOL中。除了隔离数据，我们也可以分别对不同的POOL设置不同的优化策略，比如副本数、数据清洗次数、数据块及对象大小等。  </p>
 <p>OSD是强一致性的分布式存储，它的读写流程如下图：  </p>
-<p><img src="/Users/lushenneng/Ceph/images/Ceph读写流程.png" alt="Ceph读写流程">  </p>
+<p><img src="/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/Ceph读写流程.png" alt="Ceph读写流程">  </p>
 <p>Ceph的读写操作采用主从模型，客户端要读写数据时，只能向对象所对应的的主OSD节点发起请求。主节点在接受写请求时，会同步的向从OSD中写入数据。当所有的OSD节点都写入完成后，主节点才会向客户端报告写入完成的信息，因此保证了主从节点数据的高度一致性。而读取的时候，客户端也只会向主OSD节点发送读请求，并不会有类似数据库中读写分离的情况出现，这也是处于强一致性的考虑。由于所有写操作都要交给主OSD节点来处理，所以在数据量很大的时候，性能可能会比较慢，为了克服这个问题以及让Ceph能支持事务，每个OSD节点都包含一个journal文件，稍后介绍。  </p>
 <p>数据流向的介绍就先到这，现在回到正题：OSD进程。在Ceph中，每一个OSD进程都可以称作是一个OSD节点，也就是说，每台存储服务器可靠包含了众多的OSD节点，每个OSD节点监听不同的端口，类似于在同一台服务器上跑多个MySQL或Redis。每个OSD节点可以设置一个目录作为实际存储区域，也可以是一个分区、一整块硬盘。如下图，当前这台机器上跑了两个OSD进程，每个OSD监听4个端口，分别用于接收客户请求、传输数据、发送心跳、同步数据等操作。  </p>
-<p><img src="/Users/lushenneng/Ceph/images/OSD进程.png" alt="OSD进程">  </p>
+<p><img src="/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/OSD进程.png" alt="OSD进程">  </p>
 <p>如上图所示，osd节点默认监听tcp的6800到6803端口，如果同一台服务器上有多个OSD节点，则依次往后排序。  </p>
 <p>在生成环境中OSD最少可能都有上百个，所以每个OSD都有一个全局的编号，类似OSD0、OSD1、OSD2等等，序号根据OSD诞生的顺序排列，并且是全局唯一的。存储了相同PG的OSD节点除了想Mon节点发送心跳外，还会互相发送心跳信息以检测PG数据副本是否正常。  </p>
 <p>之前在介绍数据流向时说过，每个OSD节点都包含一个journal文件，如下图：  </p>
-<p><img src="/Users/lushenneng/Ceph/images/journal.png" alt="journal">  </p>
+<p><img src="/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/journal.png" alt="journal">  </p>
 <p>默认大小为5G，也就是说创建一个OSD节点，还没使用就要被journal占用5G的空间。这个值是可以调整的，具体大小要依据OSD的总大小而定。  </p>
 <p>Journal的作用类似于MySQL innodb引擎中的事务日志系统。当有突发的大量写入操作时，Ceph可以先把一些零散的，随机的IO请求保存到缓存中进行合并，然后在同一向内核发起IO请求。这样做效率会比较高，但是一旦OSD节点崩溃，缓存中的数据就会丢失，所以数据在还未写进硬盘时，都会记录到journal中，当OSD崩溃后重新启东市，会自动尝试从journal恢复因崩溃而丢失的缓存数据。因此journal的IO是非常密集的，而且由于一个数据IO两次，很大程度上也损耗了硬件的IO性能，所以通常在生产环境中，使用ssd来单独存储journal文件以提高Ceph的读写性能。  </p>
 <h2 id="monitor节点"><a href="#monitor节点" class="headerlink" title="monitor节点"></a>monitor节点</h2><p>Mon节点监控着整个Ceph集群的状态信息，监听于tcp的6789端口。每个Ceph集群中至少要有一个Mon节点，官方推荐每个集群至少部署三台。Mon节点中保存了最新的版本集群数据分布图（Cluster Map）的主副本。客户端在使用时，需要挂载Mon节点的6789端口，下载最新的Cluster Map，通过CRUSH算法获得集群中各OSD的IP地址，然后再与OSD节点直接建立连接来传输数据。所以对于Ceph来说，并不需要有集中式的主节点用于计算与寻址，客户端分摊了这部分工作。而且客户端也可以直接和OSD通信，省去了中间代理服务器的额外开销。  </p>
 <p>Mon节点之间使用Paxos算法来保持各节点Cluster Map的一致性；各Mon节点的功能总体是一样的，相互间的关系可以被简单理解为主备关系。如果主Mon节点损坏，其他Mon存活节点超过半数时，集群还可以正常运行。当故障Mon节点恢复时，会主动从其他Mon节点拉取最新的Cluster Map。  </p>
 <p>Mon节点并不会主动轮询各个OSD的当前状态，相反，OSD只有在一些特殊情况下才会上报自己的信息，平常只会简单的发送心跳。特殊情况包括：1、新的OSD被加入集群；2、某个OSD发现自身或其他OSD发生异常。Mon节点在收到这些上报信息时，则会更新Cluster Map信息并加以扩缩。  </p>
 <p>Cluster Map信息是以异步且lazy的形式扩散的。Monitor并不会在每一次Cluster Map版本更新后都将新版广播至全体OSD，而是有OSD向自己上报信息时，将更新恢复给对方。类似的，各个OSD也是在和其他OSD通信时，如果发现对方的OSD中持有的Cluster Map版本较低，则把自己更新的版本发送给对方。  </p>
-<p><img src="/Users/lushenneng/Ceph/images/推荐架构.png" alt="推荐架构">  </p>
+<p><img src="/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/推荐架构.png" alt="推荐架构">  </p>
 <p>这里的Ceph除了管理网段外，设了两个网段，一个用于客户端读写传输数据，另一个用于各OSD节点之间同步数据和发送心跳信息等。这样做的好处是可以分担网卡的IO压力。否则在数据清洗时，客户端的读写速度会变得极为缓慢。  </p>
 <h2 id="MDS"><a href="#MDS" class="headerlink" title="MDS"></a>MDS</h2><p>Mds是Ceph集群中的元数据服务器，而通常情况它都不是必须的，因为只有在使用CephFS的时候才需要它，而目前云计算中用到的更广泛的是另外两种存储方式。  </p>
 <p>Mds虽然是元数据服务器，但是它不负责存储元数据，元数据也是被切成对象存在各个OSD节点中，如下图：  </p>
-<p><img src="/Users/lushenneng/Ceph/images/Ceph Architecture.png" alt="Ceph Architecture">  </p>
+<p><img src="/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/Ceph Architecture.png" alt="Ceph Architecture">  </p>
 <p>在创建CephFS时，要至少创建两个Pool，一个用于存储数据，另一个用于存放元数据。Mds只是负责接收用户的元数据查询请求，然后从OSD中把数据取出来映射进自己的内存中供客户访问。所以Mds其实类似一个代理缓存服务器，替OSD分担了用户的访问压力，如下图：  </p>
-<p><img src="/Users/lushenneng/Ceph/images/Mds.png" alt="Mds">  </p>
+<p><img src="/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/Mds.png" alt="Mds">  </p>
 <h2 id="Ceph-各概念之间的关系"><a href="#Ceph-各概念之间的关系" class="headerlink" title="Ceph 各概念之间的关系"></a>Ceph 各概念之间的关系</h2><h3 id="存储数据与Object的关系"><a href="#存储数据与Object的关系" class="headerlink" title="存储数据与Object的关系"></a>存储数据与Object的关系</h3><p>当用户要将数据存储到Ceph集群时，存储数据都会被分割成多个Object，每个Object都有一个Object ID，每个Object的大小是可以设置的，默认为4MB。Object可以看做是Ceph存储的最小存储单元。 </p>
 <h3 id="Object-与-PG"><a href="#Object-与-PG" class="headerlink" title="Object 与 PG"></a>Object 与 PG</h3><p>由于Object的数量很多，所以Ceph引入了PG的概念用于管理Object，每个Object最后都会通过CRUSH计算映射到某个PG中，一个PG可以包含多个Object。</p>
 <p>Ceph条带化之后，将获得N个带有唯一OID（即Object的id）。Object id是进行线性映射生成的，即有file的元数据、Ceph条带化产生的Object的序号连缀而成。此时object需要映射到PG中，该映射包括两部分：  </p>
@@ -720,7 +720,7 @@
 </ol>
 <h3 id="PG-与-Pool"><a href="#PG-与-Pool" class="headerlink" title="PG 与 Pool"></a>PG 与 Pool</h3><p>Pool也是一个逻辑存储概念，我们创建存储池pool的时候，都需要指定PG和PGP的数量，逻辑上来说PG是属于某个存储池的，就像Object是属于某个PG的一样。  </p>
 <p>下图表明了存储数据、Object、PG、Pool、OSD、存储磁盘的关系：  </p>
-<p><img src="/Users/lushenneng/Ceph/images/关系图.png" alt="关系图"></p>
+<p><img src="/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/关系图.png" alt="关系图"></p>
 <h2 id="Ceph-条带化"><a href="#Ceph-条带化" class="headerlink" title="Ceph 条带化"></a>Ceph 条带化</h2><p>众所周知，存储设备具有吞吐量限制，它影响读写性能和可扩展性能。所以存储系统通常都支持条带化以增加存储系统的吞吐量并提升性能，数据条带化最常见的方式是做RAID。与Ceph的条带化最相似的是RAID 0或者是“带区卷”。Ceph条带化提供了类似RAID 0的吞吐量，N路RAID镜像的可靠性已经更快速的恢复能力。  </p>
 <p>在磁盘阵列中，数据是以条带（stripe）的方式贯穿在磁盘阵列所有硬盘中的。这种数据的分配方式可以弥补OS读取数据量跟不上的不足。  </p>
 <p>1.将条带单元（stripe unit）从阵列的第一个硬盘到最后一个硬盘收集起来，就可以称为条带（stripe）。有的时候，条带单元也被称为交错深度。在光纤技术中，一个条带单元被叫做段。  </p>
@@ -760,11 +760,11 @@
 <h2 id="CRUSH-关系分析"><a href="#CRUSH-关系分析" class="headerlink" title="CRUSH 关系分析"></a>CRUSH 关系分析</h2><p>从本质上讲，CRUSH算法是通过存储设备的权重来计算数据对象的分布。在计算过程中，通过Cluster Map（集群映射）、Data Distribution Policy（数据分布策略）和给出的一个随机数共同决定数据对象的最终位置。  </p>
 <h3 id="Cluster-Map"><a href="#Cluster-Map" class="headerlink" title="Cluster Map"></a>Cluster Map</h3><p>Cluster Map记录所有可用的存储资源以及可用的存储资源及相互之间的空间层次结构（集群中有多少个机架、机架上有多少个服务器、每个服务器上有多少磁盘等信息）。所谓Map，顾名思义，就是类似于我们生活中的地图。在Ceph存储里，数据的索引都是通过各种不同的Map来实现的。另一方面，Map使得Ceph集群存储设备在物理层做了一层防护。例如，在多副本结构上，通过设置合理的Map（故障域设置为Host级），可以保证在某一服务器死机的情况下，有其他副本保留在正常的存储节点上，能够继续提供服务，实现存储的高可用。设置更高的故障域级别（如Rack、Row等）能保证整机柜或同一排机柜在掉电情况下数据的高可用性和完整性。  </p>
 <h4 id="1-Cluster-Map的分层结构"><a href="#1-Cluster-Map的分层结构" class="headerlink" title="1.Cluster Map的分层结构"></a>1.Cluster Map的分层结构</h4><p>Cluster Map由Device和Bucket构成。它们都有自己的ID和权重值，并且形成一个以Device为叶子节点、Bucket为躯干的树状结果。  </p>
-<p><img src="/Users/lushenneng/Ceph/images/CRUSH架构图.png" alt="CRUSH架构图">  </p>
+<p><img src="/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/CRUSH架构图.png" alt="CRUSH架构图">  </p>
 <p>Bucket拥有不同的类型，如Host、Row、Rack、Room等，通常我们默认把机架类型定义为Rack，主机类型定义为Host，数据中心（IDC机房）定义为Data Center。Bucket的类型都是虚拟结构，可以根据自己的喜好设计合适的类型。Device节点的权重值代表了存储设备的容量与性能。其中，磁盘容量是权重大小的关键因素。  </p>
 <p>OSD的权重值越高，对应磁盘会被分配写入更多的数据。总体来说，数据会被均匀写入分布于集群所有磁盘，从而提高整体性能和可靠性。无论磁盘的规格容量，总能够均匀使用。  </p>
 <p>关于OSD权重值的大小值的配比，官方默认值设置为1TB容量的硬盘，对应权重为1。可以在/etc/init.d/ceph源码里查看相关的内容。  </p>
-<h5 id="Bucket随机算法类型"><a href="#Bucket随机算法类型" class="headerlink" title="Bucket随机算法类型"></a>Bucket随机算法类型</h5><p><img src="/Users/lushenneng/Ceph/images/ceph_bucket.png" alt="Ceph Bucket">  </p>
+<h5 id="Bucket随机算法类型"><a href="#Bucket随机算法类型" class="headerlink" title="Bucket随机算法类型"></a>Bucket随机算法类型</h5><p><img src="/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/ceph_bucket.png" alt="Ceph Bucket">  </p>
 <ul>
 <li><strong>一般的buckets</strong>：适合所有子节点权重相同，而且很少添加删除item</li>
 <li><strong>list buckets</strong>：适用于集群扩展类型。增加item，产生最优的数据移动，查找item，时间复杂对为O(n)</li>
@@ -786,8 +786,8 @@
 <li>CRUSH预先考虑到pool ID相同的PG ID（如4.0x58）</li>
 </ol>
 <p>在Ceph集群里，当有数据对象要写入集群时，需要进行两次映射，第一次从Object–&gt;PG，第二层是PG–&gt;OSD set。每一次的映射都是与其他对象不相关的，这充分体现了CEUSH的独立性（充分分散）和确定性（可确定的存储位置）。  </p>
-<h1 id="Ceph-IO流程及数据分布"><a href="#Ceph-IO流程及数据分布" class="headerlink" title="Ceph IO流程及数据分布"></a>Ceph IO流程及数据分布</h1><p><img src="/Users/lushenneng/Ceph/images/rados_io_1.png" alt="rados_io_1">  </p>
-<h2 id="正常IO流程图"><a href="#正常IO流程图" class="headerlink" title="正常IO流程图"></a>正常IO流程图</h2><p><img src="/Users/lushenneng/Ceph/images/ceph_io_2.png" alt="ceph_io_2">  </p>
+<h1 id="Ceph-IO流程及数据分布"><a href="#Ceph-IO流程及数据分布" class="headerlink" title="Ceph IO流程及数据分布"></a>Ceph IO流程及数据分布</h1><p><img src="/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/rados_io_1.png" alt="rados_io_1">  </p>
+<h2 id="正常IO流程图"><a href="#正常IO流程图" class="headerlink" title="正常IO流程图"></a>正常IO流程图</h2><p><img src="/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/ceph_io_2.png" alt="ceph_io_2">  </p>
 <p>步骤：  </p>
 <ol>
 <li>Client 创建Cluster handler</li>
@@ -800,7 +800,7 @@
 </ol>
 <h2 id="新主IO流程图"><a href="#新主IO流程图" class="headerlink" title="新主IO流程图"></a>新主IO流程图</h2><p>说明：  </p>
 <p>如果新加入的OSD1取代了原有的OSD4成为Primary OSD，由于OSD1上未创建PG，不存在数据，那么PG上的IO无法进行，怎样工作呢？  </p>
-<p><img src="/Users/lushenneng/Ceph/images/ceph_io_3.png" alt="ceph_io_3">  </p>
+<p><img src="/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/ceph_io_3.png" alt="ceph_io_3">  </p>
 <p>步骤：  </p>
 <ol>
 <li>Client 连接Monitor获取集群Map信息</li>
@@ -813,7 +813,7 @@
 <li>如果OSD1数据同步完毕，临时主OSD2会交出主角色</li>
 <li>OSD1成为主节点，OSD2变成副本  </li>
 </ol>
-<h2 id="Ceph-IO算法流程"><a href="#Ceph-IO算法流程" class="headerlink" title="Ceph IO算法流程"></a>Ceph IO算法流程</h2><p><img src="/Users/lushenneng/Ceph/images/ceph_io_4.png" alt="ceph_io_4">   </p>
+<h2 id="Ceph-IO算法流程"><a href="#Ceph-IO算法流程" class="headerlink" title="Ceph IO算法流程"></a>Ceph IO算法流程</h2><p><img src="/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/ceph_io_4.png" alt="ceph_io_4">   </p>
 <ol>
 <li>File用户需要读写文件，File-&gt;Object映射：  <ul>
 <li>a. ino（File的元数据，File的唯一ID）</li>
@@ -831,7 +831,7 @@
 </ul>
 </li>
 </ol>
-<h2 id="Ceph-RBD-IO流程"><a href="#Ceph-RBD-IO流程" class="headerlink" title="Ceph RBD IO流程"></a>Ceph RBD IO流程</h2><p><img src="/Users/lushenneng/Ceph/images/ceph_rbd_io.png" alt="ceph_rbd_io">  </p>
+<h2 id="Ceph-RBD-IO流程"><a href="#Ceph-RBD-IO流程" class="headerlink" title="Ceph RBD IO流程"></a>Ceph RBD IO流程</h2><p><img src="/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/ceph_rbd_io.png" alt="ceph_rbd_io">  </p>
 <p>步骤：  </p>
 <ol>
 <li>客户端创建一个Pool，需要为这个Pool指定PG的数量</li>
@@ -842,7 +842,7 @@
 <li>OSD上实际是把底层的Disk进行了格式化操作，一般部署工具会将它格式化为xfs文件系统</li>
 <li>Object的存储就变成了存储一个名为rbd0.object1.file的文件  </li>
 </ol>
-<h2 id="Ceph-RBD-IO框架图"><a href="#Ceph-RBD-IO框架图" class="headerlink" title="Ceph RBD IO框架图"></a>Ceph RBD IO框架图</h2><p><img src="/Users/lushenneng/Ceph/images/ceph_rbd_io1.png" alt="ceph_rbd_io1">  </p>
+<h2 id="Ceph-RBD-IO框架图"><a href="#Ceph-RBD-IO框架图" class="headerlink" title="Ceph RBD IO框架图"></a>Ceph RBD IO框架图</h2><p><img src="/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/ceph_rbd_io1.png" alt="ceph_rbd_io1">  </p>
 <p>客户端写数据OSD过程：  </p>
 <ol>
 <li>采用的是librbd的形式，使用librbd创建一个块设备，向这个块设备写入数据  </li>
@@ -855,9 +855,9 @@
 <li>扩容到4个OSD，4个PG</li>
 </ul>
 <p>现状：  </p>
-<p><img src="/Users/lushenneng/Ceph/images/ceph_recory_1.png" alt="ceph_recory_1">  </p>
+<p><img src="/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/ceph_recory_1.png" alt="ceph_recory_1">  </p>
 <p>扩容后：  </p>
-<p><img src="/Users/lushenneng/Ceph/images/ceph_recory_2.png" alt="ceph_recory_2">  </p>
+<p><img src="/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/ceph_recory_2.png" alt="ceph_recory_2">  </p>
 <p>说明：  </p>
 <p>每个OSD上分布很多PG，并且每个PG会自动散落在不同的OSD上。如果扩容，那么相应的PG会自动迁移到新的OSD上，保证PG数量的均衡  </p>
 <h1 id="Ceph心跳机制"><a href="#Ceph心跳机制" class="headerlink" title="Ceph心跳机制"></a>Ceph心跳机制</h1><h2 id="心跳介绍"><a href="#心跳介绍" class="headerlink" title="心跳介绍"></a>心跳介绍</h2><p>心跳是用于节点间检测对方是否发送故障，以便及时发现故障点进入相应的故障处理流程。  </p>
@@ -874,7 +874,7 @@
 <li><strong>容忍网络抖动</strong>：网络偶尔延迟</li>
 <li><strong>扩散机制</strong>：节点存活状态改变导致的元信息变化需要通过某种机制扩散到整个集群</li>
 </ul>
-<h2 id="Ceph-心跳检查"><a href="#Ceph-心跳检查" class="headerlink" title="Ceph 心跳检查"></a>Ceph 心跳检查</h2><p><img src="/Users/lushenneng/Ceph/images/ceph_heartbeat_1.png" alt="ceph_heartbeat">  </p>
+<h2 id="Ceph-心跳检查"><a href="#Ceph-心跳检查" class="headerlink" title="Ceph 心跳检查"></a>Ceph 心跳检查</h2><p><img src="/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/ceph_heartbeat_1.png" alt="ceph_heartbeat">  </p>
 <p><strong>OSD节点会监听public、cluster、front和back四个端口</strong></p>
 <ul>
 <li><strong>public端口</strong>：监听来自Monitor和Client的连接</li>
@@ -883,14 +883,14 @@
 <li><strong>back端口</strong>：供集群内部使用的网卡，集群内部之间进行心跳</li>
 <li><strong>hbclient</strong>：发送ping心跳的messenger</li>
 </ul>
-<h2 id="Ceph-OSD之间相互心跳检查"><a href="#Ceph-OSD之间相互心跳检查" class="headerlink" title="Ceph OSD之间相互心跳检查"></a>Ceph OSD之间相互心跳检查</h2><p><img src="/Users/lushenneng/Ceph/images/ceph_heartbeat_osd.png" alt="ceph_heartbeat_osd"></p>
+<h2 id="Ceph-OSD之间相互心跳检查"><a href="#Ceph-OSD之间相互心跳检查" class="headerlink" title="Ceph OSD之间相互心跳检查"></a>Ceph OSD之间相互心跳检查</h2><p><img src="/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/ceph_heartbeat_osd.png" alt="ceph_heartbeat_osd"></p>
 <p>步骤：  </p>
 <ul>
 <li>同一个PG内的OSD相互心跳，它们互相发送PING/PONG信息</li>
 <li>每隔6s检测一次（实际会在这个基础上加一个随机时间来避免峰值）</li>
 <li>20s没有检测到心跳回复，加入failure队列  </li>
 </ul>
-<h2 id="Ceph-OSD与Mon心跳检测"><a href="#Ceph-OSD与Mon心跳检测" class="headerlink" title="Ceph OSD与Mon心跳检测"></a>Ceph OSD与Mon心跳检测</h2><p><img src="/Users/lushenneng/Ceph/images/ceph_heartbeat_mon.png" alt="ceph_heartbeat_mon">  </p>
+<h2 id="Ceph-OSD与Mon心跳检测"><a href="#Ceph-OSD与Mon心跳检测" class="headerlink" title="Ceph OSD与Mon心跳检测"></a>Ceph OSD与Mon心跳检测</h2><p><img src="/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/ceph_heartbeat_mon.png" alt="ceph_heartbeat_mon">  </p>
 <p><strong>OSD报告给Monitor</strong>：  </p>
 <ul>
 <li>OSD有事件发生时（比如故障、PG变更）</li>
@@ -938,7 +938,7 @@
 </ul>
 <h2 id="Ceph通信框架设计模式"><a href="#Ceph通信框架设计模式" class="headerlink" title="Ceph通信框架设计模式"></a>Ceph通信框架设计模式</h2><p><strong>设计模式（Subscribe/Publish）</strong></p>
 <p>订阅发布模式又名观察者模式，它意图是”定义对象间的一种一对多的依赖关系，当一个对象的状态发生改变是，所有依赖于它的对象都得到通知并被自动更新“。  </p>
-<h2 id="Ceph通信框架流程图"><a href="#Ceph通信框架流程图" class="headerlink" title="Ceph通信框架流程图"></a>Ceph通信框架流程图</h2><p><img src="/Users/lushenneng/Ceph/images/ceph_message.png" alt="ceph_message">  </p>
+<h2 id="Ceph通信框架流程图"><a href="#Ceph通信框架流程图" class="headerlink" title="Ceph通信框架流程图"></a>Ceph通信框架流程图</h2><p><img src="/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/ceph_message.png" alt="ceph_message">  </p>
 <p>步骤：  </p>
 <ul>
 <li>Accepter监听peer的请求，调用SimpleMessenger::add_accept_pip3()创建新的pipe到SimpleMessenger::pipes来处理该请求</li>
@@ -947,8 +947,8 @@
 <li>Dispatcher是订阅者的基类，具体的订阅者后端继承该类，初始化的时候通过Messenger::add_dispatcher_tail/head注册到Messenger::dispatchers。收到消息后，通知该类处理</li>
 <li>DispatchQueue该类用来缓存收到的消息，然后唤醒DispatchQueue::dispatch_thread线程找到后端的Dispatch处理消息</li>
 </ul>
-<p><img src="/Users/lushenneng/Ceph/images/ceph_message_2.png" alt="ceph_message_2">  </p>
-<h2 id="Ceph通信框架类图"><a href="#Ceph通信框架类图" class="headerlink" title="Ceph通信框架类图"></a>Ceph通信框架类图</h2><p><img src="/Users/lushenneng/Ceph/images/ceph_message_3.png" alt="ceph_message_3">  </p>
+<p><img src="/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/ceph_message_2.png" alt="ceph_message_2">  </p>
+<h2 id="Ceph通信框架类图"><a href="#Ceph通信框架类图" class="headerlink" title="Ceph通信框架类图"></a>Ceph通信框架类图</h2><p><img src="/sheldon_blog//sheldon-lu.github.io/passages/Ceph相关概念/images/ceph_message_3.png" alt="ceph_message_3">  </p>
 <h2 id="Ceph通信数据格式"><a href="#Ceph通信数据格式" class="headerlink" title="Ceph通信数据格式"></a>Ceph通信数据格式</h2><p>通信协议格式需要双方约定数据格式。  </p>
 <p><strong>消息的内容主要分为三部分</strong>：  </p>
 <ul>
