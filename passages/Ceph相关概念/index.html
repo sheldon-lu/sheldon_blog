@@ -100,13 +100,13 @@
 
 
 
-  <meta name="description" content="介绍Ceph是一个统一的分布式存储系统，最早起源于Sage就读博士期间的工作（最早的成果于2004年发表），随后贡献给开源社区。其设计初衷是提供较好的性能、可靠性和可扩展性。在经过多年的发展之后，目前已得到众多云计算厂商的支持并被广泛应用。RedHat及OpenStack都可与Ceph整合以支持虚拟机镜像的后端存储。   Ceph的优势可以概括为以下四个方面：  高性能   摒弃了传统的集中式存储">
+  <meta name="description" content="介绍Ceph是一个统一的分布式存储系统，最早起源于Sage就读博士期间的工作（最早的成果于2004年发表），随后贡献给开源社区。其设计初衷是提供较好的性能、可靠性和可扩展性。在经过多年的发展之后，目前已得到众多云计算厂商的支持并被广泛应用。RedHat及OpenStack都可与Ceph整合以支持虚拟机镜像的后端存储。   Ceph的优势可以概括为以下四个方面：">
 <meta name="keywords" content="Ceph">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ceph相关概念">
-<meta property="og:url" content="https://sheldon-lu.github.io/passages/Ceph概念/index.html">
+<meta property="og:url" content="https://sheldon-lu.github.io/passages/Ceph相关概念/index.html">
 <meta property="og:site_name" content="Sheldon_Lu">
-<meta property="og:description" content="介绍Ceph是一个统一的分布式存储系统，最早起源于Sage就读博士期间的工作（最早的成果于2004年发表），随后贡献给开源社区。其设计初衷是提供较好的性能、可靠性和可扩展性。在经过多年的发展之后，目前已得到众多云计算厂商的支持并被广泛应用。RedHat及OpenStack都可与Ceph整合以支持虚拟机镜像的后端存储。   Ceph的优势可以概括为以下四个方面：  高性能   摒弃了传统的集中式存储">
+<meta property="og:description" content="介绍Ceph是一个统一的分布式存储系统，最早起源于Sage就读博士期间的工作（最早的成果于2004年发表），随后贡献给开源社区。其设计初衷是提供较好的性能、可靠性和可扩展性。在经过多年的发展之后，目前已得到众多云计算厂商的支持并被广泛应用。RedHat及OpenStack都可与Ceph整合以支持虚拟机镜像的后端存储。   Ceph的优势可以概括为以下四个方面：">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://sheldon-lu.github.io/passages/images/Ceph架构图.png">
 <meta property="og:image" content="https://sheldon-lu.github.io/passages/images/Ceph基本组件.png">
@@ -136,10 +136,10 @@
 <meta property="og:image" content="https://sheldon-lu.github.io/passages/images/ceph_message.png">
 <meta property="og:image" content="https://sheldon-lu.github.io/passages/images/ceph_message_2.png">
 <meta property="og:image" content="https://sheldon-lu.github.io/passages/images/ceph_message_3.png">
-<meta property="og:updated_time" content="2019-09-03T15:00:32.781Z">
+<meta property="og:updated_time" content="2019-09-03T15:32:20.949Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ceph相关概念">
-<meta name="twitter:description" content="介绍Ceph是一个统一的分布式存储系统，最早起源于Sage就读博士期间的工作（最早的成果于2004年发表），随后贡献给开源社区。其设计初衷是提供较好的性能、可靠性和可扩展性。在经过多年的发展之后，目前已得到众多云计算厂商的支持并被广泛应用。RedHat及OpenStack都可与Ceph整合以支持虚拟机镜像的后端存储。   Ceph的优势可以概括为以下四个方面：  高性能   摒弃了传统的集中式存储">
+<meta name="twitter:description" content="介绍Ceph是一个统一的分布式存储系统，最早起源于Sage就读博士期间的工作（最早的成果于2004年发表），随后贡献给开源社区。其设计初衷是提供较好的性能、可靠性和可扩展性。在经过多年的发展之后，目前已得到众多云计算厂商的支持并被广泛应用。RedHat及OpenStack都可与Ceph整合以支持虚拟机镜像的后端存储。   Ceph的优势可以概括为以下四个方面：">
 <meta name="twitter:image" content="https://sheldon-lu.github.io/passages/images/Ceph架构图.png">
 
 
@@ -148,7 +148,7 @@
 
   
   
-  <link rel="canonical" href="https://sheldon-lu.github.io/passages/Ceph概念/">
+  <link rel="canonical" href="https://sheldon-lu.github.io/passages/Ceph相关概念/">
 
 
 
@@ -403,7 +403,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph概念/">
+    <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph相关概念/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sheldon Lu">
@@ -447,24 +447,12 @@
                 
               
 
-              <time title="Created: 2019-09-02 21:34:50" itemprop="dateCreated datePublished" datetime="2019-09-02T21:34:50+08:00">2019-09-02</time>
+              <time title="Created: 2019-09-03 23:30:48 / Modified: 23:32:20" itemprop="dateCreated datePublished" datetime="2019-09-03T23:30:48+08:00">2019-09-03</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-09-03 23:00:32" itemprop="dateModified" datetime="2019-09-03T23:00:32+08:00">2019-09-03</time>
               
             
           </span>
@@ -500,8 +488,8 @@
                 </span>
             
                 <span class="post-meta-item-text">Comments: </span>
-                <a href="/sheldon_blog/passages/Ceph概念/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/sheldon_blog/passages/Ceph概念/" itemprop="commentCount"></span>
+                <a href="/sheldon_blog/passages/Ceph相关概念/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/sheldon_blog/passages/Ceph相关概念/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -509,7 +497,7 @@
 
           
           
-            <span id="/sheldon_blog/passages/Ceph概念/" class="leancloud_visitors" data-flag-title="Ceph相关概念">
+            <span id="/sheldon_blog/passages/Ceph相关概念/" class="leancloud_visitors" data-flag-title="Ceph相关概念">
               <span class="post-meta-divider">|</span>
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
@@ -569,32 +557,28 @@
 
       
         <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>Ceph是一个统一的分布式存储系统，最早起源于Sage就读博士期间的工作（最早的成果于2004年发表），随后贡献给开源社区。其设计初衷是提供较好的性能、可靠性和可扩展性。在经过多年的发展之后，目前已得到众多云计算厂商的支持并被广泛应用。RedHat及OpenStack都可与Ceph整合以支持虚拟机镜像的后端存储。  </p>
-<p>Ceph的优势可以概括为以下四个方面：</p>
+<p>Ceph的优势可以概括为以下四个方面：<a id="more"></a></p>
 <ol>
-<li><p>高性能 </p>
-<ul>
+<li>高性能 <ul>
 <li>摒弃了传统的集中式存储元数据寻址的方案，采用CRUSH算法，数据分布均衡，并行度高</li>
 <li>考虑了容灾域的隔离，能够实现各类负载的副本放置规则，例如跨机房、机架感知等</li>
-<li>能够支持上千个存储节点的规模。支持TB到PB级的数据  <a id="more"></a></li>
+<li>能够支持上千个存储节点的规模。支持TB到PB级的数据  </li>
 </ul>
 </li>
-<li><p>高可用  </p>
-<ul>
+<li>高可用  <ul>
 <li>副本数可以灵活控制</li>
 <li>支持故障域分隔，数据强一致性</li>
 <li>多种故障场景自动进行修复自愈</li>
 <li>没有单点故障，自动管理  </li>
 </ul>
 </li>
-<li><p>高扩展性</p>
-<ul>
+<li>高扩展性<ul>
 <li>去中心化</li>
 <li>扩展灵活</li>
 <li>随着节点增加，性能线性增长</li>
 </ul>
 </li>
-<li><p>特性丰富</p>
-<ul>
+<li>特性丰富<ul>
 <li>支持三种存储接口：<font color="red">对象存储</font>，<font color="red">块设备存储</font>，<font color="red">文件存储</font></li>
 <li>支持自定义接口，支持多种语言驱动  </li>
 </ul>
@@ -831,21 +815,18 @@
 </ol>
 <h2 id="Ceph-IO算法流程"><a href="#Ceph-IO算法流程" class="headerlink" title="Ceph IO算法流程"></a>Ceph IO算法流程</h2><p><img src="../images/ceph_io_4.png" alt="ceph_io_4">   </p>
 <ol>
-<li><p>File用户需要读写文件，File-&gt;Object映射：  </p>
-<ul>
+<li>File用户需要读写文件，File-&gt;Object映射：  <ul>
 <li>a. ino（File的元数据，File的唯一ID）</li>
 <li>b. ono（File切分产生的某个Object的序号，默认以4M切分一个块大小）</li>
 <li>c. oid（object id： ino + ono）</li>
 </ul>
 </li>
-<li><p>Object是RADOS需要的对象。Ceph指定一个静态Hash函数计算OID的值，将OID映射成一个近似均匀分布的伪随机值，然后和mask按位相与，得到PGID。Object-&gt;PG映射：  </p>
-<ul>
+<li>Object是RADOS需要的对象。Ceph指定一个静态Hash函数计算OID的值，将OID映射成一个近似均匀分布的伪随机值，然后和mask按位相与，得到PGID。Object-&gt;PG映射：  <ul>
 <li>a. hash(oid) &amp; mask -&gt; pgid</li>
 <li>b. mask = PG总数m（m为2的整数幂）-1</li>
 </ul>
 </li>
-<li><p>PG（Placement Group），用途是对Object的存储进行组织和位置映射，类似Redis Cluster里面的slot的概念。一个PG里面会有很多Object。采用CRUSH算法，将PGID带入其中，然后得到一组OSD。PG-&gt;OSD映射：  </p>
-<ul>
+<li>PG（Placement Group），用途是对Object的存储进行组织和位置映射，类似Redis Cluster里面的slot的概念。一个PG里面会有很多Object。采用CRUSH算法，将PGID带入其中，然后得到一组OSD。PG-&gt;OSD映射：  <ul>
 <li>CRUSH(pgid) -&gt; (osd1,osd2,osd3)</li>
 </ul>
 </li>
@@ -981,7 +962,6 @@
 <li>footer        //消息的结束标记  </li>
 </ul>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Message</span> :</span> <span class="keyword">public</span> RefCountedObject &#123;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">  ceph_msg_header  header;      <span class="comment">// 消息头</span></span><br><span class="line">  ceph_msg_footer  footer;      <span class="comment">// 消息尾</span></span><br><span class="line">  bufferlist       payload;  <span class="comment">// "front" unaligned blob</span></span><br><span class="line">  bufferlist       middle;   <span class="comment">// "middle" unaligned blob</span></span><br><span class="line">  bufferlist       data;     <span class="comment">// data payload (page-alignment will be preserved where possible)</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* recv_stamp is set when the Messenger starts reading the</span></span><br><span class="line"><span class="comment">   * Message off the wire */</span></span><br><span class="line">  <span class="keyword">utime_t</span> recv_stamp;       <span class="comment">//开始接收数据的时间戳</span></span><br><span class="line">  <span class="comment">/* dispatch_stamp is set when the Messenger starts calling dispatch() on</span></span><br><span class="line"><span class="comment">   * its endpoints */</span></span><br><span class="line">  <span class="keyword">utime_t</span> dispatch_stamp;   <span class="comment">//dispatch 的时间戳</span></span><br><span class="line">  <span class="comment">/* throttle_stamp is the point at which we got throttle */</span></span><br><span class="line">  <span class="keyword">utime_t</span> throttle_stamp;   <span class="comment">//获取throttle 的slot的时间戳</span></span><br><span class="line">  <span class="comment">/* time at which message was fully read */</span></span><br><span class="line">  <span class="keyword">utime_t</span> recv_complete_stamp;  <span class="comment">//接收完成的时间戳</span></span><br><span class="line"></span><br><span class="line">  ConnectionRef connection;     <span class="comment">//网络连接</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">uint32_t</span> magic = <span class="number">0</span>;           <span class="comment">//消息的魔术字</span></span><br><span class="line"></span><br><span class="line">  bi::list_member_hook&lt;&gt; dispatch_q;    <span class="comment">//boost::intrusive 成员字段</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ceph_msg_header</span> &#123;</span></span><br><span class="line">    __le64 seq;       <span class="comment">// 当前session内 消息的唯一 序号</span></span><br><span class="line">    __le64 tid;       <span class="comment">// 消息的全局唯一的 id</span></span><br><span class="line">    __le16 type;      <span class="comment">// 消息类型</span></span><br><span class="line">    __le16 priority;  <span class="comment">// 优先级</span></span><br><span class="line">    __le16 version;   <span class="comment">// 版本号</span></span><br><span class="line"></span><br><span class="line">    __le32 front_len; <span class="comment">// payload 的长度</span></span><br><span class="line">    __le32 middle_len;<span class="comment">// middle 的长度</span></span><br><span class="line">    __le32 data_len;  <span class="comment">// data 的 长度</span></span><br><span class="line">    __le16 data_off;  <span class="comment">// 对象的数据偏移量</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ceph_entity_name</span> <span class="title">src</span>;</span> <span class="comment">//消息源</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* oldest code we think can decode this.  unknown if zero. */</span></span><br><span class="line">    __le16 compat_version;</span><br><span class="line">    __le16 reserved;</span><br><span class="line">    __le32 crc;       <span class="comment">/* header crc32c */</span></span><br><span class="line">&#125; __attribute__ ((packed));</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ceph_msg_footer</span> &#123;</span></span><br><span class="line">    __le32 front_crc, middle_crc, data_crc; <span class="comment">//crc校验码</span></span><br><span class="line">    __le64  sig; <span class="comment">//消息的64位signature</span></span><br><span class="line">    __u8 flags; <span class="comment">//结束标志</span></span><br><span class="line">&#125; __attribute__ ((packed));</span><br></pre></td></tr></table></figure>
-
       
     </div>
 
@@ -1018,8 +998,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/sheldon_blog/passages/Ceph集群安装/" rel="next" title="Ceph集群安装">
-                <i class="fa fa-chevron-left"></i> Ceph集群安装
+              <a href="/sheldon_blog/passages/Kubernetes-Istio-Gateway-Ingress-Controller/" rel="next" title="Kubernetes_Istio-Gateway_Ingress-Controller">
+                <i class="fa fa-chevron-left"></i> Kubernetes_Istio-Gateway_Ingress-Controller
               </a>
             
           </div>
@@ -1028,8 +1008,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/sheldon_blog/passages/Ceph单节点安装/" rel="prev" title="Ceph单节点安装">
-                Ceph单节点安装 <i class="fa fa-chevron-right"></i>
+              <a href="/sheldon_blog/passages/Ceph单节点部署/" rel="prev" title="Ceph单节点部署">
+                Ceph单节点部署 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
