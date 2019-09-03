@@ -100,18 +100,18 @@
 
 
 
-  <meta name="description" content="Python_set集合类型小结下面来点简单的小例子说明把。 1234x = set(&apos;spam&apos;)y = set([&apos;h&apos;,&apos;a&apos;,&apos;m&apos;])x, y(set([&apos;a&apos;, &apos;p&apos;, &apos;s&apos;, &apos;m&apos;]), set([&apos;a&apos;, &apos;h&apos;, &apos;m&apos;])) 再来些小应用。 12345678&amp;gt; &amp;gt; &amp;gt; x &amp;amp; y # 交集&amp;gt; &amp;gt; &amp;gt; set([&apos;a&apos;, &apos;m&apos;]">
+  <meta name="description" content="Python_set集合类型小结下面来点简单的小例子说明把。 1234x = set(&apos;spam&apos;)y = set([&apos;h&apos;,&apos;a&apos;,&apos;m&apos;])x, y(set([&apos;a&apos;, &apos;p&apos;, &apos;s&apos;, &apos;m&apos;]), set([&apos;a&apos;, &apos;h&apos;, &apos;m&apos;])) 再来些小应用。">
 <meta name="keywords" content="Python,Python_碎片化">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python_set集合操作">
 <meta property="og:url" content="https://sheldon-lu.github.io/passages/Python-set集合操作/index.html">
 <meta property="og:site_name" content="Sheldon_Lu">
-<meta property="og:description" content="Python_set集合类型小结下面来点简单的小例子说明把。 1234x = set(&apos;spam&apos;)y = set([&apos;h&apos;,&apos;a&apos;,&apos;m&apos;])x, y(set([&apos;a&apos;, &apos;p&apos;, &apos;s&apos;, &apos;m&apos;]), set([&apos;a&apos;, &apos;h&apos;, &apos;m&apos;])) 再来些小应用。 12345678&amp;gt; &amp;gt; &amp;gt; x &amp;amp; y # 交集&amp;gt; &amp;gt; &amp;gt; set([&apos;a&apos;, &apos;m&apos;]">
+<meta property="og:description" content="Python_set集合类型小结下面来点简单的小例子说明把。 1234x = set(&apos;spam&apos;)y = set([&apos;h&apos;,&apos;a&apos;,&apos;m&apos;])x, y(set([&apos;a&apos;, &apos;p&apos;, &apos;s&apos;, &apos;m&apos;]), set([&apos;a&apos;, &apos;h&apos;, &apos;m&apos;])) 再来些小应用。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-16T13:45:04.406Z">
+<meta property="og:updated_time" content="2019-09-03T14:34:47.714Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python_set集合操作">
-<meta name="twitter:description" content="Python_set集合类型小结下面来点简单的小例子说明把。 1234x = set(&apos;spam&apos;)y = set([&apos;h&apos;,&apos;a&apos;,&apos;m&apos;])x, y(set([&apos;a&apos;, &apos;p&apos;, &apos;s&apos;, &apos;m&apos;]), set([&apos;a&apos;, &apos;h&apos;, &apos;m&apos;])) 再来些小应用。 12345678&amp;gt; &amp;gt; &amp;gt; x &amp;amp; y # 交集&amp;gt; &amp;gt; &amp;gt; set([&apos;a&apos;, &apos;m&apos;]">
+<meta name="twitter:description" content="Python_set集合类型小结下面来点简单的小例子说明把。 1234x = set(&apos;spam&apos;)y = set([&apos;h&apos;,&apos;a&apos;,&apos;m&apos;])x, y(set([&apos;a&apos;, &apos;p&apos;, &apos;s&apos;, &apos;m&apos;]), set([&apos;a&apos;, &apos;h&apos;, &apos;m&apos;])) 再来些小应用。">
 
 
 
@@ -418,12 +418,24 @@
                 
               
 
-              <time title="Created: 2019-04-16 21:30:11 / Modified: 21:45:04" itemprop="dateCreated datePublished" datetime="2019-04-16T21:30:11+08:00">2019-04-16</time>
+              <time title="Created: 2019-04-16 21:30:11" itemprop="dateCreated datePublished" datetime="2019-04-16T21:30:11+08:00">2019-04-16</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-09-03 22:34:47" itemprop="dateModified" datetime="2019-09-03T22:34:47+08:00">2019-09-03</time>
               
             
           </span>
@@ -529,7 +541,7 @@
       
         <h2 id="Python-set集合类型小结"><a href="#Python-set集合类型小结" class="headerlink" title="Python_set集合类型小结"></a>Python_set集合类型小结</h2><p>下面来点简单的小例子说明把。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x = set(<span class="string">'spam'</span>)</span><br><span class="line">y = set([<span class="string">'h'</span>,<span class="string">'a'</span>,<span class="string">'m'</span>])</span><br><span class="line">x, y</span><br><span class="line">(set([<span class="string">'a'</span>, <span class="string">'p'</span>, <span class="string">'s'</span>, <span class="string">'m'</span>]), set([<span class="string">'a'</span>, <span class="string">'h'</span>, <span class="string">'m'</span>]))</span><br></pre></td></tr></table></figure>
-<p>再来些小应用。</p>
+<p>再来些小应用。<a id="more"></a></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt; &gt; &gt; x &amp; y <span class="comment"># 交集</span></span><br><span class="line">&gt; &gt; &gt; set([<span class="string">'a'</span>, <span class="string">'m'</span>])</span><br><span class="line"></span><br><span class="line">&gt; &gt; &gt; x | y <span class="comment"># 并集</span></span><br><span class="line">&gt; &gt; &gt; set([<span class="string">'a'</span>, <span class="string">'p'</span>, <span class="string">'s'</span>, <span class="string">'h'</span>, <span class="string">'m'</span>])</span><br><span class="line"></span><br><span class="line">&gt; &gt; &gt; x - y <span class="comment"># 差集</span></span><br><span class="line">&gt; &gt; &gt; set([<span class="string">'p'</span>, <span class="string">'s'</span>])</span><br></pre></td></tr></table></figure>
 <p>记得以前个网友提问怎么去除海量列表里重复元素，用hash来解决也行，只不过感觉在性能上不是很高，用set解决还是很不错的，示例如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">11</span>,<span class="number">22</span>,<span class="number">33</span>,<span class="number">44</span>,<span class="number">11</span>,<span class="number">22</span>]</span><br><span class="line">b = set(a)</span><br><span class="line">b</span><br><span class="line">set([<span class="number">33</span>, <span class="number">11</span>, <span class="number">44</span>, <span class="number">22</span>])</span><br><span class="line">c = [i <span class="keyword">for</span> i <span class="keyword">in</span> b]</span><br><span class="line">c</span><br><span class="line">[<span class="number">33</span>, <span class="number">11</span>, <span class="number">44</span>, <span class="number">22</span>]</span><br></pre></td></tr></table></figure>
@@ -681,7 +693,7 @@
                 
                   <a href="/sheldon_blog/archives/">
                 
-                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-count">24</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -708,7 +720,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">5</span>
+                      
+                    
+                    <span class="site-state-item-count">6</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -757,7 +771,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">16</span>
+                      
+                    
+                    <span class="site-state-item-count">17</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>

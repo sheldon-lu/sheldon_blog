@@ -100,18 +100,18 @@
 
 
 
-  <meta name="description" content="举例说明  a_list = [1,2,3,4]b_list = [1,4,5] 一. 差集很明显结果是[2,3,5]，下面我们说一下具体方法。方法a.正常法： 1234ret_list = []for item in a_list:    if item not in b_list:        ret_list.append(item) 方法b.简化版： 1ret_list = [item">
+  <meta name="description" content="举例说明  a_list = [1,2,3,4]b_list = [1,4,5] 一. 差集很明显结果是[2,3,5]，下面我们说一下具体方法。">
 <meta name="keywords" content="Python,Python_碎片化">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python_list交集、差集和并集">
 <meta property="og:url" content="https://sheldon-lu.github.io/passages/Python-list交集、差集和并集/index.html">
 <meta property="og:site_name" content="Sheldon_Lu">
-<meta property="og:description" content="举例说明  a_list = [1,2,3,4]b_list = [1,4,5] 一. 差集很明显结果是[2,3,5]，下面我们说一下具体方法。方法a.正常法： 1234ret_list = []for item in a_list:    if item not in b_list:        ret_list.append(item) 方法b.简化版： 1ret_list = [item">
+<meta property="og:description" content="举例说明  a_list = [1,2,3,4]b_list = [1,4,5] 一. 差集很明显结果是[2,3,5]，下面我们说一下具体方法。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-17T15:26:44.603Z">
+<meta property="og:updated_time" content="2019-09-03T14:34:36.488Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python_list交集、差集和并集">
-<meta name="twitter:description" content="举例说明  a_list = [1,2,3,4]b_list = [1,4,5] 一. 差集很明显结果是[2,3,5]，下面我们说一下具体方法。方法a.正常法： 1234ret_list = []for item in a_list:    if item not in b_list:        ret_list.append(item) 方法b.简化版： 1ret_list = [item">
+<meta name="twitter:description" content="举例说明  a_list = [1,2,3,4]b_list = [1,4,5] 一. 差集很明显结果是[2,3,5]，下面我们说一下具体方法。">
 
 
 
@@ -435,7 +435,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-04-17 23:26:44" itemprop="dateModified" datetime="2019-04-17T23:26:44+08:00">2019-04-17</time>
+                <time title="Modified: 2019-09-03 22:34:36" itemprop="dateModified" datetime="2019-09-03T22:34:36+08:00">2019-09-03</time>
               
             
           </span>
@@ -543,7 +543,7 @@
 <p>举例说明</p>
 </blockquote>
 <p>a_list = [1,2,3,4]<br>b_list = [1,4,5]</p>
-<h3 id="一-差集"><a href="#一-差集" class="headerlink" title="一. 差集"></a>一. 差集</h3><p>很明显结果是[2,3,5]，下面我们说一下具体方法。<br>方法a.正常法：</p>
+<h3 id="一-差集"><a href="#一-差集" class="headerlink" title="一. 差集"></a>一. 差集</h3><p>很明显结果是[2,3,5]，下面我们说一下具体方法。<a id="more"></a><br>方法a.正常法：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ret_list = []</span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> a_list:</span><br><span class="line">    <span class="keyword">if</span> item <span class="keyword">not</span> <span class="keyword">in</span> b_list:</span><br><span class="line">        ret_list.append(item)</span><br></pre></td></tr></table></figure>
 <p>方法b.简化版：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ret_list = [item <span class="keyword">for</span> item <span class="keyword">in</span> a_list <span class="keyword">if</span> item <span class="keyword">not</span> <span class="keyword">in</span> b_list]</span><br></pre></td></tr></table></figure>
@@ -680,7 +680,7 @@
                 
                   <a href="/sheldon_blog/archives/">
                 
-                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-count">24</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -707,7 +707,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">5</span>
+                      
+                    
+                    <span class="site-state-item-count">6</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -756,7 +758,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">16</span>
+                      
+                    
+                    <span class="site-state-item-count">17</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>

@@ -108,7 +108,7 @@
 <meta property="og:site_name" content="Sheldon_Lu">
 <meta property="og:description" content="最近在istio，然后想总结下ingress-controller和istio-gateway的区别。 在Kubernetes环境中，Kubernetes Ingress用于配置需要在集群外部公开的服务。 但是在Istio服务网格中，更好的方法是使用新的配置模型，即Istio Gateway；Gateway允许将Istio流量管理的功能应用于进入集群的流量。 这里的ingress为nginx i">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-07-01T15:42:56.431Z">
+<meta property="og:updated_time" content="2019-09-03T14:34:14.106Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kubernetes_Istio-Gateway_Ingress-Controller">
 <meta name="twitter:description" content="最近在istio，然后想总结下ingress-controller和istio-gateway的区别。 在Kubernetes环境中，Kubernetes Ingress用于配置需要在集群外部公开的服务。 但是在Istio服务网格中，更好的方法是使用新的配置模型，即Istio Gateway；Gateway允许将Istio流量管理的功能应用于进入集群的流量。 这里的ingress为nginx i">
@@ -418,12 +418,24 @@
                 
               
 
-              <time title="Created: 2019-07-01 22:37:27 / Modified: 23:42:56" itemprop="dateCreated datePublished" datetime="2019-07-01T22:37:27+08:00">2019-07-01</time>
+              <time title="Created: 2019-07-01 22:37:27" itemprop="dateCreated datePublished" datetime="2019-07-01T22:37:27+08:00">2019-07-01</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-09-03 22:34:14" itemprop="dateModified" datetime="2019-09-03T22:34:14+08:00">2019-09-03</time>
               
             
           </span>
@@ -533,7 +545,7 @@
 <p>但是在Istio服务网格中，更好的方法是使用新的配置模型，即Istio Gateway；Gateway允许将Istio流量管理的功能应用于进入集群的流量。</p>
 <p>这里的ingress为nginx ingress</p>
 </blockquote>
-<p>通过灰度发布，来看一下ingress与istio的实现方式的差异</p>
+<p>通过灰度发布，来看一下ingress与istio的实现方式的差异 <a id="more"></a></p>
 <h3 id="环境准备："><a href="#环境准备：" class="headerlink" title="环境准备："></a>环境准备：</h3><blockquote>
 <p>kubernetes环境     1.13.5</p>
 <p>部署istio                 1.1.1</p>
@@ -671,6 +683,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/sheldon_blog/passages/ceph单节点安装/" rel="prev" title="ceph-单节点安装">
+                ceph-单节点安装 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -744,7 +760,7 @@
                 
                   <a href="/sheldon_blog/archives/">
                 
-                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-count">24</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -771,7 +787,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">5</span>
+                      
+                    
+                    <span class="site-state-item-count">6</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -820,7 +838,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">16</span>
+                      
+                    
+                    <span class="site-state-item-count">17</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
