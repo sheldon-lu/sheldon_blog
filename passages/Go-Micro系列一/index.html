@@ -108,7 +108,7 @@
 <meta property="og:site_name" content="Sheldon_Lu">
 <meta property="og:description" content="Go-Micro系列一 – 入门篇go 1.13.0该系列go版本 1.12 - 1.13 安装go-micro安装consul安装服务发现能力，docker安装consul或者本地安装运行consul，consul在本地开发环境使用方便便于调试。 1、docker安装consul 1docker run -d --net=host -e &apos;CONSUL_LOCAL_CONFIG=&amp;#123;&quot;s">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-01-05T02:47:46.997Z">
+<meta property="og:updated_time" content="2020-01-05T02:58:19.295Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Go-Micro系列一">
 <meta name="twitter:description" content="Go-Micro系列一 – 入门篇go 1.13.0该系列go版本 1.12 - 1.13 安装go-micro安装consul安装服务发现能力，docker安装consul或者本地安装运行consul，consul在本地开发环境使用方便便于调试。 1、docker安装consul 1docker run -d --net=host -e &apos;CONSUL_LOCAL_CONFIG=&amp;#123;&quot;s">
@@ -418,7 +418,7 @@
                 
               
 
-              <time title="Created: 2020-01-05 09:35:03 / Modified: 10:47:46" itemprop="dateCreated datePublished" datetime="2020-01-05T09:35:03+08:00">2020-01-05</time>
+              <time title="Created: 2020-01-05 09:35:03 / Modified: 10:58:19" itemprop="dateCreated datePublished" datetime="2020-01-05T09:35:03+08:00">2020-01-05</time>
             
 
             
@@ -493,7 +493,7 @@
                 
                   <span class="post-meta-item-text">Symbols count in article: </span>
                 
-                <span title="Symbols count in article">4.3k</span>
+                <span title="Symbols count in article">4.4k</span>
               
 
               
@@ -559,11 +559,17 @@
 </blockquote>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#切换到项目目录下</span><br><span class="line">&gt;cd $GOPATH\microapp\hello</span><br><span class="line"></span><br><span class="line"># 根据proto生成文件</span><br><span class="line">&gt;protoc --proto_path=. --go_out=. --micro_out=. proto/hello/hello.proto</span><br></pre></td></tr></table></figure>
 <h5 id="启动应用"><a href="#启动应用" class="headerlink" title="启动应用"></a>启动应用</h5><p><strong><em>对于现在的新版本已经默认不使用consul了。可以降低micro版本或者代码插入consul插件即可使用consul</em></strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">#启动consul</span><br><span class="line">&gt;consul agent -dev</span><br><span class="line">#默认mdns启动</span><br><span class="line">&gt;go run main.go </span><br><span class="line">2019/08/19 13:00:46 Transport [http] Listening on [::]:54689</span><br><span class="line">2019/08/19 13:00:46 Broker [http] Connected to [::]:54690</span><br><span class="line">2019/08/19 13:00:46 Registry [mdns] Registering node: go.micro.srv.hello-4851dce2-ab5d-4e4c-801e-44dae5d93f26</span><br><span class="line">2019/08/19 13:00:46 Subscribing go.micro.srv.hello-4851dce2-ab5d-4e4c-801e-44dae5d93f26 to topic: go.micro.srv.hello</span><br><span class="line">2019/08/19 13:00:46 Subscribing go.micro.srv.hello-4851dce2-ab5d-4e4c-801e-44dae5d93f26 to topic: go.micro.srv.hello</span><br><span class="line"></span><br><span class="line">#指定registry只需要添加参数即可，默认使用端口8500</span><br><span class="line">&gt;go run main.go --registry=consul</span><br><span class="line"></span><br><span class="line">## 注意这里没有指定注册consul，默认使用mdns（windows中无法使用mdns，并不是注册中心，使用的广播）</span><br><span class="line">## 了解mdns，自行查看，附上链接</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">#启动consul</span><br><span class="line">&gt;consul agent -dev</span><br><span class="line">#默认mdns启动</span><br><span class="line">&gt;go run main.go </span><br><span class="line">2019/08/19 13:00:46 Transport [http] Listening on [::]:54689</span><br><span class="line">2019/08/19 13:00:46 Broker [http] Connected to [::]:54690</span><br><span class="line">2019/08/19 13:00:46 Registry [mdns] Registering node: go.micro.srv.hello-4851dce2-ab5d-4e4c-801e-44dae5d93f26</span><br><span class="line">2019/08/19 13:00:46 Subscribing go.micro.srv.hello-4851dce2-ab5d-4e4c-801e-44dae5d93f26 to topic: go.micro.srv.hello</span><br><span class="line">2019/08/19 13:00:46 Subscribing go.micro.srv.hello-4851dce2-ab5d-4e4c-801e-44dae5d93f26 to topic: go.micro.srv.hello</span><br><span class="line"></span><br><span class="line">#指定registry只需要添加参数即可，默认使用端口8500</span><br><span class="line">&gt;go run main.go --registry=consul</span><br><span class="line"></span><br><span class="line">## 注意这里没有指定注册consul，默认使用mdns（windows中无法使用mdns，并不是注册中心，使用的广播）</span><br><span class="line">## 了解mdns，自行查看</span><br></pre></td></tr></table></figure>
+<p><a href="https://micro.mu/docs/network.html" target="_blank" rel="noopener">mdns附上链接（失效了）</a></p>
 <h5 id="查看是否启动"><a href="#查看是否启动" class="headerlink" title="查看是否启动"></a>查看是否启动</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#也可以去consul的ui查看，更加直观</span><br><span class="line">&gt;micro list services --registry=consul</span><br><span class="line">go.micro.srv.hello</span><br><span class="line">topic:go.micro.srv.hello</span><br></pre></td></tr></table></figure>
 <h5 id="启动restful-api接口支持支持"><a href="#启动restful-api接口支持支持" class="headerlink" title="启动restful api接口支持支持"></a>启动restful api接口支持支持</h5><p>注意其中的–namespace参数,我们每一个微服务都属于一个命名空间,通过api暴露出来该命名空间后,满足<code>go.micro.srv.*</code>格式的微服务都可以访问。如<code>go.micro.srv.hello</code>可以通过如下格式访问</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:8080/user/call</span><br><span class="line">&gt;micro api --namespace=go.micro.srv --registry=consul</span><br><span class="line">2019/08/19 13:07:11 Registering API Default Handler at /</span><br><span class="line">2019/08/19 13:07:11 HTTP API Listening on [::]:8080</span><br><span class="line">2019/08/19 13:07:11 Transport [http] Listening on [::]:54934</span><br><span class="line">2019/08/19 13:07:11 Broker [http] Connected to [::]:54935</span><br><span class="line">2019/08/19 13:07:11 Registry [consul] Registering node: go.micro.api-1753185c-b8e1-49c4-aa0f-617f243a8e2a</span><br></pre></td></tr></table></figure>
 <h5 id="验证api接口"><a href="#验证api接口" class="headerlink" title="验证api接口"></a>验证api接口</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -XPOST -d &quot;&#123;name: nihao&#125;&quot; http://127.0.0.1:8080/user/call -H &quot;Content-Type:application/json&quot;</span><br><span class="line"></span><br><span class="line"># output: hello nihao</span><br></pre></td></tr></table></figure>
+<p>系列链接</p>
+<p><a href="Go-Micro系列一.md">Go-Micro系列一-入门篇</a></p>
+<p><a href="Go-Micro系列二.md">Go-Micro系列二-入门篇</a></p>
+<p><a href="Go-Micro系列三.md">Go-Micro系列三-入门篇</a></p>
+<p><a href="Go-Micro系列四.md">Go-Micro系列四-入门篇</a></p>
 
       
     </div>
