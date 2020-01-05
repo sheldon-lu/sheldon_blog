@@ -100,18 +100,18 @@
 
 
 
-  <meta name="description" content="Go-Micro系列一 – 入门篇go 1.13.0该系列go版本 1.12 - 1.13 安装go-micro安装consul安装服务发现能力，docker安装consul或者本地安装运行consul，consul在本地开发环境使用方便便于调试。 1、docker安装consul 1docker run -d --net=host -e &apos;CONSUL_LOCAL_CONFIG=&amp;#123;&quot;s">
+  <meta name="description" content="Go-Micro系列一 – 入门篇go 1.13.0该系列go版本 1.12 - 1.13 安装go-micro安装consul安装服务发现能力，docker安装consul或者本地安装运行consul，consul在本地开发环境使用方便便于调试。 1、docker安装consul">
 <meta name="keywords" content="Golang,Go-Micro">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Go-Micro系列一">
 <meta property="og:url" content="https://sheldon-lu.github.io/passages/Go-Micro系列一/index.html">
 <meta property="og:site_name" content="Sheldon_Lu">
-<meta property="og:description" content="Go-Micro系列一 – 入门篇go 1.13.0该系列go版本 1.12 - 1.13 安装go-micro安装consul安装服务发现能力，docker安装consul或者本地安装运行consul，consul在本地开发环境使用方便便于调试。 1、docker安装consul 1docker run -d --net=host -e &apos;CONSUL_LOCAL_CONFIG=&amp;#123;&quot;s">
+<meta property="og:description" content="Go-Micro系列一 – 入门篇go 1.13.0该系列go版本 1.12 - 1.13 安装go-micro安装consul安装服务发现能力，docker安装consul或者本地安装运行consul，consul在本地开发环境使用方便便于调试。 1、docker安装consul">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-01-05T02:58:19.295Z">
+<meta property="og:updated_time" content="2020-01-05T03:07:26.038Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Go-Micro系列一">
-<meta name="twitter:description" content="Go-Micro系列一 – 入门篇go 1.13.0该系列go版本 1.12 - 1.13 安装go-micro安装consul安装服务发现能力，docker安装consul或者本地安装运行consul，consul在本地开发环境使用方便便于调试。 1、docker安装consul 1docker run -d --net=host -e &apos;CONSUL_LOCAL_CONFIG=&amp;#123;&quot;s">
+<meta name="twitter:description" content="Go-Micro系列一 – 入门篇go 1.13.0该系列go版本 1.12 - 1.13 安装go-micro安装consul安装服务发现能力，docker安装consul或者本地安装运行consul，consul在本地开发环境使用方便便于调试。 1、docker安装consul">
 
 
 
@@ -418,7 +418,7 @@
                 
               
 
-              <time title="Created: 2020-01-05 09:35:03 / Modified: 10:58:19" itemprop="dateCreated datePublished" datetime="2020-01-05T09:35:03+08:00">2020-01-05</time>
+              <time title="Created: 2020-01-05 09:35:03 / Modified: 11:07:26" itemprop="dateCreated datePublished" datetime="2020-01-05T09:35:03+08:00">2020-01-05</time>
             
 
             
@@ -529,7 +529,7 @@
       
         <h2 id="Go-Micro系列一-–-入门篇"><a href="#Go-Micro系列一-–-入门篇" class="headerlink" title="Go-Micro系列一 – 入门篇"></a>Go-Micro系列一 – 入门篇</h2><p><code>go 1.13.0</code>该系列go版本 1.12 - 1.13</p>
 <h3 id="安装go-micro"><a href="#安装go-micro" class="headerlink" title="安装go-micro"></a>安装go-micro</h3><h4 id="安装consul"><a href="#安装consul" class="headerlink" title="安装consul"></a>安装consul</h4><p>安装服务发现能力，<strong>docker安装consul</strong>或者<strong>本地安装运行consul</strong>，consul在本地开发环境使用方便便于调试。</p>
-<p>1、docker安装consul</p>
+<p>1、docker安装consul<a id="more"></a></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --net=host -e 'CONSUL_LOCAL_CONFIG=&#123;"skip_leave_on_interrupt": true&#125;'  --name consul_server  consul agent -server -bind=192.168.0.111 -bootstrap-expect=1  -node=node1 -client 0.0.0.0 -ui</span><br></pre></td></tr></table></figure>
 <p>2、本地安装运行consul</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">windows:</span><br><span class="line">https://www.consul.io/downloads.html</span><br><span class="line">mac:</span><br><span class="line">https://www.consul.io/downloads.html</span><br><span class="line"></span><br><span class="line">直接下载对应操作系统的版本即可，自行添加环境变量</span><br><span class="line">consul命令即可直接运行，默认端口8500</span><br><span class="line"></span><br><span class="line">consul agent -server -bind=192.168.0.111 -bootstrap-expect=1  -node=node1 -client 0.0.0.0 -ui</span><br><span class="line">consul agent -dev  # 本地开发测试直接运行dev即可</span><br></pre></td></tr></table></figure>
@@ -565,11 +565,11 @@
 <h5 id="启动restful-api接口支持支持"><a href="#启动restful-api接口支持支持" class="headerlink" title="启动restful api接口支持支持"></a>启动restful api接口支持支持</h5><p>注意其中的–namespace参数,我们每一个微服务都属于一个命名空间,通过api暴露出来该命名空间后,满足<code>go.micro.srv.*</code>格式的微服务都可以访问。如<code>go.micro.srv.hello</code>可以通过如下格式访问</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:8080/user/call</span><br><span class="line">&gt;micro api --namespace=go.micro.srv --registry=consul</span><br><span class="line">2019/08/19 13:07:11 Registering API Default Handler at /</span><br><span class="line">2019/08/19 13:07:11 HTTP API Listening on [::]:8080</span><br><span class="line">2019/08/19 13:07:11 Transport [http] Listening on [::]:54934</span><br><span class="line">2019/08/19 13:07:11 Broker [http] Connected to [::]:54935</span><br><span class="line">2019/08/19 13:07:11 Registry [consul] Registering node: go.micro.api-1753185c-b8e1-49c4-aa0f-617f243a8e2a</span><br></pre></td></tr></table></figure>
 <h5 id="验证api接口"><a href="#验证api接口" class="headerlink" title="验证api接口"></a>验证api接口</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -XPOST -d &quot;&#123;name: nihao&#125;&quot; http://127.0.0.1:8080/user/call -H &quot;Content-Type:application/json&quot;</span><br><span class="line"></span><br><span class="line"># output: hello nihao</span><br></pre></td></tr></table></figure>
-<p>系列链接</p>
-<p><a href="Go-Micro系列一.md">Go-Micro系列一-入门篇</a></p>
-<p><a href="Go-Micro系列二.md">Go-Micro系列二-入门篇</a></p>
-<p><a href="Go-Micro系列三.md">Go-Micro系列三-入门篇</a></p>
-<p><a href="Go-Micro系列四.md">Go-Micro系列四-入门篇</a></p>
+<p>系列链接：</p>
+<a href="/sheldon_blog/passages/Go-Micro系列一/" title="Go-Micro系列一-入门篇">Go-Micro系列一-入门篇</a>
+<a href="/sheldon_blog/passages/Go-Micro系列二/" title="Go-Micro系列二-介绍及micro使用GRPC例子">Go-Micro系列二-介绍及micro使用GRPC例子</a>
+<a href="/sheldon_blog/passages/Go-Micro系列三/" title="Go-Micro系列三">Go-Micro系列三</a>
+<a href="/sheldon_blog/passages/Go-Micro系列四/" title="Go-Micro系列四">Go-Micro系列四</a>
 
       
     </div>
