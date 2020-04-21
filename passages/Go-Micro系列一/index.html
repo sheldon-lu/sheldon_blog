@@ -100,18 +100,18 @@
 
 
 
-  <meta name="description" content="Go-Micro系列一 – 入门篇go 1.13.0该系列go版本 1.12 - 1.13 安装go-micro安装consul安装服务发现能力，docker安装consul或者本地安装运行consul，consul在本地开发环境使用方便便于调试。 1、docker安装consul">
+  <meta name="description" content="Go-Micro系列一 – 入门篇go 1.13.0 go版本 1.12 - 1.13  官方貌似20200227开始更新版本，关于micro的V2、GO MOD更新  安装go-micro安装consul安装服务发现能力，docker安装consul或者本地安装运行consul，consul在本地开发环境使用方便便于调试。 1、docker安装consul">
 <meta name="keywords" content="Golang,Go-Micro">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Go-Micro系列一">
 <meta property="og:url" content="https://sheldon-lu.github.io/passages/Go-Micro系列一/index.html">
 <meta property="og:site_name" content="Sheldon_Lu">
-<meta property="og:description" content="Go-Micro系列一 – 入门篇go 1.13.0该系列go版本 1.12 - 1.13 安装go-micro安装consul安装服务发现能力，docker安装consul或者本地安装运行consul，consul在本地开发环境使用方便便于调试。 1、docker安装consul">
+<meta property="og:description" content="Go-Micro系列一 – 入门篇go 1.13.0 go版本 1.12 - 1.13  官方貌似20200227开始更新版本，关于micro的V2、GO MOD更新  安装go-micro安装consul安装服务发现能力，docker安装consul或者本地安装运行consul，consul在本地开发环境使用方便便于调试。 1、docker安装consul">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-01-05T03:21:22.197Z">
+<meta property="og:updated_time" content="2020-04-21T12:36:38.474Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Go-Micro系列一">
-<meta name="twitter:description" content="Go-Micro系列一 – 入门篇go 1.13.0该系列go版本 1.12 - 1.13 安装go-micro安装consul安装服务发现能力，docker安装consul或者本地安装运行consul，consul在本地开发环境使用方便便于调试。 1、docker安装consul">
+<meta name="twitter:description" content="Go-Micro系列一 – 入门篇go 1.13.0 go版本 1.12 - 1.13  官方貌似20200227开始更新版本，关于micro的V2、GO MOD更新  安装go-micro安装consul安装服务发现能力，docker安装consul或者本地安装运行consul，consul在本地开发环境使用方便便于调试。 1、docker安装consul">
 
 
 
@@ -418,7 +418,7 @@
                 
               
 
-              <time title="Created: 2020-01-05 09:35:03 / Modified: 11:21:22" itemprop="dateCreated datePublished" datetime="2020-01-05T09:35:03+08:00">2020-01-05</time>
+              <time title="Created: 2020-04-21 21:35:03 / Modified: 20:36:38" itemprop="dateCreated datePublished" datetime="2020-04-21T21:35:03+08:00">2020-04-21</time>
             
 
             
@@ -493,7 +493,7 @@
                 
                   <span class="post-meta-item-text">Symbols count in article: </span>
                 
-                <span title="Symbols count in article">4.4k</span>
+                <span title="Symbols count in article">4.7k</span>
               
 
               
@@ -527,18 +527,20 @@
       
 
       
-        <h2 id="Go-Micro系列一-–-入门篇"><a href="#Go-Micro系列一-–-入门篇" class="headerlink" title="Go-Micro系列一 – 入门篇"></a>Go-Micro系列一 – 入门篇</h2><p><code>go 1.13.0</code>该系列go版本 1.12 - 1.13</p>
+        <h2 id="Go-Micro系列一-–-入门篇"><a href="#Go-Micro系列一-–-入门篇" class="headerlink" title="Go-Micro系列一 – 入门篇"></a>Go-Micro系列一 – 入门篇</h2><p><code>go 1.13.0</code> go版本 1.12 - 1.13</p>
+<blockquote>
+<p>官方貌似20200227开始更新版本，关于micro的V2、GO MOD更新</p>
+</blockquote>
 <h3 id="安装go-micro"><a href="#安装go-micro" class="headerlink" title="安装go-micro"></a>安装go-micro</h3><h4 id="安装consul"><a href="#安装consul" class="headerlink" title="安装consul"></a>安装consul</h4><p>安装服务发现能力，<strong>docker安装consul</strong>或者<strong>本地安装运行consul</strong>，consul在本地开发环境使用方便便于调试。</p>
 <p>1、docker安装consul<a id="more"></a></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --net=host -e 'CONSUL_LOCAL_CONFIG=&#123;"skip_leave_on_interrupt": true&#125;'  --name consul_server  consul agent -server -bind=192.168.0.111 -bootstrap-expect=1  -node=node1 -client 0.0.0.0 -ui</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --net=host -e &apos;CONSUL_LOCAL_CONFIG=&#123;&quot;skip_leave_on_interrupt&quot;: true&#125;&apos;  --name consul_server  consul agent -server -bind=192.168.0.111 -bootstrap-expect=1  -node=node1 -client 0.0.0.0 -ui</span><br></pre></td></tr></table></figure>
 <p>2、本地安装运行consul</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">windows:</span><br><span class="line">https://www.consul.io/downloads.html</span><br><span class="line">mac:</span><br><span class="line">https://www.consul.io/downloads.html</span><br><span class="line"></span><br><span class="line">直接下载对应操作系统的版本即可，自行添加环境变量</span><br><span class="line">consul命令即可直接运行，默认端口8500</span><br><span class="line"></span><br><span class="line">consul agent -server -bind=192.168.0.111 -bootstrap-expect=1  -node=node1 -client 0.0.0.0 -ui</span><br><span class="line">consul agent -dev  # 本地开发测试直接运行dev即可</span><br></pre></td></tr></table></figure>
-<p>以上两种方式运行，浏览器输入<a href="http://192.168.0.111:8500" target="_blank" rel="noopener">http://192.168.0.111:8500</a> 能看到consul的UI页面表示正常启动</p>
+<p>以上两种方式运行，浏览器输入<a href="http://192.168.0.111:8500/" target="_blank" rel="noopener">http://192.168.0.111:8500</a> 能看到consul的UI页面表示正常启动</p>
 <h4 id="安装Micro"><a href="#安装Micro" class="headerlink" title="安装Micro"></a>安装Micro</h4><h5 id="基础知识补充"><a href="#基础知识补充" class="headerlink" title="基础知识补充"></a>基础知识补充</h5><p>go的包管理工具 – gomod</p>
 <p>可参考：<a href="https://segmentfault.com/a/1190000018389353?utm_source=tag-newest" target="_blank" rel="noopener">https://segmentfault.com/a/1190000018389353?utm_source=tag-newest</a></p>
-<p>​              <a href="https://segmentfault.com/a/1190000020293616?utm_source=tag-newest" target="_blank" rel="noopener">https://segmentfault.com/a/1190000020293616?utm_source=tag-newest</a></p>
-<h5 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>linux/mac 下</span><br><span class="line">export GO111MODULE=on</span><br><span class="line">export GOPROXY=https://goproxy.cn,direct</span><br><span class="line"><span class="meta">#</span> windows下设置如下环境变量</span><br><span class="line">setx GO111MODULE on</span><br><span class="line">setx GOPROXY https://goproxy.cn,direct</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> go 1.12</span><br><span class="line">export GO111MODULE=on</span><br><span class="line">export GOPROXY=https://goproxy.cn</span><br></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 使用如下指令安装</span><br><span class="line">go get -u -v github.com/micro/micro</span><br><span class="line">go get -u -v github.com/micro/go-micro</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>如果没有git请自行安装git</span><br><span class="line"><span class="meta">#</span>下载地址</span><br><span class="line"><span class="meta">#</span>https://git-scm.com/downloads/</span><br></pre></td></tr></table></figure>
+<p> <a href="https://segmentfault.com/a/1190000020293616?utm_source=tag-newest" target="_blank" rel="noopener">https://segmentfault.com/a/1190000020293616?utm_source=tag-newest</a></p>
+<h5 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#linux/mac 下</span><br><span class="line">export GO111MODULE=on</span><br><span class="line">export GOPROXY=https://goproxy.cn,direct</span><br><span class="line"># windows下设置如下环境变量</span><br><span class="line">setx GO111MODULE on</span><br><span class="line">setx GOPROXY https://goproxy.cn,direct</span><br><span class="line"></span><br><span class="line"># go 1.12</span><br><span class="line">export GO111MODULE=on</span><br><span class="line">export GOPROXY=https://goproxy.cn</span><br><span class="line"># 使用如下指令安装</span><br><span class="line"># micro为二进制命令文件</span><br><span class="line">go get -u -v github.com/micro/micro</span><br><span class="line">go get -u -v github.com/micro/go-micro</span><br><span class="line"></span><br><span class="line">#如果没有git请自行安装git</span><br><span class="line">#下载地址</span><br><span class="line">#https://git-scm.com/downloads/</span><br></pre></td></tr></table></figure>
 <h4 id="安装Protoc"><a href="#安装Protoc" class="headerlink" title="安装Protoc"></a>安装Protoc</h4><p>1、访问如下网址</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/protocolbuffers/protobuf/releases</span><br></pre></td></tr></table></figure>
 <p>2、下载,不同的版本文件名称不一样，Win选择protoc-xx-win64.zip，Mac选择protoc-xx-osx-x86_64.zip</p>
@@ -549,7 +551,7 @@
 <p>发现无法用 <code>protoc-gen-go</code> 生成代码。所以我去下载了<code>protobuf</code>。</p>
 <p>这里我是MAC系统所以，下载对应的mac版本 <a href="https://github.com/google/protobuf/releases/download/v3.0.0/protoc-3.0.0-osx-x86_64.zip" target="_blank" rel="noopener">protobuf</a>，有问题可以自行选择各种系统版本。</p>
 <h4 id="安装protoc-gen-micro插件"><a href="#安装protoc-gen-micro插件" class="headerlink" title="安装protoc-gen-micro插件"></a>安装protoc-gen-micro插件</h4><p>这个插件主要作用是通过<code>.proto</code>文件生成适用于<code>go-micro</code>的代码</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get -u -v github.com/micro/protoc-gen-micro</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get -u -v github.com/micro/protoc-gen-micro</span><br></pre></td></tr></table></figure>
 <h4 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">consul</span><br><span class="line">protoc</span><br><span class="line">micro --version</span><br></pre></td></tr></table></figure>
 <h4 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h4><p>两种方法，一种使用micro自动生成代码，另一种手动创建；注意，手动创建可以自定义目录，自行<code>go mod init</code>，自动生成代码会生成在goPath中的指定目录。可自行选择</p>
 <p>这里使用自动生成代码</p>
@@ -558,15 +560,18 @@
 <p>注意：在win系统下<code>$GOPATH</code>环境变量无效,因此如上脚本将创建微服务失败,因此我们需要对如上脚本进行处理</p>
 </blockquote>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#切换到项目目录下</span><br><span class="line">&gt;cd $GOPATH\microapp\hello</span><br><span class="line"></span><br><span class="line"># 根据proto生成文件</span><br><span class="line">&gt;protoc --proto_path=. --go_out=. --micro_out=. proto/hello/hello.proto</span><br></pre></td></tr></table></figure>
-<h5 id="启动应用"><a href="#启动应用" class="headerlink" title="启动应用"></a>启动应用</h5><p><strong><em>对于现在的新版本已经默认不使用consul了。可以降低micro版本或者代码插入consul插件即可使用consul</em></strong></p>
+<h5 id="启动应用"><a href="#启动应用" class="headerlink" title="启动应用"></a>启动应用</h5><p><strong>对于现在的新版本已经默认不使用consul了。可以降低micro版本或者插件代码插入consul插件即可使用consul</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">#启动consul</span><br><span class="line">&gt;consul agent -dev</span><br><span class="line">#默认mdns启动</span><br><span class="line">&gt;go run main.go </span><br><span class="line">2019/08/19 13:00:46 Transport [http] Listening on [::]:54689</span><br><span class="line">2019/08/19 13:00:46 Broker [http] Connected to [::]:54690</span><br><span class="line">2019/08/19 13:00:46 Registry [mdns] Registering node: go.micro.srv.hello-4851dce2-ab5d-4e4c-801e-44dae5d93f26</span><br><span class="line">2019/08/19 13:00:46 Subscribing go.micro.srv.hello-4851dce2-ab5d-4e4c-801e-44dae5d93f26 to topic: go.micro.srv.hello</span><br><span class="line">2019/08/19 13:00:46 Subscribing go.micro.srv.hello-4851dce2-ab5d-4e4c-801e-44dae5d93f26 to topic: go.micro.srv.hello</span><br><span class="line"></span><br><span class="line">#指定registry只需要添加参数即可，默认使用端口8500</span><br><span class="line">&gt;go run main.go --registry=consul</span><br><span class="line"></span><br><span class="line">## 注意这里没有指定注册consul，默认使用mdns（windows中无法使用mdns，并不是注册中心，使用的广播）</span><br><span class="line">## 了解mdns，自行查看</span><br></pre></td></tr></table></figure>
-<p><a href="https://micro.mu/docs/network.html" target="_blank" rel="noopener">mdns附上链接（失效了）</a></p>
-<h5 id="查看是否启动"><a href="#查看是否启动" class="headerlink" title="查看是否启动"></a>查看是否启动</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#也可以去consul的ui查看，更加直观</span><br><span class="line">&gt;micro list services --registry=consul</span><br><span class="line">go.micro.srv.hello</span><br><span class="line">topic:go.micro.srv.hello</span><br></pre></td></tr></table></figure>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在mian.go目录下新建一个插件文件plugins.go</span></span><br><span class="line"><span class="comment">// cat plugins.go 导入consul插件即可</span></span><br><span class="line"><span class="keyword">import</span> _ <span class="string">"github.com/micro/go-plugins/registry/consul"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用的时候或者build带上plugins文件</span></span><br><span class="line"><span class="comment">// go run main.go plugins.go --registry=consul</span></span><br></pre></td></tr></table></figure>
+<p><a href="https://micro.mu/docs/" target="_blank" rel="noopener">官方文档附上链接</a></p>
+<h5 id="查看是否启动"><a href="#查看是否启动" class="headerlink" title="查看是否启动"></a>查看是否启动</h5><p><strong>这里说一个micro需要跟go-micro的版本兼容，不然无法使用micro命令</strong></p>
+<p><strong>当然，如果你后期不适用micro api，micro命令不用也没关系</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#也可以去consul的ui查看，更加直观</span><br><span class="line">&gt;micro list services --registry=consul</span><br><span class="line">go.micro.srv.hello</span><br><span class="line">topic:go.micro.srv.hello</span><br></pre></td></tr></table></figure>
 <h5 id="启动restful-api接口支持支持"><a href="#启动restful-api接口支持支持" class="headerlink" title="启动restful api接口支持支持"></a>启动restful api接口支持支持</h5><p>注意其中的–namespace参数,我们每一个微服务都属于一个命名空间,通过api暴露出来该命名空间后,满足<code>go.micro.srv.*</code>格式的微服务都可以访问。如<code>go.micro.srv.hello</code>可以通过如下格式访问</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:8080/user/call</span><br><span class="line">&gt;micro api --namespace=go.micro.srv --registry=consul</span><br><span class="line">2019/08/19 13:07:11 Registering API Default Handler at /</span><br><span class="line">2019/08/19 13:07:11 HTTP API Listening on [::]:8080</span><br><span class="line">2019/08/19 13:07:11 Transport [http] Listening on [::]:54934</span><br><span class="line">2019/08/19 13:07:11 Broker [http] Connected to [::]:54935</span><br><span class="line">2019/08/19 13:07:11 Registry [consul] Registering node: go.micro.api-1753185c-b8e1-49c4-aa0f-617f243a8e2a</span><br></pre></td></tr></table></figure>
 <h5 id="验证api接口"><a href="#验证api接口" class="headerlink" title="验证api接口"></a>验证api接口</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -XPOST -d &quot;&#123;name: nihao&#125;&quot; http://127.0.0.1:8080/user/call -H &quot;Content-Type:application/json&quot;</span><br><span class="line"></span><br><span class="line"># output: hello nihao</span><br></pre></td></tr></table></figure>
 <h3 id="系列链接"><a href="#系列链接" class="headerlink" title="系列链接"></a>系列链接</h3><p>-&gt; <a href="/sheldon_blog/passages/Go-Micro系列一/" title="Go-Micro系列一-入门篇">Go-Micro系列一-入门篇</a></p>
-<p>-&gt; <a href="/sheldon_blog/passages/Go-Micro系列二/" title="Go-Micro系列二-介绍及micro使用GRPC例子">Go-Micro系列二-介绍及micro使用GRPC例子</a></p>
+<p>-&gt; <a href="/sheldon_blog/passages/Go-Micro系列二/" title="Go-Micro系列二-micro介绍以及微服务">Go-Micro系列二-micro介绍以及微服务</a></p>
 <p>-&gt; <a href="/sheldon_blog/passages/Go-Micro系列三/" title="Go-Micro系列三-">Go-Micro系列三-</a></p>
 <p>-&gt; <a href="/sheldon_blog/passages/Go-Micro系列四/" title="Go-Micro系列四-">Go-Micro系列四-</a></p>
 
@@ -609,8 +614,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/sheldon_blog/passages/Go-Micro相关/" rel="next" title="Go-Micro相关">
-                <i class="fa fa-chevron-left"></i> Go-Micro相关
+              <a href="/sheldon_blog/passages/Go-Micro系列四/" rel="next" title="Go-Micro系列四">
+                <i class="fa fa-chevron-left"></i> Go-Micro系列四
               </a>
             
           </div>
@@ -618,10 +623,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/sheldon_blog/passages/Go-Micro系列二/" rel="prev" title="Go-Micro系列二">
-                Go-Micro系列二 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
