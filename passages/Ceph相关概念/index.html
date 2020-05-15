@@ -104,42 +104,42 @@
 <meta name="keywords" content="Ceph">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ceph相关概念">
-<meta property="og:url" content="https://sheldon-lu.github.io/passages/Ceph相关概念/index.html">
+<meta property="og:url" content="https://www.sheldonlu.com/passages/Ceph相关概念/index.html">
 <meta property="og:site_name" content="Sheldon_Lu">
 <meta property="og:description" content="介绍Ceph是一个统一的分布式存储系统，最早起源于Sage就读博士期间的工作（最早的成果于2004年发表），随后贡献给开源社区。其设计初衷是提供较好的性能、可靠性和可扩展性。在经过多年的发展之后，目前已得到众多云计算厂商的支持并被广泛应用。RedHat及OpenStack都可与Ceph整合以支持虚拟机镜像的后端存储。   Ceph的优势可以概括为以下四个方面：">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph相关概念/images/Ceph架构图.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph相关概念/images/Ceph基本组件.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph相关概念/images/Ceph数据存储过程.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph相关概念/images/OSDs.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph相关概念/images/pools.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph相关概念/images/Ceph读写流程.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph相关概念/images/OSD进程.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph相关概念/images/journal.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph相关概念/images/推荐架构.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph相关概念/images/Mds.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph相关概念/images/关系图.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph相关概念/images/CRUSH架构图.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph相关概念/images/ceph_bucket.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph相关概念/images/rados_io_1.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph相关概念/images/ceph_io_2.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph相关概念/images/ceph_io_3.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph相关概念/images/ceph_io_4.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph相关概念/images/ceph_rbd_io.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph相关概念/images/ceph_rbd_io1.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph相关概念/images/ceph_recory_1.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph相关概念/images/ceph_recory_2.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph相关概念/images/ceph_heartbeat_1.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph相关概念/images/ceph_heartbeat_osd.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph相关概念/images/ceph_heartbeat_mon.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph相关概念/images/ceph_message.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph相关概念/images/ceph_message_2.png">
-<meta property="og:image" content="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph相关概念/images/ceph_message_3.png">
+<meta property="og:image" content="https://www.sheldonlu.com/sheldon_blog/passages/Ceph相关概念/images/Ceph架构图.png">
+<meta property="og:image" content="https://www.sheldonlu.com/sheldon_blog/passages/Ceph相关概念/images/Ceph基本组件.png">
+<meta property="og:image" content="https://www.sheldonlu.com/sheldon_blog/passages/Ceph相关概念/images/Ceph数据存储过程.png">
+<meta property="og:image" content="https://www.sheldonlu.com/sheldon_blog/passages/Ceph相关概念/images/OSDs.png">
+<meta property="og:image" content="https://www.sheldonlu.com/sheldon_blog/passages/Ceph相关概念/images/pools.png">
+<meta property="og:image" content="https://www.sheldonlu.com/sheldon_blog/passages/Ceph相关概念/images/Ceph读写流程.png">
+<meta property="og:image" content="https://www.sheldonlu.com/sheldon_blog/passages/Ceph相关概念/images/OSD进程.png">
+<meta property="og:image" content="https://www.sheldonlu.com/sheldon_blog/passages/Ceph相关概念/images/journal.png">
+<meta property="og:image" content="https://www.sheldonlu.com/sheldon_blog/passages/Ceph相关概念/images/推荐架构.png">
+<meta property="og:image" content="https://www.sheldonlu.com/sheldon_blog/passages/Ceph相关概念/images/Mds.png">
+<meta property="og:image" content="https://www.sheldonlu.com/sheldon_blog/passages/Ceph相关概念/images/关系图.png">
+<meta property="og:image" content="https://www.sheldonlu.com/sheldon_blog/passages/Ceph相关概念/images/CRUSH架构图.png">
+<meta property="og:image" content="https://www.sheldonlu.com/sheldon_blog/passages/Ceph相关概念/images/ceph_bucket.png">
+<meta property="og:image" content="https://www.sheldonlu.com/sheldon_blog/passages/Ceph相关概念/images/rados_io_1.png">
+<meta property="og:image" content="https://www.sheldonlu.com/sheldon_blog/passages/Ceph相关概念/images/ceph_io_2.png">
+<meta property="og:image" content="https://www.sheldonlu.com/sheldon_blog/passages/Ceph相关概念/images/ceph_io_3.png">
+<meta property="og:image" content="https://www.sheldonlu.com/sheldon_blog/passages/Ceph相关概念/images/ceph_io_4.png">
+<meta property="og:image" content="https://www.sheldonlu.com/sheldon_blog/passages/Ceph相关概念/images/ceph_rbd_io.png">
+<meta property="og:image" content="https://www.sheldonlu.com/sheldon_blog/passages/Ceph相关概念/images/ceph_rbd_io1.png">
+<meta property="og:image" content="https://www.sheldonlu.com/sheldon_blog/passages/Ceph相关概念/images/ceph_recory_1.png">
+<meta property="og:image" content="https://www.sheldonlu.com/sheldon_blog/passages/Ceph相关概念/images/ceph_recory_2.png">
+<meta property="og:image" content="https://www.sheldonlu.com/sheldon_blog/passages/Ceph相关概念/images/ceph_heartbeat_1.png">
+<meta property="og:image" content="https://www.sheldonlu.com/sheldon_blog/passages/Ceph相关概念/images/ceph_heartbeat_osd.png">
+<meta property="og:image" content="https://www.sheldonlu.com/sheldon_blog/passages/Ceph相关概念/images/ceph_heartbeat_mon.png">
+<meta property="og:image" content="https://www.sheldonlu.com/sheldon_blog/passages/Ceph相关概念/images/ceph_message.png">
+<meta property="og:image" content="https://www.sheldonlu.com/sheldon_blog/passages/Ceph相关概念/images/ceph_message_2.png">
+<meta property="og:image" content="https://www.sheldonlu.com/sheldon_blog/passages/Ceph相关概念/images/ceph_message_3.png">
 <meta property="og:updated_time" content="2020-01-03T03:07:01.613Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ceph相关概念">
 <meta name="twitter:description" content="介绍Ceph是一个统一的分布式存储系统，最早起源于Sage就读博士期间的工作（最早的成果于2004年发表），随后贡献给开源社区。其设计初衷是提供较好的性能、可靠性和可扩展性。在经过多年的发展之后，目前已得到众多云计算厂商的支持并被广泛应用。RedHat及OpenStack都可与Ceph整合以支持虚拟机镜像的后端存储。   Ceph的优势可以概括为以下四个方面：">
-<meta name="twitter:image" content="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph相关概念/images/Ceph架构图.png">
+<meta name="twitter:image" content="https://www.sheldonlu.com/sheldon_blog/passages/Ceph相关概念/images/Ceph架构图.png">
 
 
 
@@ -147,7 +147,7 @@
 
   
   
-  <link rel="canonical" href="https://sheldon-lu.github.io/passages/Ceph相关概念/">
+  <link rel="canonical" href="https://www.sheldonlu.com/passages/Ceph相关概念/">
 
 
 
@@ -402,7 +402,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://sheldon-lu.github.io/sheldon_blog/passages/Ceph相关概念/">
+    <link itemprop="mainEntityOfPage" href="https://www.sheldonlu.com/sheldon_blog/passages/Ceph相关概念/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sheldon Lu">
