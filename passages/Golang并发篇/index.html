@@ -100,22 +100,22 @@
 
 
 
-  <meta name="description" content="Golang之并发篇进程和线程12345A.进程是程序在操作系统中的一次执行过程，系统进行资源分配和调度的一个独立单位。B.线程是进程的一个执行实体，是CPU调度和分派的基本单位，它是比进程更小的能独立运行的基本单位。C.一个进程可以创建和撤销多个线程；同一进程中的多个线程之间可以并发执行。  并发和并行1234并发：多线程程序在一个核的cpu上运行并行：多线程程序在多个核的cpu上运行举例: 一">
+  <meta name="description" content="Golang之并发篇进程和线程12345A.进程是程序在操作系统中的一次执行过程，系统进行资源分配和调度的一个独立单位。B.线程是进程的一个执行实体，是CPU调度和分派的基本单位，它是比进程更小的能独立运行的基本单位。C.一个进程可以创建和撤销多个线程；同一进程中的多个线程之间可以并发执行。  并发和并行">
 <meta name="keywords" content="Golang">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Golang并发篇">
 <meta property="og:url" content="https://www.sheldonlu.com/passages/Golang并发篇/index.html">
 <meta property="og:site_name" content="Sheldon_Lu">
-<meta property="og:description" content="Golang之并发篇进程和线程12345A.进程是程序在操作系统中的一次执行过程，系统进行资源分配和调度的一个独立单位。B.线程是进程的一个执行实体，是CPU调度和分派的基本单位，它是比进程更小的能独立运行的基本单位。C.一个进程可以创建和撤销多个线程；同一进程中的多个线程之间可以并发执行。  并发和并行1234并发：多线程程序在一个核的cpu上运行并行：多线程程序在多个核的cpu上运行举例: 一">
+<meta property="og:description" content="Golang之并发篇进程和线程12345A.进程是程序在操作系统中的一次执行过程，系统进行资源分配和调度的一个独立单位。B.线程是进程的一个执行实体，是CPU调度和分派的基本单位，它是比进程更小的能独立运行的基本单位。C.一个进程可以创建和撤销多个线程；同一进程中的多个线程之间可以并发执行。  并发和并行">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://images2017.cnblogs.com/blog/1132884/201801/1132884-20180119160736443-318205395.png">
 <meta property="og:image" content="https://images2017.cnblogs.com/blog/1132884/201801/1132884-20180119161120193-1746947231.png">
 <meta property="og:image" content="https://images2017.cnblogs.com/blog/1132884/201801/1132884-20180119164420162-1968227687.png">
 <meta property="og:image" content="https://images2017.cnblogs.com/blog/1132884/201801/1132884-20180119164737381-1301671524.png">
-<meta property="og:updated_time" content="2020-06-11T00:35:07.597Z">
+<meta property="og:updated_time" content="2020-06-11T00:38:29.247Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang并发篇">
-<meta name="twitter:description" content="Golang之并发篇进程和线程12345A.进程是程序在操作系统中的一次执行过程，系统进行资源分配和调度的一个独立单位。B.线程是进程的一个执行实体，是CPU调度和分派的基本单位，它是比进程更小的能独立运行的基本单位。C.一个进程可以创建和撤销多个线程；同一进程中的多个线程之间可以并发执行。  并发和并行1234并发：多线程程序在一个核的cpu上运行并行：多线程程序在多个核的cpu上运行举例: 一">
+<meta name="twitter:description" content="Golang之并发篇进程和线程12345A.进程是程序在操作系统中的一次执行过程，系统进行资源分配和调度的一个独立单位。B.线程是进程的一个执行实体，是CPU调度和分派的基本单位，它是比进程更小的能独立运行的基本单位。C.一个进程可以创建和撤销多个线程；同一进程中的多个线程之间可以并发执行。  并发和并行">
 <meta name="twitter:image" content="https://images2017.cnblogs.com/blog/1132884/201801/1132884-20180119160736443-318205395.png">
 
 
@@ -423,7 +423,7 @@
                 
               
 
-              <time title="Created: 2020-06-11 08:22:15 / Modified: 08:35:07" itemprop="dateCreated datePublished" datetime="2020-06-11T08:22:15+08:00">2020-06-11</time>
+              <time title="Created: 2020-06-11 08:22:15 / Modified: 08:38:29" itemprop="dateCreated datePublished" datetime="2020-06-11T08:22:15+08:00">2020-06-11</time>
             
 
             
@@ -534,7 +534,7 @@
       
         <h2 id="Golang之并发篇"><a href="#Golang之并发篇" class="headerlink" title="Golang之并发篇"></a>Golang之并发篇</h2><h3 id="进程和线程"><a href="#进程和线程" class="headerlink" title="进程和线程"></a>进程和线程</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">A.进程是程序在操作系统中的一次执行过程，系统进行资源分配和调度的一个独立单位。</span><br><span class="line"></span><br><span class="line">B.线程是进程的一个执行实体，是CPU调度和分派的基本单位，它是比进程更小的能独立运行的基本单位。</span><br><span class="line"></span><br><span class="line">C.一个进程可以创建和撤销多个线程；同一进程中的多个线程之间可以并发执行。</span><br></pre></td></tr></table></figure>
 <p><img src="https://images2017.cnblogs.com/blog/1132884/201801/1132884-20180119160736443-318205395.png" alt="img"></p>
-<h3 id="并发和并行"><a href="#并发和并行" class="headerlink" title="并发和并行"></a>并发和并行</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">并发：多线程程序在一个核的cpu上运行</span><br><span class="line">并行：多线程程序在多个核的cpu上运行</span><br><span class="line">举例: 一个妈给一个碗给多个小孩喂饭，，是并发</span><br><span class="line">　　　　一个妈给每个小孩一人一个碗，就是并行</span><br></pre></td></tr></table></figure>
+<h3 id="并发和并行"><a href="#并发和并行" class="headerlink" title="并发和并行"></a>并发和并行<a id="more"></a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">并发：多线程程序在一个核的cpu上运行</span><br><span class="line">并行：多线程程序在多个核的cpu上运行</span><br><span class="line">举例: 一个妈给一个碗给多个小孩喂饭，，是并发</span><br><span class="line">　　　　一个妈给每个小孩一人一个碗，就是并行</span><br></pre></td></tr></table></figure>
 <p><img src="https://images2017.cnblogs.com/blog/1132884/201801/1132884-20180119161120193-1746947231.png" alt="img"></p>
 <h3 id="协程和线程"><a href="#协程和线程" class="headerlink" title="协程和线程"></a>协程和线程</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">协程：独立的栈空间，共享堆空间，调度由用户自己控制，本质上有点类似于用户级协程，这些用户级线程的调度也是自己实现的。</span><br><span class="line">线程：一个线程上可以跑多个协程，协程是轻量级的线程。</span><br></pre></td></tr></table></figure>
 <p><strong>例子</strong></p>
