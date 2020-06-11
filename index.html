@@ -580,6 +580,479 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.sheldonlu.com/passages/Golang并发篇/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sheldon Lu">
+      <meta itemprop="description" content="静下心来写点东西">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sheldon_Lu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/passages/Golang并发篇/" class="post-title-link" itemprop="url">Golang并发篇</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2020-06-11 08:22:15 / Modified: 08:35:07" itemprop="dateCreated datePublished" datetime="2020-06-11T08:22:15+08:00">2020-06-11</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Golang并发/" itemprop="url" rel="index"><span itemprop="name">Golang并发</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/passages/Golang并发篇/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/passages/Golang并发篇/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/passages/Golang并发篇/" class="leancloud_visitors" data-flag-title="Golang并发篇">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Views: </span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article">8.8k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">8 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Golang之并发篇"><a href="#Golang之并发篇" class="headerlink" title="Golang之并发篇"></a>Golang之并发篇</h2><h3 id="进程和线程"><a href="#进程和线程" class="headerlink" title="进程和线程"></a>进程和线程</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">A.进程是程序在操作系统中的一次执行过程，系统进行资源分配和调度的一个独立单位。</span><br><span class="line"></span><br><span class="line">B.线程是进程的一个执行实体，是CPU调度和分派的基本单位，它是比进程更小的能独立运行的基本单位。</span><br><span class="line"></span><br><span class="line">C.一个进程可以创建和撤销多个线程；同一进程中的多个线程之间可以并发执行。</span><br></pre></td></tr></table></figure>
+<p><img src="https://images2017.cnblogs.com/blog/1132884/201801/1132884-20180119160736443-318205395.png" alt="img"></p>
+<h3 id="并发和并行"><a href="#并发和并行" class="headerlink" title="并发和并行"></a>并发和并行</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">并发：多线程程序在一个核的cpu上运行</span><br><span class="line">并行：多线程程序在多个核的cpu上运行</span><br><span class="line">举例: 一个妈给一个碗给多个小孩喂饭，，是并发</span><br><span class="line">　　　　一个妈给每个小孩一人一个碗，就是并行</span><br></pre></td></tr></table></figure>
+<p><img src="https://images2017.cnblogs.com/blog/1132884/201801/1132884-20180119161120193-1746947231.png" alt="img"></p>
+<h3 id="协程和线程"><a href="#协程和线程" class="headerlink" title="协程和线程"></a>协程和线程</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">协程：独立的栈空间，共享堆空间，调度由用户自己控制，本质上有点类似于用户级协程，这些用户级线程的调度也是自己实现的。</span><br><span class="line">线程：一个线程上可以跑多个协程，协程是轻量级的线程。</span><br></pre></td></tr></table></figure>
+<p><strong>例子</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">test</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> i <span class="keyword">int</span></span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        fmt.Println(i)</span><br><span class="line">        time.Sleep(time.Second)</span><br><span class="line">        i++</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">go</span> test() <span class="comment">//起一个协程执行test（）</span></span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        fmt.Println(<span class="string">"i : runnging in main"</span>)</span><br><span class="line">        time.Sleep(time.Second )</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="GPM"><a href="#GPM" class="headerlink" title="GPM"></a>GPM</h3><p><img src="https://images2017.cnblogs.com/blog/1132884/201801/1132884-20180119164420162-1968227687.png" alt="img"></p>
+<p><img src="https://images2017.cnblogs.com/blog/1132884/201801/1132884-20180119164737381-1301671524.png" alt="img"></p>
+<p><strong>设置Golang运行的cpu核数。</strong></p>
+<p><strong>1.8版本以上，默认跑多个核</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"runtime"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    num := runtime.NumCPU()</span><br><span class="line">    runtime.GOMAXPROCS(num)</span><br><span class="line">    fmt.Println(num)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>并发计算</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"sync"</span></span><br><span class="line">    <span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">    m    = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">uint64</span>)</span><br><span class="line">    lock sync.Mutex</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> task <span class="keyword">struct</span> &#123;</span><br><span class="line">    n <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">calc</span><span class="params">(t *task)</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> sum <span class="keyword">uint64</span></span><br><span class="line">    sum = <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">1</span>; i &lt; t.n; i++ &#123;</span><br><span class="line">        sum *= <span class="keyword">uint64</span>(i)</span><br><span class="line">    &#125;</span><br><span class="line">    fmt.Println(t.n, sum)</span><br><span class="line">    lock.Lock()</span><br><span class="line">    m[t.n] = sum</span><br><span class="line">    lock.Unlock()</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">16</span>; i++ &#123;</span><br><span class="line">        t := &amp;task&#123;n: i&#125;</span><br><span class="line">        <span class="keyword">go</span> calc(t)<span class="comment">//并发执行，谁快谁先出 </span></span><br><span class="line">    &#125;</span><br><span class="line">    time.Sleep(<span class="number">10</span> * time.Second)</span><br><span class="line">    <span class="comment">//lock.Lock()</span></span><br><span class="line">    <span class="comment">//for k, v := range m &#123;</span></span><br><span class="line">    <span class="comment">//    fmt.Printf("%d!=%v\n", k, v)</span></span><br><span class="line">    <span class="comment">//&#125;</span></span><br><span class="line">    <span class="comment">//lock.Unlock()</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Channel"><a href="#Channel" class="headerlink" title="Channel"></a>Channel</h3><h4 id="channel概念"><a href="#channel概念" class="headerlink" title="channel概念"></a>channel概念</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a.类似unix中的管道(pipe)</span><br><span class="line">b.先进先出</span><br><span class="line">c.线程安全，多个goroutine同时访问，不需要枷锁</span><br><span class="line">d.channel是有类型的，一个整数的channel只能存整数</span><br></pre></td></tr></table></figure>
+<h4 id="channel声明"><a href="#channel声明" class="headerlink" title="channel声明"></a>channel声明</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name <span class="keyword">chan</span> <span class="keyword">string</span></span><br><span class="line"><span class="keyword">var</span> age <span class="keyword">chan</span> <span class="keyword">int</span></span><br><span class="line"><span class="keyword">var</span> mapchan <span class="keyword">chan</span> <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span></span><br><span class="line"><span class="keyword">var</span> test <span class="keyword">chan</span> student</span><br><span class="line"><span class="keyword">var</span> test1 <span class="keyword">chan</span> *student</span><br></pre></td></tr></table></figure>
+<h4 id="channel初始化"><a href="#channel初始化" class="headerlink" title="channel初始化"></a>channel初始化</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">使用<span class="built_in">make</span>进行初始化</span><br><span class="line"><span class="keyword">var</span> test <span class="keyword">chan</span> <span class="keyword">int</span></span><br><span class="line">test = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>,<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> test <span class="keyword">chan</span> <span class="keyword">string</span></span><br><span class="line">test=<span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>,<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="channel基本操作"><a href="#channel基本操作" class="headerlink" title="channel基本操作"></a>channel基本操作</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">从channel读取数据</span><br><span class="line"><span class="keyword">var</span> testChan <span class="keyword">chan</span> <span class="keyword">int</span></span><br><span class="line">testChan = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">10</span>)</span><br><span class="line"><span class="keyword">var</span> a <span class="keyword">int</span></span><br><span class="line">a = &lt;-testChan</span><br></pre></td></tr></table></figure>
+<h4 id="从channel写入数据"><a href="#从channel写入数据" class="headerlink" title="从channel写入数据"></a>从channel写入数据</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> testChan <span class="keyword">chan</span> <span class="keyword">int</span></span><br><span class="line">testChan = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">10</span>)</span><br><span class="line"><span class="keyword">var</span> a <span class="keyword">int</span> = <span class="number">10</span></span><br><span class="line">testChan &lt;- a</span><br></pre></td></tr></table></figure>
+<p>第一个例子</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> student <span class="keyword">struct</span> &#123;</span><br><span class="line">    name <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> stuChan <span class="keyword">chan</span> *student</span><br><span class="line">    stuChan = <span class="built_in">make</span>(<span class="keyword">chan</span> *student, <span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">    stu := student&#123;name: <span class="string">"stu001"</span>&#125;</span><br><span class="line"></span><br><span class="line">    stuChan &lt;- &amp;stu</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> stu01 <span class="keyword">interface</span>&#123;&#125;</span><br><span class="line">    stu01 = &lt;-stuChan</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> stu02 *student</span><br><span class="line">    stu02, ok := stu01.(*student)</span><br><span class="line">    <span class="keyword">if</span> !ok &#123;</span><br><span class="line">        fmt.Println(<span class="string">"can not convert"</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    fmt.Println(stu02)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="goroutine与channel"><a href="#goroutine与channel" class="headerlink" title="goroutine与channel"></a>goroutine与channel</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">//起一个读的协程</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">write</span><span class="params">(ch <span class="keyword">chan</span> <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">1000</span>; i++ &#123;</span><br><span class="line">        ch &lt;- i</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">read</span><span class="params">(ch <span class="keyword">chan</span> <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        <span class="keyword">var</span> b <span class="keyword">int</span></span><br><span class="line">        b = &lt;-ch</span><br><span class="line">        fmt.Println(b)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    intChan := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">10</span>)</span><br><span class="line">    <span class="keyword">go</span> write(intChan)</span><br><span class="line">    <span class="keyword">go</span> read(intChan)</span><br><span class="line">    time.Sleep(<span class="number">10</span> * time.Second)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>读，取，字符串</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sendData</span><span class="params">(ch <span class="keyword">chan</span> <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">    ch &lt;- <span class="string">"Washington"</span></span><br><span class="line">    ch &lt;- <span class="string">"Tripoli"</span></span><br><span class="line">    ch &lt;- <span class="string">"London"</span></span><br><span class="line">    ch &lt;- <span class="string">"Beijing"</span></span><br><span class="line">    ch &lt;- <span class="string">"Tokio"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">getData</span><span class="params">(ch <span class="keyword">chan</span> <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> input <span class="keyword">string</span></span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        input = &lt;-ch</span><br><span class="line">        fmt.Println(input)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>)</span><br><span class="line">    <span class="keyword">go</span> sendData(ch)</span><br><span class="line">    <span class="keyword">go</span> getData(ch)</span><br><span class="line">    time.Sleep(<span class="number">3</span> * time.Second)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Channel缓冲区"><a href="#Channel缓冲区" class="headerlink" title="Channel缓冲区"></a>Channel缓冲区</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 只能放一个元素的testChan</span></span><br><span class="line"><span class="keyword">var</span> testChan <span class="keyword">chan</span> <span class="keyword">int</span></span><br><span class="line">testChan = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line"><span class="keyword">var</span> a <span class="keyword">int</span></span><br><span class="line">a = &lt;-testChan</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// testChan是带缓冲区的chan，一次可以放10个元素</span></span><br><span class="line"><span class="keyword">var</span> testChan <span class="keyword">chan</span> <span class="keyword">int</span></span><br><span class="line">testChan = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">10</span>)</span><br><span class="line"><span class="keyword">var</span> a <span class="keyword">int</span> = <span class="number">10</span></span><br><span class="line">testChan &lt;- a</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"sync"</span></span><br><span class="line">    <span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">    m    = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">uint64</span>)</span><br><span class="line">    lock sync.Mutex</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> task <span class="keyword">struct</span> &#123;</span><br><span class="line">    n <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">calc</span><span class="params">(t *task)</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> sum <span class="keyword">uint64</span></span><br><span class="line">    sum = <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">1</span>; i &lt; t.n; i++ &#123;</span><br><span class="line">        sum *= <span class="keyword">uint64</span>(i)</span><br><span class="line">    &#125;</span><br><span class="line">    fmt.Println(t.n, sum)</span><br><span class="line">    lock.Lock()</span><br><span class="line">    m[t.n] = sum</span><br><span class="line">    lock.Unlock()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">16</span>; i++ &#123;</span><br><span class="line">        t := &amp;task&#123;n: i&#125;</span><br><span class="line">        <span class="keyword">go</span> calc(t)</span><br><span class="line">    &#125;</span><br><span class="line">    time.Sleep(<span class="number">10</span> * time.Second)</span><br><span class="line">    lock.Lock()</span><br><span class="line">    <span class="keyword">for</span> k, v := <span class="keyword">range</span> m &#123;</span><br><span class="line">        fmt.Printf(<span class="string">"%d!=%v\n"</span>, k, v)</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    lock.Unlock()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">calc</span><span class="params">(taskChan <span class="keyword">chan</span> <span class="keyword">int</span>, resChan <span class="keyword">chan</span> <span class="keyword">int</span>, exitChan <span class="keyword">chan</span> <span class="keyword">bool</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> v := <span class="keyword">range</span> taskChan &#123;</span><br><span class="line">        flag := <span class="literal">true</span></span><br><span class="line">        <span class="keyword">for</span> i := <span class="number">2</span>; i &lt; v; i++ &#123;</span><br><span class="line">            <span class="keyword">if</span> v%i == <span class="number">0</span> &#123;</span><br><span class="line">                flag = <span class="literal">false</span></span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> flag &#123;</span><br><span class="line">            resChan &lt;- v</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    fmt.Println(<span class="string">"exit"</span>)</span><br><span class="line">    exitChan &lt;- <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    intChan := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">1000</span>)</span><br><span class="line">    resultChan := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">1000</span>)</span><br><span class="line">    exitChan := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">bool</span>, <span class="number">8</span>)</span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10000</span>; i++ &#123;</span><br><span class="line">            intChan &lt;- i</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">close</span>(intChan)</span><br><span class="line">    &#125;()</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">8</span>; i++ &#123;</span><br><span class="line">        <span class="keyword">go</span> calc(intChan, resultChan, exitChan)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//等待所有计算的goroutine全部退出</span></span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">8</span>; i++ &#123;</span><br><span class="line">            &lt;-exitChan</span><br><span class="line">            fmt.Println(<span class="string">"wait goroute"</span>, i, <span class="string">"exited"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">close</span>(resultChan)</span><br><span class="line">    &#125;()</span><br><span class="line">    <span class="keyword">for</span> v := <span class="keyword">range</span> resultChan &#123;</span><br><span class="line">        fmt.Println(v)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">send</span><span class="params">(ch <span class="keyword">chan</span> <span class="keyword">int</span>, exitChan <span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">        ch &lt;- i</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">close</span>(ch)</span><br><span class="line">    <span class="keyword">var</span> a <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line">    exitChan &lt;- a</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">recv</span><span class="params">(ch <span class="keyword">chan</span> <span class="keyword">int</span>, exitChan <span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        v, ok := &lt;-ch</span><br><span class="line">        <span class="keyword">if</span> !ok &#123;</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">        fmt.Println(v)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> a <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line">    exitChan &lt;- a</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> ch <span class="keyword">chan</span> <span class="keyword">int</span></span><br><span class="line">    ch = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">10</span>)</span><br><span class="line">    exitChan := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">go</span> send(ch, exitChan)</span><br><span class="line">    <span class="keyword">go</span> recv(ch, exitChan)</span><br><span class="line">    <span class="keyword">var</span> total = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> _ = <span class="keyword">range</span> exitChan &#123;</span><br><span class="line">        total++</span><br><span class="line">        <span class="keyword">if</span> total == <span class="number">2</span> &#123;</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="检测管道是否关闭"><a href="#检测管道是否关闭" class="headerlink" title="检测管道是否关闭"></a>检测管道是否关闭</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> ch <span class="keyword">chan</span> <span class="keyword">int</span></span><br><span class="line">    ch = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">10</span>)</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">        ch &lt;- i</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">close</span>(ch)</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        <span class="keyword">var</span> b <span class="keyword">int</span></span><br><span class="line">        b, ok := &lt;-ch</span><br><span class="line">        <span class="comment">//检测管道是否关闭</span></span><br><span class="line">        <span class="keyword">if</span> ok == <span class="literal">false</span> &#123;</span><br><span class="line">            fmt.Println(<span class="string">"chan is close"</span>)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">        fmt.Println(b)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="如何关闭chan"><a href="#如何关闭chan" class="headerlink" title="如何关闭chan"></a>如何关闭chan</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. 使用内置函数close进行关闭，chan关闭之后，for range遍历chan中</span><br><span class="line">已经存在的元素后结束</span><br><span class="line">2. 使用内置函数close进行关闭，chan关闭之后，没有使用for range的写法</span><br><span class="line">需要使用，v, ok := &lt;- ch进行判断chan是否关闭</span><br></pre></td></tr></table></figure>
+<h3 id="chan的只读和只写"><a href="#chan的只读和只写" class="headerlink" title="chan的只读和只写"></a>chan的只读和只写</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">只读的声明</span><br><span class="line">Var 变量的名字 &lt;-chan int</span><br><span class="line">Var readChan &lt;- chan int</span><br><span class="line"></span><br><span class="line">只写的声明</span><br><span class="line">Var 变量的名字 chan&lt;- int</span><br><span class="line">Var writeChan chan&lt;- int</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//只写chan</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">send</span><span class="params">(ch <span class="keyword">chan</span>&lt;- <span class="keyword">int</span>, exitChan <span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">        ch &lt;- i</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">close</span>(ch)</span><br><span class="line">    <span class="keyword">var</span> a <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line">    exitChan &lt;- a</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//只读chan</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">recv</span><span class="params">(ch &lt;-<span class="keyword">chan</span> <span class="keyword">int</span>, exitChan <span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        v, ok := &lt;-ch</span><br><span class="line">        <span class="keyword">if</span> !ok &#123;</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">        fmt.Println(v)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> a <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line">    exitChan &lt;- a</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> ch <span class="keyword">chan</span> <span class="keyword">int</span></span><br><span class="line">    ch = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">10</span>) <span class="comment">//初始化chan</span></span><br><span class="line">    exitChan := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">go</span> send(ch, exitChan)</span><br><span class="line">    <span class="keyword">go</span> recv(ch, exitChan)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> total = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> _ = <span class="keyword">range</span> exitChan &#123;</span><br><span class="line">        total++</span><br><span class="line">        <span class="keyword">if</span> total == <span class="number">2</span> &#123;</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>不阻塞</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">"time"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> ch <span class="keyword">chan</span> <span class="keyword">int</span></span><br><span class="line">    ch = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">10</span>)</span><br><span class="line">    ch2 := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">10</span>)</span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">var</span> i <span class="keyword">int</span></span><br><span class="line">        <span class="keyword">for</span> &#123;</span><br><span class="line">            ch &lt;- i</span><br><span class="line">            time.Sleep(time.Second)</span><br><span class="line">            ch2 &lt;- i * i</span><br><span class="line">            time.Sleep(time.Second)</span><br><span class="line">            i++</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;()</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        <span class="keyword">select</span> &#123;</span><br><span class="line">        <span class="keyword">case</span> v := &lt;-ch:</span><br><span class="line">            fmt.Println(v)</span><br><span class="line">        <span class="keyword">case</span> v := &lt;-ch2:</span><br><span class="line">            fmt.Println(v)</span><br><span class="line">        <span class="keyword">case</span> &lt;-time.After(time.Second):</span><br><span class="line">            fmt.Println(<span class="string">"get data timeout"</span>)</span><br><span class="line">            time.Sleep(time.Second)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.sheldonlu.com/passages/Golang并发之条件变量/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sheldon Lu">
+      <meta itemprop="description" content="静下心来写点东西">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sheldon_Lu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/passages/Golang并发之条件变量/" class="post-title-link" itemprop="url">Golang并发之条件变量</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2020-06-11 08:10:24 / Modified: 08:21:36" itemprop="dateCreated datePublished" datetime="2020-06-11T08:10:24+08:00">2020-06-11</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Golang并发/" itemprop="url" rel="index"><span itemprop="name">Golang并发</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/passages/Golang并发之条件变量/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/passages/Golang并发之条件变量/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/passages/Golang并发之条件变量/" class="leancloud_visitors" data-flag-title="Golang并发之条件变量">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Views: </span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article">3.4k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">3 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>条件变量</p>
+</blockquote>
+<p>在Go语言中，sync.Cond类型代表了条件变量。与互斥锁和读写锁不同，简单的声明无法创建出一个可用的条件变量。为了得到这样一个条件变量，我们需要用到sync.NewCond函数。该函数的声明如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewCond</span><span class="params">(l Locker)</span> *<span class="title">Cond</span></span></span><br></pre></td></tr></table></figure>
+<p>条件变量总是要与互斥量组合使用。因此，sync.NewCond函数的唯一参数是sync.Locker类型的，而具体的参数值既可以是一个互斥锁也可以是一个读写锁。sync.NewCond函数在被调用之后会返回一个*sync.Cond类型的结果值。我们可以调用该值拥有的几个方法来操纵对应的条件变量。</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/passages/Golang并发之条件变量/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.sheldonlu.com/passages/Go-Micro系列一/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1798,7 +2271,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2020-01-05 11:08:48" itemprop="dateModified" datetime="2020-01-05T11:08:48+08:00">2020-01-05</time>
+                <time title="Modified: 2020-06-10 23:13:55" itemprop="dateModified" datetime="2020-06-10T23:13:55+08:00">2020-06-10</time>
               
             
           </span>
@@ -1850,7 +2323,7 @@
                 
                   <span class="post-meta-item-text">Symbols count in article: </span>
                 
-                <span title="Symbols count in article">5</span>
+                <span title="Symbols count in article">6</span>
               
 
               
@@ -2167,477 +2640,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.sheldonlu.com/passages/Ceph单节点部署/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sheldon Lu">
-      <meta itemprop="description" content="静下心来写点东西">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sheldon_Lu">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/passages/Ceph单节点部署/" class="post-title-link" itemprop="url">Ceph单节点部署</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2019-09-03 23:30:55" itemprop="dateCreated datePublished" datetime="2019-09-03T23:30:55+08:00">2019-09-03</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2020-01-03 11:22:10" itemprop="dateModified" datetime="2020-01-03T11:22:10+08:00">2020-01-03</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Ceph/" itemprop="url" rel="index"><span itemprop="name">Ceph</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-            
-                <span class="post-meta-item-text">Comments: </span>
-                <a href="/passages/Ceph单节点部署/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/passages/Ceph单节点部署/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-            <span id="/passages/Ceph单节点部署/" class="leancloud_visitors" data-flag-title="Ceph单节点部署">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Views: </span>
-              
-                <span class="leancloud-visitors-count"></span>
-            </span>
-          
-
-          
-
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Symbols count in article: </span>
-                
-                <span title="Symbols count in article">6.6k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Reading time &asymp;</span>
-                
-                <span title="Reading time">6 mins.</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="Ceph集群单节点安装"><a href="#Ceph集群单节点安装" class="headerlink" title="Ceph集群单节点安装"></a>Ceph集群单节点安装</h2><p>创建虚拟机（正常步骤）</p>
-<p>添加ceph.repo，安装ceph-deploy</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/passages/Ceph单节点部署/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.sheldonlu.com/passages/Ceph相关概念/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sheldon Lu">
-      <meta itemprop="description" content="静下心来写点东西">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sheldon_Lu">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/passages/Ceph相关概念/" class="post-title-link" itemprop="url">Ceph相关概念</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2019-09-03 23:30:48" itemprop="dateCreated datePublished" datetime="2019-09-03T23:30:48+08:00">2019-09-03</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2020-01-03 11:07:01" itemprop="dateModified" datetime="2020-01-03T11:07:01+08:00">2020-01-03</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Ceph/" itemprop="url" rel="index"><span itemprop="name">Ceph</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-            
-                <span class="post-meta-item-text">Comments: </span>
-                <a href="/passages/Ceph相关概念/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/passages/Ceph相关概念/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-            <span id="/passages/Ceph相关概念/" class="leancloud_visitors" data-flag-title="Ceph相关概念">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Views: </span>
-              
-                <span class="leancloud-visitors-count"></span>
-            </span>
-          
-
-          
-
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Symbols count in article: </span>
-                
-                <span title="Symbols count in article">19k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Reading time &asymp;</span>
-                
-                <span title="Reading time">17 mins.</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>Ceph是一个统一的分布式存储系统，最早起源于Sage就读博士期间的工作（最早的成果于2004年发表），随后贡献给开源社区。其设计初衷是提供较好的性能、可靠性和可扩展性。在经过多年的发展之后，目前已得到众多云计算厂商的支持并被广泛应用。RedHat及OpenStack都可与Ceph整合以支持虚拟机镜像的后端存储。  </p>
-<p>Ceph的优势可以概括为以下四个方面：</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/passages/Ceph相关概念/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -2681,7 +2688,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-count">31</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
