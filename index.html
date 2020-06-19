@@ -638,7 +638,7 @@
                 
               
 
-              <time title="Created: 2020-06-19 08:32:03 / Modified: 08:53:43" itemprop="dateCreated datePublished" datetime="2020-06-19T08:32:03+08:00">2020-06-19</time>
+              <time title="Created: 2020-06-19 08:32:03 / Modified: 09:00:47" itemprop="dateCreated datePublished" datetime="2020-06-19T08:32:03+08:00">2020-06-19</time>
             
 
             
@@ -748,176 +748,19 @@
 
       
         
-          
-            <h2 id="问题汇总"><a href="#问题汇总" class="headerlink" title="问题汇总"></a>问题汇总</h2><p>接下来，就总结一下，我在当初面试时，被问到的一些常见问题。</p>
+          <h2 id="问题汇总"><a href="#问题汇总" class="headerlink" title="问题汇总"></a>问题汇总</h2><p>接下来，就总结一下，我在当初面试时，被问到的一些常见问题。</p>
 <p>问题总共可分为七类：数学题、计算机基础、数据结构、机器学习相关、深度学习相关、项目相关、业务场景。</p>
 <p>项目相关的问题，根据每个人的项目经历而不同，这个需要自行准备了，根据实际情况阐述。</p>
 <p>本文主要记录另外六类问题。</p>
-<h3 id="1、数学题"><a href="#1、数学题" class="headerlink" title="1、数学题"></a>1、数学题</h3><p>面试的时候偶尔会被问道数学题，这里也值得准备一下，特别是算法岗。</p>
-<p>面试的题型完全看面试官的风格，比如问问泰勒展开、偏导啥的，还有一些五花八门的小智力题。</p>
-<p>不过这类考点，考得并不多，十场面试，可能就碰到一场问数学题的。</p>
-<h3 id="2、计算机基础"><a href="#2、计算机基础" class="headerlink" title="2、计算机基础"></a>2、计算机基础</h3><p>计算机基础属于常考内容。一般都会问一些 linux 基础，比如常用 linux 指令，平时经常用 linux 的话，这个问题不大。</p>
-<p>如果没有这方面基础的，就需要提前学一学了。</p>
-<p>此外，还会问一下关于你熟悉的计算机语言的基础知识，比如我说我更熟悉 python ，那么面试官可能就会问一些关于 python 基础的问题。</p>
-<p>常考问题如下：</p>
-<p>1) 进程和线程的区别？</p>
-<p>答：进程拥有一个完整的虚拟地址空间，不依赖于线程而独立存在；反之，线程是进程的一部分，没有自己的地址空间，与进程内的其他线程一起共享分配给该进程的所有资源。</p>
-<p>比如：开个 QQ，开了一个进程；开了迅雷，开了一个进程。在 QQ 的这个进程里，传输文字开一个线程、传输语音开了一个线程、弹出对话框又开了一个线程。所以运行某个软件，相当于开了一个进程。在这个软件运行的过程里（在这个进程里），多个工作支撑的完成 QQ 的运行，那么这“多个工作”分别有一个线程。所以一个进程管着多个线程。通俗的讲：“进程是爹妈，管着众多的线程儿子”。</p>
-<p>2) 为什么说 python 的线程是伪线程？</p>
-<p>答：在 python 的原始解释器 CPython 中存在着 <strong>GIL</strong>（Global Interpreter Lock，全局解释器锁），因此在解释执行 python 代码时，会产生互斥锁来限制线程对共享资源的访问，直到解释器遇到 I/O 操作或者操作次数达到一定数目时才会释放 GIL 。</p>
-<p>所以，虽然 CPython 的线程库直接封装了系统的原生线程，但 CPython 整体作为一个进程，同一时间只会有一个线程在跑，其他线程则处于等待状态。这就造成了即使在多核 CPU 中，多线程也只是做着分时切换而已。</p>
-<p>3) python 的 append 和 extend 有什么区别？</p>
-<p>答：extend() 接受一个列表参数，把参数列表的元素添加到列表的尾部，append() 接受一个对象参数，把对象添加到列表的尾部。</p>
-<p>例如：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">1</span>,<span class="number">2</span>]</span><br><span class="line">b = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">a.append(b)</span><br><span class="line">print(a)</span><br></pre></td></tr></table></figure>
-<p>输出结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]]</span><br></pre></td></tr></table></figure>
-<p>而：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">1</span>,<span class="number">2</span>]</span><br><span class="line">b = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">a.extend(b)</span><br><span class="line">print(a)</span><br></pre></td></tr></table></figure>
-<p>输出结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br></pre></td></tr></table></figure>
-<p>4) linux 下创建定时任务使用什么指令？</p>
-<p>答：可以使用 crontab 命令。</p>
-<p>5) 数据库 Mysql 和 MongoDB 的区别？</p>
-<p>答：Mysql 是关系型数据库，MongoDB 是文档型数据库。MongoDB 占用空间大，典型的用空间换时间原则的类型。Mysql 相对成熟，MongoDB 较为年轻。</p>
-<p>6) 你知道的加解密算法有哪些？</p>
-<p>答：AES（对称加密）、RSA（非对称加密）、MD5（Hash算法）等。</p>
-<h3 id="3、数据结构"><a href="#3、数据结构" class="headerlink" title="3、数据结构"></a>3、数据结构</h3><p>个人感觉数据结构最重要，面试五花八门什么题都有，但是唯一统一的，就是数据结构基础。</p>
-<p>不考数据结构的情况也有，但这种情况少之又少。</p>
-<p>数据结构的考法，也各有不同。<strong>有的让说思路，有的让在线写代码。</strong></p>
-<p>所以，复习的方法应该是：<strong>审题-&gt;思考-&gt;表达-&gt;码字。</strong></p>
-<p>首先，认真审题，审题很重要。然后组织语言，把自己所想表达清楚。</p>
-<p>别小看这一步，一些公司面试都是让先说解题思路，再写代码，甚至是只需要说思路。</p>
-<p>已分门别类整理好，有需要的自取。</p>
-<p>地址：<a href="https://cuijiahua.com/blog/2018/02/basis_67.html" target="_blank" rel="noopener">https://cuijiahua.com/blog/2018/02/basis_67.html</a></p>
-<p>下面对一些常见题型进行汇总，这些也是我当初面试时，真实被问到的题目以及相关扩展题。</p>
-<p><strong>链表：</strong></p>
-<p>1) 找出单链表的倒数第K个元素（仅允许遍历一遍链表）</p>
-<p>答：使用指针追赶的方法，定义一个 fast 指针和一个 slow 指针，fast 指针先走 K 步，然后 fast 和slow 同时继续走。当 fast 指针走到链表尾部时，slow 指向的位置就是倒数第 K 个元素。</p>
-<p><strong>注意</strong>：要考虑链表长度应该大于 K 。</p>
-<p>2) 找出单链表的中间元素（仅允许遍历一遍链表）</p>
-<p>答：使用指针追赶的方法，定义一个 fast 指针和一个 slow 指针，两个指针同时走，fast 指针每次走两步，slow 指针每次走一步。当 fast 指针到链表尾部时，slow 指针指向的就是链表的中间元素。</p>
-<p>3) 判断单链表是否有环？</p>
-<p>答：使用指针追赶的方法，定义一个 fast 指针和一个 slow 指针，两个指针同时走，fast 指针每次走两步，slow 指针每次走一步。如果有环，则两者会相遇；如果没有环，fast 指针会遇到 NULL 退出。</p>
-<p>4) 已知单链表有环，如何知道环的长度？</p>
-<p>答：使用指针追赶的方法，定义一个 fast 指针和一个 slow 指针，两个指针同时走，fast 指针每次走两步，slow 指针每次走一步，找到碰撞点。然后使用 slow 指针，从该碰撞点开始遍历，绕着走一起圈，再次回到该点，所走过的结点数就是环的长度。</p>
-<p>5) 如何找到环的入口结点？</p>
-<p>答：先使用题 4 的方法，计算出环的长度。然后重新从头结点开始遍历，定义定义一个 fast 指针和一个 slow 指针，fast 指针先走 l（环的长度）步，然后两个指针以相同的速度在链表上向前移动，直到它们再次相遇，那么这个相遇点即为环的入口结点。</p>
-<p>6) 判断两个无环单链表是否相交？</p>
-<p>答：一旦两个链表相交，那么两个链表从相交节点开始到尾节点一定都是相同的节点。所以，如果他们相交的话，那么他们最后的一个节点一定是相同的，因此分别遍历到两个链表的尾部，然后判断他们是否相同。</p>
-<p>7) 如何知道两个单链表（可能有环）是否相交？</p>
-<p>答：根据两个链表是否有环来分别处理，若相交这个环属于两个链表共有</p>
-<p>（1）如果两个链表都没有环，如题 6 所示方法。</p>
-<p>（2）一个有环，一个没环，肯定不相交。</p>
-<p>（3）两个都有环。在 A 链表上，使用指针追赶的方法，找到两个指针碰撞点，之后判断碰撞点是否在 B 链表上。如果在，则相交。</p>
-<p>8) 寻找两个相交链表的第一个公共结点。</p>
-<p>答：我们也可以先让把长的链表的头砍掉，让两个链表长度相同，这样，同时遍历也能找到公共结点。此时，时间复杂度 O(m+n)，空间复杂度为 O(MAX(m,n)) 。</p>
-<p>9) 反转链表。</p>
-<p>答：我们使用三个指针，分别指向当前遍历到的结点、它的前一个结点以及后一个结点。在遍历的时候，交换当前结点的尾结点和前一个结点的。</p>
-<p><strong>数组：</strong></p>
-<p>1) 给定一个数组（非递减排序），同时给定一个目标数字，找出这个数字在该数组中第一次出现的位置，如果不存在，返回-1。例如[1,3,5,5,5,5,8,9,13,15]，输入5，返回2，输入8，返回6，输入18，返回-1。</p>
-<p>答：使用二分查找法即可。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*-coding:utf-8 -*-</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">BinarySearch</span><span class="params">(input_list, end, value)</span>:</span></span><br><span class="line">	<span class="keyword">if</span> end == <span class="number">0</span> <span class="keyword">or</span> value &lt; input_list[<span class="number">0</span>] <span class="keyword">or</span> value &gt; input_list[<span class="number">-1</span>]:</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">	left = <span class="number">0</span></span><br><span class="line">	right = end - <span class="number">1</span></span><br><span class="line">	<span class="keyword">while</span> left &lt;= right:</span><br><span class="line">		middle = left + (right - left) // <span class="number">2</span></span><br><span class="line">		<span class="keyword">if</span> input_list[middle] &gt;= value:</span><br><span class="line">			right = middle - <span class="number">1</span></span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			left = middle + <span class="number">1</span></span><br><span class="line"> </span><br><span class="line">	<span class="keyword">return</span> left <span class="keyword">if</span> left &lt; end <span class="keyword">else</span> <span class="number">-1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">	input_list = [<span class="number">1</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">5</span>,<span class="number">5</span>,<span class="number">5</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">13</span>,<span class="number">15</span>]</span><br><span class="line">	target = <span class="number">5</span></span><br><span class="line">	print(BinarySearch(input_list, len(input_list), target))</span><br></pre></td></tr></table></figure>
-<p>运行结果如下图所示：</p>
-<img src="/passages/Offer面试题的一些/images/life_2_2.png">  
-<p>2) 给定一个数组，里面有很多数字（乱序），找出其中最大的 4 个数字。</p>
-<p>答：最简单的办法就是先排序再找出最大的四数，这种方法时间复杂度过高。一个更好的方法是使用堆排序，即维护一个存储最大的4个数的最小堆。</p>
-<p>解析：这的思想和代码可以参考《最小的K个数》，这里仅仅做了一个变形。</p>
-<p>3) 给定一个整数的数组 nums，返回相加为 target 的两个数字的索引值。假设每次输入都只有一个答案，并且不会使用同一个元素两次。</p>
-<p>答：<strong>如果这个数组是已经排序的</strong>，可以使用头指针和尾指针，我们可以定义一个头指针 left，一个尾指针 right 。left 指针指向元素值+ right 指针指向元素值的和为 sum，用 sum 和 target 比较。如果sum &gt; target，说明和大了，那么 right 右指针左移一位，然后重新判断。反之，如果 sum &lt; target，说明和小了，那么 left 左指针右移以为，然后会从新判断。直到找到 sum=target 的情况。<strong>如果没有排序</strong>，可以使用使用哈希表，也就是散列表。</p>
-<p>解析：如果没有排序，这道题就是Leetcode中的一道题。</p>
-<p>4) 给定一个字符串，找到最长无重复子字符串。</p>
-<p>答：定义两个变量 longest 和 left ，longest 用于存储最长子字符串的长度，left 存储无重复子串左边的起始位置。然后创建一个哈希表，遍历整个字符串，如果字符串没有在哈希表中出现，说明没有遇到过该字符，则此时计算最长无重复子串，当哈希表中的值小于 left，说明 left 位置更新了，需要重新计算最长无重复子串。每次在哈希表中将当前字符串对应的赋值加 1 。</p>
-<p>解析：Leetcode中的一道题。</p>
-<p><strong>二叉树：</strong></p>
-<p>1) 给定任意一棵二叉树，假设每个结点之间的距离相等，现从任意叶结点，点燃这颗二叉树，假设结点到结点间的燃烧时间均为 1s，问需要多久能烧完整颗二叉树。</p>
-<p>答：二叉树燃烧，需要向父结点遍历。此外，因为是燃烧整颗二叉树，所以结点间应该是扩散式的同时燃烧。因此思路是找到点燃的叶结点到另一个结点的最大距离。</p>
-<p><strong>其他：</strong></p>
-<p>1) 不使用现成的开根号库函数，如何实现开平方根的操作？</p>
-<p>答：可以使用二分查找法或者牛顿法。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*-coding:utf-8 -*-</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sqrt_binary_search</span><span class="params">(target)</span>:</span></span><br><span class="line">	left = <span class="number">0</span></span><br><span class="line">	right = target</span><br><span class="line">	mid = (left + right) / <span class="number">2</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> abs(mid*mid-target) &gt; <span class="number">0.000001</span>:</span><br><span class="line">		<span class="keyword">if</span> mid*mid == target:</span><br><span class="line">			<span class="keyword">return</span> mid</span><br><span class="line">		<span class="keyword">elif</span> mid*mid &gt; target:</span><br><span class="line">			right = mid</span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			left = mid</span><br><span class="line">		mid = (left + right) / <span class="number">2</span></span><br><span class="line">	<span class="keyword">return</span> mid</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sqrt_newton</span><span class="params">(target)</span>:</span></span><br><span class="line">	k = target</span><br><span class="line">	<span class="keyword">while</span> abs(k*k-target) &gt; <span class="number">0.000001</span>:</span><br><span class="line">		k = <span class="number">0.5</span>*(k+target/k)</span><br><span class="line">	<span class="keyword">return</span> k</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">	print(<span class="string">"二分查找法:"</span>,sqrt_binary_search(<span class="number">64</span>))</span><br><span class="line">	print(<span class="string">"牛顿法:"</span>,sqrt_newton(<span class="number">64</span>))</span><br></pre></td></tr></table></figure>
-<p>运行结果如下图所示：</p>
-<img src="/passages/Offer面试题的一些/images/life_2_1.png">  
-<p>2) 一个自然序列，从0开始，去掉凡是出现8和9的数，请问去掉后的序列中的第2018个数是多少？</p>
-<p>答：这道题只要理解题意就好了，怎奈我当时紧张，感觉答的不好，其实事后仔细一想还是蛮简单的。例如去掉后的序列为：0，1，2，3，4，5，6，7，10，11，12，13，14，15，16，17，20，21，22，23，24，25，26，27，30，31，32，33，34，35，36，37···。通过数字规律，会发现，其实这个就是10进制转8进制，第9个数是10，第17个数是20，第25个数是30。那么，第2018个数是多少？用除八取余法，得3742。而第2018个数，应该是3742-1=3741。</p>
-<p>3) EXCEL中，列序是有规律的。A，B，C···，Z，接着是AA，AB，···，AZ，再接着是BA，BB，···，BZ。这样一直循环下去，等到有三位的时候就是从AAA开始。请问，第2018个数对应的序列号是多少？</p>
-<p>答：这道题还是进制转换问题，是10进制转26进制。比如第27个数：27除以26为1余1，那么结果就是AA，第53个数：53除以26为2余1，那么结果就是BA。同理，第2018个数：使用除26取余法，得到最终结果为BYP。</p>
-<h3 id="4、机器学习"><a href="#4、机器学习" class="headerlink" title="4、机器学习"></a>4、机器学习</h3><p>1) 什么是归一化，归一化的作用是什么？</p>
-<p>答：<strong>归一化</strong>是将数据变为(0,1)之间的小数，主要是为了数据处理方便，把数据映射到0~1范围之内处理，处理起来可以更加便捷快速。<strong>归一化的作用</strong>是把有量纲表达式变为无量纲表达式，归一化是一种简化计算的方式，即将有量纲的表达式，经过变化，化为无量纲的表达式，成为纯量。同时，提高迭代求解的收敛速度，提高迭代求解的精度。</p>
-<p><strong>相应扩展：</strong></p>
-<p>深度学习中的归一化应该怎么理解？</p>
-<p>答：神经网络学习过程的本质是为了学习数据分布，一旦训练数据与测试数据的分布不同，那么网络的泛化能力也大大降低；另一方面，一旦每批训练数据的分布各不相同，那么网络就要在每次迭代都去学习适应不同的分布，这样会大大降低网络的训练速度，这也正是为什么我们需要对数据进行归一化处理的原因。对于深度网络的训练是一个复杂的过程，只要网络的前面几层发生微小的改变，那么后面几层就会被累积放大下去。一旦网络某一层的输入数据的分布发生改变，那么这一层网络就需要去适应学习这个新的数据分布，所以如果训练过程中，训练数据的分布一直在发生变化，那么将会影响网络的训练速度。因此，我们一般会对输入数据进行”白化”除理，使得它的均值是0，方差是1。</p>
-<p>2) 标准化是什么？</p>
-<p>答：数据的标准化是将数据按比例缩放，使之落入一个小的特定区间。由于信用指标体系的各个指标度量单位是不同的，为了能够将指标参与评价计算，需要对指标进行规范化处理，通过函数变化将其数值映射到某个数值区间。</p>
-<p><strong>相应扩展：</strong></p>
-<p>常见的数据归一化方法有哪些？</p>
-<p>答：min-max标准化、z-score标准化等。</p>
-<p>对于数据标准化/归一化的详细内容，可以参见：</p>
-<p><a href="https://blog.csdn.net/pipisorry/article/details/52247379" target="_blank" rel="noopener">https://blog.csdn.net/pipisorry/article/details/52247379</a></p>
-<p>3) 在推导公式的时候，要向量化，这是什么意思？</p>
-<p>答：其实就是将多组数据，放到一个矩阵里，进行矩阵运算。因为如果是一条一条遍历计算参数，需要用到for循环，这样很浪费时间。python的第三方库提供了很好的矩阵计算支持，我们完全可以把多组数据放到一个矩阵里，这样可以实现多组数据同时计算。这个向量化推导，就是根据一条数据计算公式推导出矩阵运算公式，这样可以方便我们写代码。</p>
-<p>4) 在逻辑回归中，我们使用的是sigmoid函数，知道sigmoid函数吧？</p>
-<p>答：知道。</p>
-<p>继续问：那么tanh函数和它有什么区别呢？</p>
-<p>答：它们的值域不同，sigmoid函数将输出映射到0~1的范围内，而tanh函数将输出映射到-1~1的范围内。同时，它们过零点的值也不同，sigmoid函数的过零点的值为0.5，tanh函数过零点的值为0。当我们更偏向于当激活函数的输入是0时，输出也是0的函数时候，就需要使用tanh函数，而非sigmoid函数。</p>
-<p>5) SVM和Logistic的区别？</p>
-<p>答：（1）SVM不是概率输出，Logistic Regression是概率输出。也就是说，当一个新样本来了，SVM只会告诉你它的分类，而Logistic Regression会告诉你它属于某类的概率！（2）异常点的鲁棒性问题。当训练样本中存在异常点时，由于Logistic Regression的lost function中有每一个点的贡献，所以某种程度上“削弱了”异常点的贡献。而SVM只需要考虑支持向量，此时支持向量本来就不是很多的情况下，几个异常点就很有可能极大影响SVM的表现。（3）目标函数不同。Logistic Regression使用cross entropy loss，互熵损失。而SVM使用hinge loss，铰链损失。（4）实际问题中，如果数据量非常大，特征维度很高，使用SVM搞不定时，还是用Logistic Regression吧，速度更快一些。</p>
-<p>6) 常见的损失函数有哪些？</p>
-<ul>
-<li>铰链损失（Hinge Loss）：主要用于支持向量机（SVM） 中；</li>
-<li>互熵损失 （Cross Entropy Loss，Softmax Loss ）：用于Logistic 回归与Softmax 分类中；</li>
-<li>平方损失（Square Loss）：主要是最小二乘法（OLS）中；</li>
-<li>指数损失（Exponential Loss） ：主要用于Adaboost 集成学习算法中；</li>
-<li>其他损失（如0-1损失，绝对值损失）。</li>
-</ul>
-<p>参考链接：<a href="https://blog.csdn.net/u010976453/article/details/78488279" target="_blank" rel="noopener">https://blog.csdn.net/u010976453/article/details/78488279</a></p>
-<p>7) GBDT和XGBOOST的区别有哪些？</p>
-<ul>
-<li>传统GBDT以CART作为基分类器，xgboost还支持线性分类器，这个时候xgboost相当于带L1和L2正则化项的逻辑斯蒂回归（分类问题）或者线性回归（回归问题）。</li>
-<li>传统GBDT在优化时只用到一阶导数信息，xgboost则对代价函数进行了二阶泰勒展开，同时用到了一阶和二阶导数。顺便提一下，xgboost工具支持自定义代价函数，只要函数可一阶和二阶求导。</li>
-<li>xgboost在代价函数里加入了正则项，用于控制模型的复杂度。正则项里包含了树的叶子节点个数、每个叶子节点上输出的score的L2模的平方和。从Bias-variance tradeoff角度来讲，正则项降低了模型的variance，使学习出来的模型更加简单，防止过拟合，这也是xgboost优于传统GBDT的一个特性。</li>
-<li>Shrinkage（缩减），相当于学习速率（xgboost中的eta）。xgboost在进行完一次迭代后，会将叶子节点的权重乘上该系数，主要是为了削弱每棵树的影响，让后面有更大的学习空间。实际应用中，一般把eta设置得小一点，然后迭代次数设置得大一点。（补充：传统GBDT的实现也有学习速率）</li>
-<li><p>列抽样（column subsampling）。xgboost借鉴了随机森林的做法，支持列抽样，不仅能降低过拟合，还能减少计算，这也是xgboost异于传统gbdt的一个特性。</p>
-</li>
-<li><p>对缺失值的处理。对于特征的值有缺失的样本，xgboost可以自动学习出它的分裂方向。</p>
-</li>
-<li><p>xgboost工具支持并行。boosting不是一种串行的结构吗?怎么并行的？注意xgboost的并行不是tree粒度的并行，xgboost也是一次迭代完才能进行下一次迭代的（第t次迭代的代价函数里包含了前面t-1次迭代的预测值）。xgboost的并行是在特征粒度上的。我们知道，决策树的学习最耗时的一个步骤就是对特征的值进行排序（因为要确定最佳分割点），xgboost在训练之前，预先对数据进行了排序，然后保存为block结构，后面的迭代中重复地使用这个结构，大大减小计算量。这个block结构也使得并行成为了可能，在进行节点的分裂时，需要计算每个特征的增益，最终选增益最大的那个特征去做分裂，那么各个特征的增益计算就可以开多线程进行。</p>
-</li>
-<li><p>可并行的近似直方图算法。树节点在进行分裂时，我们需要计算每个特征的每个分割点对应的增益，即用贪心法枚举所有可能的分割点。当数据无法一次载入内存或者在分布式情况下，贪心算法效率就会变得很低，所以xgboost还提出了一种可并行的近似直方图算法，用于高效地生成候选的分割点。</p>
-</li>
-</ul>
-<p>参考自：<a href="https://blog.csdn.net/u010976453/article/details/78488279" target="_blank" rel="noopener">https://www.zhihu.com/question/41354392</a></p>
-<h3 id="5、深度学习"><a href="#5、深度学习" class="headerlink" title="5、深度学习"></a>5、深度学习</h3><p><strong>目标检测算法相关：</strong></p>
-<p>1) 简述下 YOLO 算法原理？</p>
-<p>答：Yolo算法采用一个单独的CNN模型实现end-to-end的目标检测，模型参考自GoogleNet，YOLO的CNN网络将输入的图片分割成SxS的网络，然后每个单元格负责去检测那些中心点落在该格子内的目标。每个单元格会预测B个边界框（bounding box）以及边界框的置信度（confidence score）。所谓置信度其实包含两个方面，一是这个边界框含有目标的可能性大小，二是这个边界框的准确度，边界框的准确度可以用预测框与实际框（ground truth）的IOU（intersection over union，交并比）来表征。边界框的大小与位置可以用4个值来表征：（x,y,w,h），其中(x,y)是边界框的中心坐标，而(w,h)是边界框的宽与高。还有一点要注意，中心坐标的预测值(x,y)是相对于每个单元格左上角坐标点的偏移值，并且单位是相对于单元格大小的，而(w,h)预测值是相对于整个图片的宽与高的比例。这样，每个边界框的预测值实际上包含5个元素：(x,y,w,h,c)，其中前4个表征边界框的大小与位置，而最后一个值是置信度。每个单元格需要预测 (B<em>5+C) 个值。如果将输入图片划分为 S</em>S 网格，那么最终预测值为 S<em>S</em>(B<em>5+C) 大小的张量。对于PASCAL VOC数据，其共有20个类别，如果使用 S=7,B=2 ，那么最终的预测结果就是 7</em>7*30大小的张量。</p>
-<p>2) 相对于YOLO，YOLO v2有哪些改进？</p>
-<ul>
-<li>首先，将dropout层去掉，在每个卷积层添加了Batch Normalization，mAP提高了2%；</li>
-<li>其次，使用高分辨率分类器，将输入分辨率数据有224<em>224变为448</em>448，mAP提高了4%；</li>
-<li>第三，引入anchor boxes来预测bounding boxes，去掉网络中的全连接层。准确率只有小幅度的下降，而召回率则提升了7%，说明可以通过进一步的工作来加强准确率，的确有改进空间；</li>
-<li>第四，使用维度聚类，本文使用K-means聚类方法训练bounding boxes，可以自行找到更好的boxes宽高维度；同时使用直接位置预测(Direct lacation prediction)，将定位预测值归一化，使参数更容易得到学习，模型更加稳定。作者使用Dimension Clusters和Direct location prediction这两项anchor boxes改进方法，mAP获得了5%的提升。</li>
-<li>第五，增加细粒度特征(Fine-Grained Feature)，是模型获得多尺度的适应性，简单添加了一个转移层（ passthrough layer），这一层要把浅层特征图（分辨率为26 * 26，是底层分辨率4倍）连接到深层特征图。这样做相当于做了一次特征融合，有利于检测小目标。</li>
-<li>最后，多尺度训练(Multi-Scale Training)，方法就是几次迭代之后就会微调网络，每过10次训练（10 epoch），就会随机选择新的图片尺寸。YOLO网络使用的降采样参数为32，那么就使用32的倍数进行尺度池化{320,352，…，608}。最终最小的尺寸为320 <em> 320，最大的尺寸为608 </em> 608。接着按照输入尺寸调整网络进行训练。这种机制使得网络可以更好地预测不同尺寸的图片，意味着同一个网络可以进行不同分辨率的检测任务，在小尺寸图片上YOLOv2运行更快，在速度和精度上达到了平衡。</li>
-</ul>
-<p>3) 深度学习方法与传统机器学习方法的区别是什么？</p>
-<p>答：机器学习包括深度学习，深度学习是使用卷积层<strong>学习特征</strong>，而非像机器学习那样需要人为<strong>提取特征</strong>，深度学习可以自行学习到更深层次的特征。机器学习方法的各个公式有数学理论推导支持，深度学习方法就像一个黑匣子，缺少数学理论支持。</p>
-<p>4) YOLO的损失函数是什么？</p>
-<p>答：YOLO算法将目标检测看成回归问题，采用的是均方差损失函数。公式如下图所示：</p>
-<img src="/passages/Offer面试题的一些/images/life_2_3.jpg">  
-<h3 id="6、业务场景"><a href="#6、业务场景" class="headerlink" title="6、业务场景"></a>6、<strong>业务场景</strong></h3><p>种这题目也是常出题目，会给定你一个场景来提问。</p>
-<p>1) 如果给了你很多数据，这些数据已经标注好，即已经做好分类，现在让你训练出一个模型，用于区分新来的数据属于哪一类，你需要怎么做呢？可以说下详细的流程吗？</p>
-<p>答：首先这是一个分类问题，首先应该想到的是可以尝试使用常用的分类算法，例如朴素贝叶斯、决策树或者SVM。拿到数据之后，做的第一件事就是特征工程。然后将数据分类两部分，一部分用于训练，另一部分用于测试，即分为训练集和测试集，不混用。其实，使用什么分类算法倒是其次，重要在于选好特征，对于给定的特征，需要做一些过滤，比如一些干扰数据，如果对于结果影响很大，可以尝试舍弃这些数据。除此之外，看看是否需要对数据进行归一化处理，将数据无量纲化。然后对已经处理好的特征，送入分类算法中，让其学习。最后，可以通过查看测试集的预测准确度，对一些算法必要参数进行优化调试。</p>
-<p>解析：我当时差不多就是这么回答的，只要有的说，让面试官认为你做过相关工作即可。</p>
-<p>2) 如果给你1亿个数据，让你找出其中第 1000 大的数据，你会怎么做？我们先不考虑多进程和多线程，也不考虑数据库，如何在算法方面给出思路呢？</p>
-<p>答：可以使用堆排序，创建一个存储1000个数据的小根堆。先将1亿个数据的前1000个数据放入这个小根堆中，然后继续遍历，对于新插入的数据，需要与小根堆的最小值进行比较，如果待插入的数据比这个最小值还小，那么不插入，如果比这个最小值大，那么就插入该数，并重新调整小根堆，随后继续使用此方法遍历整个数据。遍历一次数据后，就得到了前1000大的数据，然后输出小根堆的最小值，即根值，即可得到第1000大的数据。</p>
-<p>PS：还有一种思路，有就是利用 MapReduce，实际工作中，非常常用的工具。</p>
-<h2 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h2><ul>
-<li>本文总结的题目，都是我当初刚参加工作面试遇到的一些常规题目，例如 YOLO 系列算法，现在已经出了 YOLO v3、YOLO v4 ，有新算法就得看，需要跟进最新的进展。</li>
-<li>临阵磨枪，不快也光。面试前，看一看自己的笔记，没准面试的时候正好碰到。</li>
-<li>好好准备，祝在座的各位，人人都是 offer 收割机。</li>
-</ul>
-
+          <!--noindex-->
           
+            <div class="post-button text-center">
+              <a class="btn" href="/passages/Offer面试题的一些/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
         
       
     </div>
