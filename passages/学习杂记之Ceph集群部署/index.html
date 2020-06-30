@@ -1,0 +1,1798 @@
+<!--崩溃欺骗-->
+<script type="text/javascript" src="/js/src/crash_cheat.js"></script>
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="pM3LIEUO3X">
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/faviconz.ico?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="CentOS7下安装Ceph供Kubernetes使用环境说明1234系统：CentOS7，一个非系统分区分配给cephdocker：18.06-cekubernetes：1.11.3ceph：luminous Ceph部署准备">
+<meta name="keywords" content="学习杂记,Ceph">
+<meta property="og:type" content="article">
+<meta property="og:title" content="学习杂记之Ceph集群部署">
+<meta property="og:url" content="https://www.sheldonlu.com/passages/学习杂记之Ceph集群部署/index.html">
+<meta property="og:site_name" content="Sheldon_Lu">
+<meta property="og:description" content="CentOS7下安装Ceph供Kubernetes使用环境说明1234系统：CentOS7，一个非系统分区分配给cephdocker：18.06-cekubernetes：1.11.3ceph：luminous Ceph部署准备">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-06-30T13:40:33.248Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="学习杂记之Ceph集群部署">
+<meta name="twitter:description" content="CentOS7下安装Ceph供Kubernetes使用环境说明1234系统：CentOS7，一个非系统分区分配给cephdocker：18.06-cekubernetes：1.11.3ceph：luminous Ceph部署准备">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://www.sheldonlu.com/passages/学习杂记之Ceph集群部署/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>学习杂记之Ceph集群部署 | Sheldon_Lu</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sheldon_Lu</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.sheldonlu.com/passages/学习杂记之Ceph集群部署/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sheldon Lu">
+      <meta itemprop="description" content="静下心来写点东西">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sheldon_Lu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">学习杂记之Ceph集群部署
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-09-03 23:31:00" itemprop="dateCreated datePublished" datetime="2019-09-03T23:31:00+08:00">2019-09-03</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2020-06-30 21:40:33" itemprop="dateModified" datetime="2020-06-30T21:40:33+08:00">2020-06-30</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Study/" itemprop="url" rel="index"><span itemprop="name">Study</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/passages/学习杂记之Ceph集群部署/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/passages/学习杂记之Ceph集群部署/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/passages/学习杂记之Ceph集群部署/" class="leancloud_visitors" data-flag-title="学习杂记之Ceph集群部署">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Views: </span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article">36k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">33 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="CentOS7下安装Ceph供Kubernetes使用"><a href="#CentOS7下安装Ceph供Kubernetes使用" class="headerlink" title="CentOS7下安装Ceph供Kubernetes使用"></a>CentOS7下安装Ceph供Kubernetes使用</h3><h4 id="环境说明"><a href="#环境说明" class="headerlink" title="环境说明"></a>环境说明</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">系统：CentOS7，一个非系统分区分配给ceph</span><br><span class="line">docker：18.06-ce</span><br><span class="line">kubernetes：1.11.3</span><br><span class="line">ceph：luminous</span><br></pre></td></tr></table></figure>
+<h4 id="Ceph部署准备"><a href="#Ceph部署准备" class="headerlink" title="Ceph部署准备"></a>Ceph部署准备<a id="more"></a></h4><h5 id="节点规划"><a href="#节点规划" class="headerlink" title="节点规划"></a>节点规划</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">192.168.105.92 lab1  # master1</span><br><span class="line">192.168.105.93 lab2  # master2</span><br><span class="line">192.168.105.94 lab3  # master3</span><br><span class="line">192.168.105.95 lab4  # node4</span><br><span class="line">192.168.105.96 lab5  # node5</span><br><span class="line">192.168.105.97 lab6  # node6</span><br><span class="line">192.168.105.98 lab7  # node7</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">监控节点：lab1、lab2、lab3</span><br><span class="line">OSD节点：lab4、lab5、lab6、lab7</span><br><span class="line">MDS节点：lab4</span><br></pre></td></tr></table></figure>
+<h5 id="添加yum源"><a href="#添加yum源" class="headerlink" title="添加yum源"></a>添加yum源</h5><p>我们使用阿里云yum源：(CeontOS和epel也是阿里云yum源)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/yum.repos.d/ceph.repo</span><br><span class="line">[Ceph]</span><br><span class="line">name=Ceph packages for $basearch</span><br><span class="line">baseurl=https://mirrors.aliyun.com/ceph/rpm-luminous/el7/$basearch</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=1</span><br><span class="line">type=rpm-md</span><br><span class="line">gpgkey=https://mirrors.aliyun.com/ceph/keys/release.asc</span><br><span class="line"></span><br><span class="line">[Ceph-noarch]</span><br><span class="line">name=Ceph noarch packages</span><br><span class="line">baseurl=https://mirrors.aliyun.com/ceph/rpm-luminous/el7/noarch</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=1</span><br><span class="line">type=rpm-md</span><br><span class="line">gpgkey=https://mirrors.aliyun.com/ceph/keys/release.asc</span><br><span class="line"></span><br><span class="line">[ceph-source]</span><br><span class="line">name=Ceph source packages</span><br><span class="line">baseurl=https://mirrors.aliyun.com/ceph/rpm-luminous/el7/SRPMS</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=1</span><br><span class="line">type=rpm-md</span><br><span class="line">gpgkey=https://mirrors.aliyun.com/ceph/keys/release.asc</span><br></pre></td></tr></table></figure>
+<p>注意：ceph集群中节点都需要添加该yum源</p>
+<h5 id="安装Ceph部署工具"><a href="#安装Ceph部署工具" class="headerlink" title="安装Ceph部署工具"></a>安装Ceph部署工具</h5><p><strong>以下操作在lab1上root用户操作</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">安装 ceph-deploy</span><br><span class="line">yum -y install ceph-deploy</span><br></pre></td></tr></table></figure>
+<h5 id="安装时间同步工具chrony"><a href="#安装时间同步工具chrony" class="headerlink" title="安装时间同步工具chrony"></a>安装时间同步工具chrony</h5><p>以下操作在所有ceph节点root用户操作</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">yum -y install chrony</span><br><span class="line">systemctl start chronyd</span><br><span class="line">systemctl enable chronyd</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 修改/etc/chrony.conf前面的server段为如下</span><br><span class="line">server ntp1.aliyun.com iburst</span><br><span class="line">server ntp2.aliyun.com iburst</span><br><span class="line">server ntp3.aliyun.com iburst</span><br><span class="line">server ntp4.aliyun.com iburst</span><br></pre></td></tr></table></figure>
+<h5 id="安装SSH服务"><a href="#安装SSH服务" class="headerlink" title="安装SSH服务"></a>安装SSH服务</h5><p>默认已正常运行，略</p>
+<h5 id="创建部署-CEPH-的用户"><a href="#创建部署-CEPH-的用户" class="headerlink" title="创建部署 CEPH 的用户"></a>创建部署 CEPH 的用户</h5><p><strong>以下操作在所有ceph节点root用户操作</strong></p>
+<p>ceph-deploy 工具必须以普通用户登录 Ceph 节点，且此用户拥有无密码使用 sudo 的权限，因为它需要在安装软件及配置文件的过程中，不必输入密码。</p>
+<p>较新版的 ceph-deploy 支持用 –username 选项提供可无密码使用 sudo 的用户名（包括 root ，虽然不建议这样做）。使用 ceph-deploy –username {username} 命令时，指定的用户必须能够通过无密码 SSH 连接到 Ceph 节点，因为 ceph-deploy 中途不会提示输入密码。</p>
+<p>建议在集群内的所有 Ceph 节点上给 ceph-deploy 创建一个特定的用户，但不要用 “ceph” 这个名字。全集群统一的用户名可简化操作（非必需），然而你应该避免使用知名用户名，因为黑客们会用它做暴力破解（如 root 、 admin 、 {productname} ）。后续步骤描述了如何创建无 sudo 密码的用户，你要用自己取的名字替换 {username} 。</p>
+<p>注意：<br>从 Infernalis 版起，用户名 “ceph” 保留给了 Ceph 守护进程。如果 Ceph 节点上已经有了 “ceph” 用户，升级前必须先删掉这个用户。</p>
+<p><strong>我们使用用户名ceph-admin</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">username="ceph-admin"</span><br><span class="line">useradd $&#123;username&#125; &amp;&amp; echo 'PASSWORD' | passwd $&#123;ceph-admin&#125; --stdinecho "$&#123;username&#125; ALL = (root) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/$&#123;username&#125;</span><br><span class="line">chmod 0440 /etc/sudoers.d/$&#123;username&#125;</span><br><span class="line">chmod a+x /etc/sudoers.d/</span><br></pre></td></tr></table></figure>
+<h5 id="允许无密码-SSH-登录"><a href="#允许无密码-SSH-登录" class="headerlink" title="允许无密码 SSH 登录"></a>允许无密码 SSH 登录</h5><p>以下操作在lab1节点ceph-admin用户操作</p>
+<p>正因为 ceph-deploy 不支持输入密码，你必须在管理节点上生成 SSH 密钥并把其公钥分发到各 Ceph 节点。 ceph-deploy 会尝试给初始 monitors 生成 SSH 密钥对。</p>
+<p>生成 SSH 密钥对，但不要用 sudo 或 root 用户。提示 “Enter passphrase” 时，直接回车，口令即为空：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">su - ceph-admin  # 切换到此用户，因为ceph-deploy也用此用户</span><br><span class="line">ssh-keygen</span><br><span class="line"></span><br><span class="line">Generating public/private rsa key pair.</span><br><span class="line">Enter file in which to save the key (/home/ceph-admin/.ssh/id_rsa): </span><br><span class="line">/home/ceph-admin/.ssh/id_rsa already exists.</span><br><span class="line">Overwrite (y/n)? y</span><br><span class="line">Enter passphrase (empty for no passphrase): </span><br><span class="line">Enter same passphrase again: </span><br><span class="line">Your identification has been saved in /home/ceph-admin/.ssh/id_rsa.</span><br><span class="line">Your public key has been saved in /home/ceph-admin/.ssh/id_rsa.pub.</span><br><span class="line">The key fingerprint is:</span><br></pre></td></tr></table></figure>
+<p>把公钥拷贝到各 Ceph 节点，把下列命令中的 {username} 替换成前面创建部署 Ceph 的用户里的用户名。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">username="ceph-admin"</span><br><span class="line">ssh-copy-id $&#123;username&#125;@lab1</span><br><span class="line">ssh-copy-id $&#123;username&#125;@lab2</span><br><span class="line">ssh-copy-id $&#123;username&#125;@lab3</span><br></pre></td></tr></table></figure>
+<p>（推荐做法）修改 ceph-deploy 管理节点上的 ~/.ssh/config 文件，这样 ceph-deploy 就能用你所建的用户名登录 Ceph 节点了，而无需每次执行 ceph-deploy 都要指定 –username {username} 。这样做同时也简化了 ssh 和 scp 的用法。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Host lab1</span><br><span class="line">   Hostname lab1</span><br><span class="line">   User ceph-admin</span><br><span class="line">Host lab2</span><br><span class="line">   Hostname lab2</span><br><span class="line">   User ceph-admin</span><br><span class="line">Host lab3</span><br><span class="line">   Hostname lab3</span><br><span class="line">   User ceph-admin</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Bad owner or permissions on /home/ceph-admin/.ssh/config</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 需要用chmod 600 ~/.ssh/config解决。</span><br></pre></td></tr></table></figure>
+<h5 id="开放所需端口"><a href="#开放所需端口" class="headerlink" title="开放所需端口"></a>开放所需端口</h5><blockquote>
+<p>以下操作在所有监视器节点<code>root</code>用户操作</p>
+</blockquote>
+<p>Ceph Monitors 之间默认使用 <code>6789</code> 端口通信， OSD 之间默认用 6800:7300 这个范围内的端口通信。</p>
+<p><code>firewall-cmd --zone=public --add-port=6789/tcp --permanent &amp;&amp; firewall-cmd --reload</code></p>
+<h5 id="终端（-TTY-）"><a href="#终端（-TTY-）" class="headerlink" title="终端（ TTY ）"></a>终端（ TTY ）</h5><blockquote>
+<p>以下操作在所有ceph节点root用户操作</p>
+</blockquote>
+<p>在 CentOS 和 RHEL 上执行 ceph-deploy 命令时可能会报错。如果你的 Ceph 节点默认设置了 requiretty ，执行 sudo visudo 禁用它，并找到 Defaults requiretty 选项，把它改为 Defaults:ceph !requiretty 或者直接注释掉，这样 ceph-deploy 就可以用之前创建的用户（创建部署 Ceph 的用户 ）连接了。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -i -r 's@Defaults(.*)!visiblepw@Defaults:ceph-admin\1!visiblepw@g' /etc/sudoers</span><br></pre></td></tr></table></figure>
+<h5 id="SELINUX"><a href="#SELINUX" class="headerlink" title="SELINUX"></a>SELINUX</h5><blockquote>
+<p>以下操作在所有ceph节点root用户操作</p>
+</blockquote>
+<p>如果原来是开启的，需要重启生效。</p>
+<p>永久关闭 修改/etc/sysconfig/selinux文件设置</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -i 's/SELINUX=.*/SELINUX=disabled/' /etc/sysconfig/selinux</span><br></pre></td></tr></table></figure>
+<h5 id="整理以上所有ceph节点操作"><a href="#整理以上所有ceph节点操作" class="headerlink" title="整理以上所有ceph节点操作"></a>整理以上所有ceph节点操作</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">yum -y install chrony</span><br><span class="line">systemctl start chronyd</span><br><span class="line">systemctl enable chronyd</span><br><span class="line"></span><br><span class="line">username="ceph-admin"</span><br><span class="line">useradd $&#123;username&#125; &amp;&amp; echo 'PASSWORD' | passwd $&#123;username&#125; --stdin</span><br><span class="line">echo "$&#123;username&#125; ALL = (root) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/$&#123;username&#125;</span><br><span class="line">chmod 0440 /etc/sudoers.d/$&#123;username&#125;</span><br><span class="line">chmod a+x /etc/sudoers.d/</span><br><span class="line">sed -i -r 's@Defaults(.*)!visiblepw@Defaults:ceph-admin\1!visiblepw@g' /etc/sudoers</span><br><span class="line">sed -i 's/SELINUX=.*/SELINUX=disabled/' /etc/sysconfig/selinux</span><br><span class="line">yum -y install ceph</span><br></pre></td></tr></table></figure>
+<h4 id="存储集群部署"><a href="#存储集群部署" class="headerlink" title="存储集群部署"></a>存储集群部署</h4><blockquote>
+<p>以下操作在lab节点<code>ceph-admin</code>用户操作</p>
+</blockquote>
+<p>我们创建一个 Ceph 存储集群，它有一个 Monitor 和两个 OSD 守护进程。一旦集群达到 active + clean 状态，再扩展它：增加第三个 OSD 、增加元数据服务器和两个 Ceph Monitors。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">su - ceph-admin</span><br><span class="line">mkdir ceph-cluster</span><br></pre></td></tr></table></figure>
+<p>如果在某些地方碰到麻烦，想从头再来，可以用下列命令清除配置：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ceph-deploy purgedata &#123;ceph-node&#125; [&#123;ceph-node&#125;]</span><br><span class="line">ceph-deploy forgetkeys</span><br><span class="line">rm -rf /etc/ceph/*</span><br><span class="line">rm -rf /var/lib/ceph/*/*</span><br><span class="line">rm -rf /var/log/ceph/*</span><br><span class="line">rm -rf /var/run/ceph/*</span><br></pre></td></tr></table></figure>
+<h5 id="创建集群并准备配置"><a href="#创建集群并准备配置" class="headerlink" title="创建集群并准备配置"></a>创建集群并准备配置</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ceph-cluster</span><br><span class="line">ceph-deploy new lab1</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[ceph-admin@lab1 ceph-cluster]$ ls -l</span><br><span class="line">total 24</span><br><span class="line">-rw-rw-r-- 1 ceph-admin ceph-admin   196 Aug 17 14:31 ceph.conf</span><br><span class="line">-rw-rw-r-- 1 ceph-admin ceph-admin 12759 Aug 17 14:31 ceph-deploy-ceph.log</span><br><span class="line">-rw------- 1 ceph-admin ceph-admin    73 Aug 17 14:31 ceph.mon.keyring</span><br><span class="line">[ceph-admin@lab1 ceph-cluster]$ more ceph.mon.keyring </span><br><span class="line">[mon.]</span><br><span class="line">key = AQC2a3ZbAAAAABAAor15nkYQCXuC681B/Q53og==</span><br><span class="line">caps mon = allow *</span><br><span class="line">[ceph-admin@lab1 ceph-cluster]$ more ceph.conf </span><br><span class="line">[global]</span><br><span class="line">fsid = fb212173-233c-4c5e-a98e-35be9359f8e2</span><br><span class="line">mon_initial_members = lab1</span><br><span class="line">mon_host = 192.168.105.92</span><br><span class="line">auth_cluster_required = cephx</span><br><span class="line">auth_service_required = cephx</span><br><span class="line">auth_client_required = cephx</span><br></pre></td></tr></table></figure>
+<p>把 Ceph 配置文件里的默认副本数从 3 改成 2 ，这样只有两个 OSD 也可以达到 active + clean 状态。把下面这行加入 [global] 段：</p>
+<p><code>osd pool default size = 2</code></p>
+<p>再把 <code>public network</code> 写入 Ceph 配置文件的<code>[global]</code>段下</p>
+<p><code>public network = 192.168.105.0/24</code></p>
+<p>安装 Ceph</p>
+<p><code>ceph-deploy install lab1 lab4 lab5 --no-adjust-repos</code></p>
+<p>配置monitor(s)并收集所有密钥：</p>
+<p><code>ceph-deploy mon create-initial</code></p>
+<p>完成上述操作后，当前目录里应该会出现这些密钥环：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br></pre></td><td class="code"><pre><span class="line">[ceph-admin@lab1 ceph-cluster]$ ceph-deploy mon create-initial</span><br><span class="line">[ceph_deploy.conf][DEBUG ] found configuration file at: /home/ceph-admin/.cephdeploy.conf</span><br><span class="line">[ceph_deploy.cli][INFO ] Invoked (2.0.1): /bin/ceph-deploy mon create-initial</span><br><span class="line">[ceph_deploy.cli][INFO ] ceph-deploy options:</span><br><span class="line">[ceph_deploy.cli][INFO ]  username                      : None</span><br><span class="line">[ceph_deploy.cli][INFO ]  verbose                       : False</span><br><span class="line">[ceph_deploy.cli][INFO ]  overwrite_conf                : False</span><br><span class="line">[ceph_deploy.cli][INFO ]  subcommand                    : create-initial</span><br><span class="line">[ceph_deploy.cli][INFO ]  quiet                         : False</span><br><span class="line">[ceph_deploy.cli][INFO ]  cd_conf                       : &lt;ceph_deploy.conf.cephdeploy.Conf instance at 0x1160f38&gt;</span><br><span class="line">[ceph_deploy.cli][INFO ]  cluster                       : ceph</span><br><span class="line">[ceph_deploy.cli][INFO ]  func                          : &lt;function mon at 0x115c2a8&gt;</span><br><span class="line">[ceph_deploy.cli][INFO ]  ceph_conf                     : None</span><br><span class="line">[ceph_deploy.cli][INFO ]  default_release               : False</span><br><span class="line">[ceph_deploy.cli][INFO ]  keyrings                      : None</span><br><span class="line">[ceph_deploy.mon][DEBUG ] Deploying mon, cluster ceph hosts lab1</span><br><span class="line">[ceph_deploy.mon][DEBUG ] detecting platform for host lab1 ...</span><br><span class="line">[lab1][DEBUG ] connection detected need for sudo</span><br><span class="line">[lab1][DEBUG ] connected to host: lab1 </span><br><span class="line">[lab1][DEBUG ] detect platform information from remote host</span><br><span class="line">[lab1][DEBUG ] detect machine type</span><br><span class="line">[lab1][DEBUG ] find the location of an executable</span><br><span class="line">[ceph_deploy.mon][INFO ] distro info: CentOS Linux 7.5.1804 Core</span><br><span class="line">[lab1][DEBUG ] determining if provided host has same hostname in remote</span><br><span class="line">[lab1][DEBUG ] get remote short hostname</span><br><span class="line">[lab1][DEBUG ] deploying mon to lab1</span><br><span class="line">[lab1][DEBUG ] get remote short hostname</span><br><span class="line">[lab1][DEBUG ] remote hostname: lab1</span><br><span class="line">[lab1][DEBUG ] write cluster configuration to /etc/ceph/&#123;cluster&#125;.conf</span><br><span class="line">[lab1][DEBUG ] create the mon path if it does not exist</span><br><span class="line">[lab1][DEBUG ] checking for done path: /var/lib/ceph/mon/ceph-lab1/done</span><br><span class="line">[lab1][DEBUG ] done path does not exist: /var/lib/ceph/mon/ceph-lab1/done</span><br><span class="line">[lab1][INFO ] creating keyring file: /var/lib/ceph/tmp/ceph-lab1.mon.keyring</span><br><span class="line">[lab1][DEBUG ] create the monitor keyring file</span><br><span class="line">[lab1][INFO ] Running command: sudo ceph-mon --cluster ceph --mkfs -i lab1 --keyring /var/lib/ceph/tmp/ceph-lab1.mon.keyring --setuser 167 --setgroup 167</span><br><span class="line">[lab1][INFO ] unlinking keyring file /var/lib/ceph/tmp/ceph-lab1.mon.keyring</span><br><span class="line">[lab1][DEBUG ] create a done file to avoid re-doing the mon deployment</span><br><span class="line">[lab1][DEBUG ] create the init path if it does not exist</span><br><span class="line">[lab1][INFO ] Running command: sudo systemctl enable ceph.target</span><br><span class="line">[lab1][INFO ] Running command: sudo systemctl enable ceph-mon@lab1</span><br><span class="line">[lab1][INFO ] Running command: sudo systemctl start ceph-mon@lab1</span><br><span class="line">[lab1][INFO ] Running command: sudo ceph --cluster=ceph --admin-daemon /var/run/ceph/ceph-mon.lab1.asok mon_status</span><br><span class="line">[lab1][DEBUG ] ********************************************************************************</span><br><span class="line">[lab1][DEBUG ] status for monitor: mon.lab1</span><br><span class="line">[lab1][DEBUG ] &#123;</span><br><span class="line">[lab1][DEBUG ]   "election_epoch": 3, </span><br><span class="line">[lab1][DEBUG ]   "extra_probe_peers": [], </span><br><span class="line">[lab1][DEBUG ]   "feature_map": &#123;</span><br><span class="line">[lab1][DEBUG ]     "mon": &#123;</span><br><span class="line">[lab1][DEBUG ]       "group": &#123;</span><br><span class="line">[lab1][DEBUG ]         "features": "0x3ffddff8eea4fffb", </span><br><span class="line">[lab1][DEBUG ]         "num": 1, </span><br><span class="line">[lab1][DEBUG ]         "release": "luminous"</span><br><span class="line">[lab1][DEBUG ]       &#125;</span><br><span class="line">[lab1][DEBUG ]     &#125;</span><br><span class="line">[lab1][DEBUG ]   &#125;, </span><br><span class="line">[lab1][DEBUG ]   "features": &#123;</span><br><span class="line">[lab1][DEBUG ]     "quorum_con": "4611087853745930235", </span><br><span class="line">[lab1][DEBUG ]     "quorum_mon": [</span><br><span class="line">[lab1][DEBUG ]       "kraken", </span><br><span class="line">[lab1][DEBUG ]       "luminous"</span><br><span class="line">[lab1][DEBUG ]     ], </span><br><span class="line">[lab1][DEBUG ]     "required_con": "153140804152475648", </span><br><span class="line">[lab1][DEBUG ]     "required_mon": [</span><br><span class="line">[lab1][DEBUG ]       "kraken", </span><br><span class="line">[lab1][DEBUG ]       "luminous"</span><br><span class="line">[lab1][DEBUG ]     ]</span><br><span class="line">[lab1][DEBUG ]   &#125;, </span><br><span class="line">[lab1][DEBUG ]   "monmap": &#123;</span><br><span class="line">[lab1][DEBUG ]     "created": "2018-08-17 14:46:18.770540", </span><br><span class="line">[lab1][DEBUG ]     "epoch": 1, </span><br><span class="line">[lab1][DEBUG ]     "features": &#123;</span><br><span class="line">[lab1][DEBUG ]       "optional": [], </span><br><span class="line">[lab1][DEBUG ]       "persistent": [</span><br><span class="line">[lab1][DEBUG ]         "kraken", </span><br><span class="line">[lab1][DEBUG ]         "luminous"</span><br><span class="line">[lab1][DEBUG ]       ]</span><br><span class="line">[lab1][DEBUG ]     &#125;, </span><br><span class="line">[lab1][DEBUG ]     "fsid": "fb212173-233c-4c5e-a98e-35be9359f8e2", </span><br><span class="line">[lab1][DEBUG ]     "modified": "2018-08-17 14:46:18.770540", </span><br><span class="line">[lab1][DEBUG ]     "mons": [</span><br><span class="line">[lab1][DEBUG ]       &#123;</span><br><span class="line">[lab1][DEBUG ]         "addr": "192.168.105.92:6789/0", </span><br><span class="line">[lab1][DEBUG ]         "name": "lab1", </span><br><span class="line">[lab1][DEBUG ]         "public_addr": "192.168.105.92:6789/0", </span><br><span class="line">[lab1][DEBUG ]         "rank": 0</span><br><span class="line">[lab1][DEBUG ]       &#125;</span><br><span class="line">[lab1][DEBUG ]     ]</span><br><span class="line">[lab1][DEBUG ]   &#125;, </span><br><span class="line">[lab1][DEBUG ]   "name": "lab1", </span><br><span class="line">[lab1][DEBUG ]   "outside_quorum": [], </span><br><span class="line">[lab1][DEBUG ]   "quorum": [</span><br><span class="line">[lab1][DEBUG ]     0</span><br><span class="line">[lab1][DEBUG ]   ], </span><br><span class="line">[lab1][DEBUG ]   "rank": 0, </span><br><span class="line">[lab1][DEBUG ]   "state": "leader", </span><br><span class="line">[lab1][DEBUG ]   "sync_provider": []</span><br><span class="line">[lab1][DEBUG ] &#125;</span><br><span class="line">[lab1][DEBUG ] ********************************************************************************</span><br><span class="line">[lab1][INFO ] monitor: mon.lab1 is running</span><br><span class="line">[lab1][INFO ] Running command: sudo ceph --cluster=ceph --admin-daemon /var/run/ceph/ceph-mon.lab1.asok mon_status</span><br><span class="line">[ceph_deploy.mon][INFO ] processing monitor mon.lab1</span><br><span class="line">[lab1][DEBUG ] connection detected need for sudo</span><br><span class="line">[lab1][DEBUG ] connected to host: lab1 </span><br><span class="line">[lab1][DEBUG ] detect platform information from remote host</span><br><span class="line">[lab1][DEBUG ] detect machine type</span><br><span class="line">[lab1][DEBUG ] find the location of an executable</span><br><span class="line">[lab1][INFO ] Running command: sudo ceph --cluster=ceph --admin-daemon /var/run/ceph/ceph-mon.lab1.asok mon_status</span><br><span class="line">[ceph_deploy.mon][INFO ] mon.lab1 monitor has reached quorum!</span><br><span class="line">[ceph_deploy.mon][INFO ] all initial monitors are running and have formed quorum</span><br><span class="line">[ceph_deploy.mon][INFO ] Running gatherkeys...</span><br><span class="line">[ceph_deploy.gatherkeys][INFO ] Storing keys in temp directory /tmp/tmpfUkCWD</span><br><span class="line">[lab1][DEBUG ] connection detected need for sudo</span><br><span class="line">[lab1][DEBUG ] connected to host: lab1 </span><br><span class="line">[lab1][DEBUG ] detect platform information from remote host</span><br><span class="line">[lab1][DEBUG ] detect machine type</span><br><span class="line">[lab1][DEBUG ] get remote short hostname</span><br><span class="line">[lab1][DEBUG ] fetch remote file</span><br><span class="line">[lab1][INFO ] Running command: sudo /usr/bin/ceph --connect-timeout=25 --cluster=ceph --admin-daemon=/var/run/ceph/ceph-mon.lab1.asok mon_status</span><br><span class="line">[lab1][INFO ] Running command: sudo /usr/bin/ceph --connect-timeout=25 --cluster=ceph --name mon. --keyring=/var/lib/ceph/mon/ceph-lab1/keyring auth get client.admin</span><br><span class="line">[lab1][INFO ] Running command: sudo /usr/bin/ceph --connect-timeout=25 --cluster=ceph --name mon. --keyring=/var/lib/ceph/mon/ceph-lab1/keyring auth get-or-create client.admin osd allow * mds allow * mon allow * mgr allow *</span><br><span class="line">[lab1][INFO ] Running command: sudo /usr/bin/ceph --connect-timeout=25 --cluster=ceph --name mon. --keyring=/var/lib/ceph/mon/ceph-lab1/keyring auth get client.bootstrap-mds</span><br><span class="line">[lab1][INFO ] Running command: sudo /usr/bin/ceph --connect-timeout=25 --cluster=ceph --name mon. --keyring=/var/lib/ceph/mon/ceph-lab1/keyring auth get-or-create client.bootstrap-mds mon allow profile bootstrap-mds</span><br><span class="line">[lab1][INFO ] Running command: sudo /usr/bin/ceph --connect-timeout=25 --cluster=ceph --name mon. --keyring=/var/lib/ceph/mon/ceph-lab1/keyring auth get client.bootstrap-mgr</span><br><span class="line">[lab1][INFO ] Running command: sudo /usr/bin/ceph --connect-timeout=25 --cluster=ceph --name mon. --keyring=/var/lib/ceph/mon/ceph-lab1/keyring auth get-or-create client.bootstrap-mgr mon allow profile bootstrap-mgr</span><br><span class="line">[lab1][INFO ] Running command: sudo /usr/bin/ceph --connect-timeout=25 --cluster=ceph --name mon. --keyring=/var/lib/ceph/mon/ceph-lab1/keyring auth get client.bootstrap-osd</span><br><span class="line">[lab1][INFO ] Running command: sudo /usr/bin/ceph --connect-timeout=25 --cluster=ceph --name mon. --keyring=/var/lib/ceph/mon/ceph-lab1/keyring auth get-or-create client.bootstrap-osd mon allow profile bootstrap-osd</span><br><span class="line">[lab1][INFO ] Running command: sudo /usr/bin/ceph --connect-timeout=25 --cluster=ceph --name mon. --keyring=/var/lib/ceph/mon/ceph-lab1/keyring auth get client.bootstrap-rgw</span><br><span class="line">[lab1][INFO ] Running command: sudo /usr/bin/ceph --connect-timeout=25 --cluster=ceph --name mon. --keyring=/var/lib/ceph/mon/ceph-lab1/keyring auth get-or-create client.bootstrap-rgw mon allow profile bootstrap-rgw</span><br><span class="line">[ceph_deploy.gatherkeys][INFO ] Storing ceph.client.admin.keyring</span><br><span class="line">[ceph_deploy.gatherkeys][INFO ] Storing ceph.bootstrap-mds.keyring</span><br><span class="line">[ceph_deploy.gatherkeys][INFO ] Storing ceph.bootstrap-mgr.keyring</span><br><span class="line">[ceph_deploy.gatherkeys][INFO ] keyring 'ceph.mon.keyring' already exists</span><br><span class="line">[ceph_deploy.gatherkeys][INFO ] Storing ceph.bootstrap-osd.keyring</span><br><span class="line">[ceph_deploy.gatherkeys][INFO ] Storing ceph.bootstrap-rgw.keyring</span><br><span class="line">[ceph_deploy.gatherkeys][INFO ] Destroy temp directory /tmp/tmpfUkCWD</span><br></pre></td></tr></table></figure>
+<p>用 ceph-deploy 把配置文件和 admin 密钥拷贝到管理节点和 Ceph 节点，这样你每次执行 Ceph 命令行时就无需指定 <code>monitor</code> 地址和<code>ceph.client.admin.keyring</code>了。</p>
+<p><code>ceph-deploy admin lab1 lab4 lab5</code></p>
+<blockquote>
+<p>注意<br>ceph-deploy 和本地管理主机（ admin-node ）通信时，必须通过主机名可达。必要时可修改 /etc/hosts ，加入管理主机的名字。</p>
+</blockquote>
+<p>确保你对 ceph.client.admin.keyring 有正确的操作权限。</p>
+<p><code>sudo chmod +r /etc/ceph/ceph.client.admin.keyring</code></p>
+<p>安装mrg</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ceph-deploy mgr create lab1</span><br><span class="line">ceph-deploy mgr create lab2</span><br><span class="line">ceph-deploy mgr create lab3</span><br></pre></td></tr></table></figure>
+<p>检查集群的健康状况。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[ceph-admin@lab1 ceph-cluster]$ ceph health</span><br><span class="line">HEALTH_OK</span><br></pre></td></tr></table></figure>
+<h5 id="增加OSD"><a href="#增加OSD" class="headerlink" title="增加OSD"></a>增加OSD</h5><p>列举磁盘并擦净</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">[ceph-admin@lab1 ceph-cluster]$ ceph-deploy disk list lab4</span><br><span class="line">[ceph_deploy.conf][DEBUG ] found configuration file at: /home/ceph-admin/.cephdeploy.conf</span><br><span class="line">[ceph_deploy.cli][INFO ] Invoked (2.0.1): /bin/ceph-deploy disk list lab4</span><br><span class="line">[ceph_deploy.cli][INFO ] ceph-deploy options:</span><br><span class="line">[ceph_deploy.cli][INFO ]  username                      : None</span><br><span class="line">[ceph_deploy.cli][INFO ]  verbose                       : False</span><br><span class="line">[ceph_deploy.cli][INFO ]  debug                         : False</span><br><span class="line">[ceph_deploy.cli][INFO ]  overwrite_conf                : False</span><br><span class="line">[ceph_deploy.cli][INFO ]  subcommand                    : list</span><br><span class="line">[ceph_deploy.cli][INFO ]  quiet                         : False</span><br><span class="line">[ceph_deploy.cli][INFO ]  cd_conf                       : &lt;ceph_deploy.conf.cephdeploy.Conf instance at 0x20d97e8&gt;</span><br><span class="line">[ceph_deploy.cli][INFO ]  cluster                       : ceph</span><br><span class="line">[ceph_deploy.cli][INFO ]  host                          : ['lab4']</span><br><span class="line">[ceph_deploy.cli][INFO ]  func                          : &lt;function disk at 0x20ca7d0&gt;</span><br><span class="line">[ceph_deploy.cli][INFO ]  ceph_conf                     : None</span><br><span class="line">[ceph_deploy.cli][INFO ]  default_release               : False</span><br><span class="line">[lab4][DEBUG ] connection detected need for sudo</span><br><span class="line">[lab4][DEBUG ] connected to host: lab4 </span><br><span class="line">[lab4][DEBUG ] detect platform information from remote host</span><br><span class="line">[lab4][DEBUG ] detect machine type</span><br><span class="line">[lab4][DEBUG ] find the location of an executable</span><br><span class="line">[lab4][INFO ] Running command: sudo fdisk -l</span><br><span class="line">[lab4][INFO ] Disk /dev/sda: 107.4 GB, 107374182400 bytes, 209715200 sectors</span><br><span class="line">[lab4][INFO ] Disk /dev/sdb: 214.7 GB, 214748364800 bytes, 419430400 sectors</span><br><span class="line">[lab4][INFO ] Disk /dev/mapper/cl-root: 97.8 GB, 97840529408 bytes, 191094784 sectors</span><br><span class="line">[lab4][INFO ] Disk /dev/mapper/cl-swap: 8455 MB, 8455716864 bytes, 16515072 sectors</span><br><span class="line">[lab4][INFO ] Disk /dev/mapper/vg_a66945efa6324ffeb209d165cac8ede9-tp_1f4ce4f4bfb224aa385f35516236af43_tmeta: 12 MB, 12582912 bytes, 24576 sectors</span><br><span class="line">[lab4][INFO ] Disk /dev/mapper/vg_a66945efa6324ffeb209d165cac8ede9-tp_1f4ce4f4bfb224aa385f35516236af43_tdata: 2147 MB, 2147483648 bytes, 4194304 sectors</span><br><span class="line">[lab4][INFO ] Disk /dev/mapper/vg_a66945efa6324ffeb209d165cac8ede9-tp_1f4ce4f4bfb224aa385f35516236af43-tpool: 2147 MB, 2147483648 bytes, 4194304 sectors</span><br><span class="line">[lab4][INFO ] Disk /dev/mapper/vg_a66945efa6324ffeb209d165cac8ede9-tp_1f4ce4f4bfb224aa385f35516236af43: 2147 MB, 2147483648 bytes, 4194304 sectors</span><br><span class="line">[lab4][INFO ] Disk /dev/mapper/vg_a66945efa6324ffeb209d165cac8ede9-brick_1f4ce4f4bfb224aa385f35516236af43: 2147 MB, 2147483648 bytes, 4194304 sectors</span><br><span class="line">[ceph-admin@lab1 ceph-cluster]$ ceph-deploy disk zap lab4 /dev/sdb</span><br><span class="line">[ceph_deploy.conf][DEBUG ] found configuration file at: /home/ceph-admin/.cephdeploy.conf</span><br><span class="line">[ceph_deploy.cli][INFO ] Invoked (2.0.1): /bin/ceph-deploy disk zap lab4 /dev/sdb</span><br><span class="line">[ceph_deploy.cli][INFO ] ceph-deploy options:</span><br><span class="line">[ceph_deploy.cli][INFO ]  username                      : None</span><br><span class="line">[ceph_deploy.cli][INFO ]  verbose                       : False</span><br><span class="line">[ceph_deploy.cli][INFO ]  debug                         : False</span><br><span class="line">[ceph_deploy.cli][INFO ]  overwrite_conf                : False</span><br><span class="line">[ceph_deploy.cli][INFO ]  subcommand                    : zap</span><br><span class="line">[ceph_deploy.cli][INFO ]  quiet                         : False</span><br><span class="line">[ceph_deploy.cli][INFO ]  cd_conf                       : &lt;ceph_deploy.conf.cephdeploy.Conf instance at 0xd447e8&gt;</span><br><span class="line">[ceph_deploy.cli][INFO ]  cluster                       : ceph</span><br><span class="line">[ceph_deploy.cli][INFO ]  host                          : lab4</span><br><span class="line">[ceph_deploy.cli][INFO ]  func                          : &lt;function disk at 0xd357d0&gt;</span><br><span class="line">[ceph_deploy.cli][INFO ]  ceph_conf                     : None</span><br><span class="line">[ceph_deploy.cli][INFO ]  default_release               : False</span><br><span class="line">[ceph_deploy.cli][INFO ]  disk                          : ['/dev/sdb']</span><br><span class="line">[ceph_deploy.osd][DEBUG ] zapping /dev/sdb on lab4</span><br><span class="line">[lab4][DEBUG ] connection detected need for sudo</span><br><span class="line">[lab4][DEBUG ] connected to host: lab4 </span><br><span class="line">[lab4][DEBUG ] detect platform information from remote host</span><br><span class="line">[lab4][DEBUG ] detect machine type</span><br><span class="line">[lab4][DEBUG ] find the location of an executable</span><br><span class="line">[ceph_deploy.osd][INFO ] Distro info: CentOS Linux 7.5.1804 Core</span><br><span class="line">[lab4][DEBUG ] zeroing last few blocks of device</span><br><span class="line">[lab4][DEBUG ] find the location of an executable</span><br><span class="line">[lab4][INFO ] Running command: sudo /usr/sbin/ceph-volume lvm zap /dev/sdb</span><br><span class="line">[lab4][DEBUG ] --&gt; Zapping: /dev/sdb</span><br><span class="line">[lab4][DEBUG ] Running command: /usr/sbin/cryptsetup status /dev/mapper/</span><br><span class="line">[lab4][DEBUG ]  stdout: /dev/mapper/ is inactive.</span><br><span class="line">[lab4][DEBUG ] Running command: wipefs --all /dev/sdb</span><br><span class="line">[lab4][DEBUG ] Running command: dd if=/dev/zero of=/dev/sdb bs=1M count=10</span><br><span class="line">[lab4][DEBUG ] --&gt; Zapping successful for: /dev/sdb</span><br></pre></td></tr></table></figure>
+<p>同理，lab5的sdb也一样。</p>
+<p>创建pv、vg、lv，略。</p>
+<p>创建 OSD</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">[ceph-admin@lab1 ceph-cluster]$ ceph-deploy osd create lab4 --fs-type btrfs --data vg1/lvol0     </span><br><span class="line">[ceph_deploy.conf][DEBUG ] found configuration file at: /home/ceph-admin/.cephdeploy.conf</span><br><span class="line">[ceph_deploy.cli][INFO ] Invoked (2.0.1): /bin/ceph-deploy osd create lab4 --fs-type btrfs --data vg1/lvol0</span><br><span class="line">[ceph_deploy.cli][INFO ] ceph-deploy options:</span><br><span class="line">[ceph_deploy.cli][INFO ]  verbose                       : False</span><br><span class="line">[ceph_deploy.cli][INFO ]  bluestore                     : None</span><br><span class="line">[ceph_deploy.cli][INFO ]  cd_conf                       : &lt;ceph_deploy.conf.cephdeploy.Conf instance at 0x26d4908&gt;</span><br><span class="line">[ceph_deploy.cli][INFO ]  cluster                       : ceph</span><br><span class="line">[ceph_deploy.cli][INFO ]  fs_type                       : btrfs</span><br><span class="line">[ceph_deploy.cli][INFO ]  block_wal                     : None</span><br><span class="line">[ceph_deploy.cli][INFO ]  default_release               : False</span><br><span class="line">[ceph_deploy.cli][INFO ]  username                      : None</span><br><span class="line">[ceph_deploy.cli][INFO ]  journal                       : None</span><br><span class="line">[ceph_deploy.cli][INFO ]  subcommand                    : create</span><br><span class="line">[ceph_deploy.cli][INFO ]  host                          : lab4</span><br><span class="line">[ceph_deploy.cli][INFO ]  filestore                     : None</span><br><span class="line">[ceph_deploy.cli][INFO ]  func                          : &lt;function osd at 0x26c4758&gt;</span><br><span class="line">[ceph_deploy.cli][INFO ]  ceph_conf                     : None</span><br><span class="line">[ceph_deploy.cli][INFO ]  zap_disk                      : False</span><br><span class="line">[ceph_deploy.cli][INFO ]  data                          : vg1/lvol0</span><br><span class="line">[ceph_deploy.cli][INFO ]  block_db                      : None</span><br><span class="line">[ceph_deploy.cli][INFO ]  dmcrypt                       : False</span><br><span class="line">[ceph_deploy.cli][INFO ]  overwrite_conf                : False</span><br><span class="line">[ceph_deploy.cli][INFO ]  dmcrypt_key_dir               : /etc/ceph/dmcrypt-keys</span><br><span class="line">[ceph_deploy.cli][INFO ]  quiet                         : False</span><br><span class="line">[ceph_deploy.cli][INFO ]  debug                         : False</span><br><span class="line">[ceph_deploy.osd][DEBUG ] Creating OSD on cluster ceph with data device vg1/lvol0</span><br><span class="line">[lab4][DEBUG ] connection detected need for sudo</span><br><span class="line">[lab4][DEBUG ] connected to host: lab4 </span><br><span class="line">[lab4][DEBUG ] detect platform information from remote host</span><br><span class="line">[lab4][DEBUG ] detect machine type</span><br><span class="line">[lab4][DEBUG ] find the location of an executable</span><br><span class="line">[ceph_deploy.osd][INFO ] Distro info: CentOS Linux 7.5.1804 Core</span><br><span class="line">[ceph_deploy.osd][DEBUG ] Deploying osd to lab4</span><br><span class="line">[lab4][DEBUG ] write cluster configuration to /etc/ceph/&#123;cluster&#125;.conf</span><br><span class="line">[lab4][DEBUG ] find the location of an executable</span><br><span class="line">[lab4][INFO ] Running command: sudo /usr/sbin/ceph-volume --cluster ceph lvm create --bluestore --data vg1/lvol0</span><br><span class="line">[lab4][DEBUG ] Running command: /bin/ceph-authtool --gen-print-key</span><br><span class="line">[lab4][DEBUG ] Running command: /bin/ceph --cluster ceph --name client.bootstrap-osd --keyring /var/lib/ceph/bootstrap-osd/ceph.keyring -i - osd new 7bb2b8f4-9e9d-4cd2-a2da-802a953a4d62</span><br><span class="line">[lab4][DEBUG ] Running command: /bin/ceph-authtool --gen-print-key</span><br><span class="line">[lab4][DEBUG ] Running command: mount -t tmpfs tmpfs /var/lib/ceph/osd/ceph-1</span><br><span class="line">[lab4][DEBUG ] Running command: chown -h ceph:ceph /dev/vg1/lvol0</span><br><span class="line">[lab4][DEBUG ] Running command: chown -R ceph:ceph /dev/dm-2</span><br><span class="line">[lab4][DEBUG ] Running command: ln -s /dev/vg1/lvol0 /var/lib/ceph/osd/ceph-1/block</span><br><span class="line">[lab4][DEBUG ] Running command: ceph --cluster ceph --name client.bootstrap-osd --keyring /var/lib/ceph/bootstrap-osd/ceph.keyring mon getmap -o /var/lib/ceph/osd/ceph-1/activate.monmap</span><br><span class="line">[lab4][DEBUG ]  stderr: got monmap epoch 1</span><br><span class="line">[lab4][DEBUG ] Running command: ceph-authtool /var/lib/ceph/osd/ceph-1/keyring --create-keyring --name osd.1 --add-key AQAmjHZbiiGUChAAVCWdPZqHms99mLgSZ7M+fQ==</span><br><span class="line">[lab4][DEBUG ]  stdout: creating /var/lib/ceph/osd/ceph-1/keyring</span><br><span class="line">[lab4][DEBUG ] added entity osd.1 auth auth(auid = 18446744073709551615 key=AQAmjHZbiiGUChAAVCWdPZqHms99mLgSZ7M+fQ== with 0 caps)</span><br><span class="line">[lab4][DEBUG ] Running command: chown -R ceph:ceph /var/lib/ceph/osd/ceph-1/keyring</span><br><span class="line">[lab4][DEBUG ] Running command: chown -R ceph:ceph /var/lib/ceph/osd/ceph-1/</span><br><span class="line">[lab4][DEBUG ] Running command: /bin/ceph-osd --cluster ceph --osd-objectstore bluestore --mkfs -i 1 --monmap /var/lib/ceph/osd/ceph-1/activate.monmap --keyfile - --osd-data /var/lib/ceph/osd/ceph-1/ --osd-uuid 7bb2b8f4-9e9d-4cd2-a2da-802a953a4d62 --setuser ceph --setgroup ceph</span><br><span class="line">[lab4][DEBUG ] --&gt; ceph-volume lvm prepare successful for: vg1/lvol0</span><br><span class="line">[lab4][DEBUG ] Running command: ceph-bluestore-tool --cluster=ceph prime-osd-dir --dev /dev/vg1/lvol0 --path /var/lib/ceph/osd/ceph-1</span><br><span class="line">[lab4][DEBUG ] Running command: ln -snf /dev/vg1/lvol0 /var/lib/ceph/osd/ceph-1/block</span><br><span class="line">[lab4][DEBUG ] Running command: chown -h ceph:ceph /var/lib/ceph/osd/ceph-1/block</span><br><span class="line">[lab4][DEBUG ] Running command: chown -R ceph:ceph /dev/dm-2</span><br><span class="line">[lab4][DEBUG ] Running command: chown -R ceph:ceph /var/lib/ceph/osd/ceph-1</span><br><span class="line">[lab4][DEBUG ] Running command: systemctl enable ceph-volume@lvm-1-7bb2b8f4-9e9d-4cd2-a2da-802a953a4d62</span><br><span class="line">[lab4][DEBUG ]  stderr: Created symlink from /etc/systemd/system/multi-user.target.wants/ceph-volume@lvm-1-7bb2b8f4-9e9d-4cd2-a2da-802a953a4d62.service to /usr/lib/systemd/system/ceph-volume@.service.</span><br><span class="line">[lab4][DEBUG ] Running command: systemctl start ceph-osd@1</span><br><span class="line">[lab4][DEBUG ] --&gt; ceph-volume lvm activate successful for osd ID: 1</span><br><span class="line">[lab4][DEBUG ] --&gt; ceph-volume lvm create successful for: vg1/lvol0</span><br><span class="line">[lab4][INFO ] checking OSD status...</span><br><span class="line">[lab4][DEBUG ] find the location of an executable</span><br><span class="line">[lab4][INFO ] Running command: sudo /bin/ceph --cluster=ceph osd stat --format=json</span><br><span class="line">[lab4][WARNIN] there is 1 OSD down</span><br><span class="line">[lab4][WARNIN] there is 1 OSD out</span><br><span class="line">[ceph_deploy.osd][DEBUG ] Host lab4 is now ready for osd use.</span><br></pre></td></tr></table></figure>
+<p><code>ceph-deploy osd create lab5 --fs-type btrfs --data vg1/lvol0</code></p>
+<h4 id="扩展集群"><a href="#扩展集群" class="headerlink" title="扩展集群"></a>扩展集群</h4><p>一个基本的集群启动并开始运行后，下一步就是扩展集群。在 lab6、lab7 各上添加一个 OSD 守护进程和一个元数据服务器。然后分别在 lab2 和 lab3 上添加 <code>Ceph Monitor</code>，以形成 Monitors 的法定人数。</p>
+<p>添加 MONITORS</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ceph-deploy mon add lab2</span><br><span class="line">ceph-deploy mon add lab3</span><br></pre></td></tr></table></figure>
+<p>过程：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br></pre></td><td class="code"><pre><span class="line">[ceph-admin@lab1 ceph-cluster]$ ceph-deploy mon add lab3</span><br><span class="line">[ceph_deploy.conf][DEBUG ] found configuration file at: /home/ceph-admin/.cephdeploy.conf</span><br><span class="line">[ceph_deploy.cli][INFO ] Invoked (2.0.1): /bin/ceph-deploy mon add lab3</span><br><span class="line">[ceph_deploy.cli][INFO ] ceph-deploy options:</span><br><span class="line">[ceph_deploy.cli][INFO ]  username                      : None</span><br><span class="line">[ceph_deploy.cli][INFO ]  verbose                       : False</span><br><span class="line">[ceph_deploy.cli][INFO ]  overwrite_conf                : False</span><br><span class="line">[ceph_deploy.cli][INFO ]  subcommand                    : add</span><br><span class="line">[ceph_deploy.cli][INFO ]  quiet                         : False</span><br><span class="line">[ceph_deploy.cli][INFO ]  cd_conf                       : &lt;ceph_deploy.conf.cephdeploy.Conf instance at 0x29f0f38&gt;</span><br><span class="line">[ceph_deploy.cli][INFO ]  cluster                       : ceph</span><br><span class="line">[ceph_deploy.cli][INFO ]  mon                           : ['lab3']</span><br><span class="line">[ceph_deploy.cli][INFO ]  func                          : &lt;function mon at 0x29ec2a8&gt;</span><br><span class="line">[ceph_deploy.cli][INFO ]  address                       : None</span><br><span class="line">[ceph_deploy.cli][INFO ]  ceph_conf                     : None</span><br><span class="line">[ceph_deploy.cli][INFO ]  default_release               : False</span><br><span class="line">[ceph_deploy.mon][INFO ] ensuring configuration of new mon host: lab3</span><br><span class="line">[ceph_deploy.admin][DEBUG ] Pushing admin keys and conf to lab3</span><br><span class="line">[lab3][DEBUG ] connection detected need for sudo</span><br><span class="line">[lab3][DEBUG ] connected to host: lab3 </span><br><span class="line">[lab3][DEBUG ] detect platform information from remote host</span><br><span class="line">[lab3][DEBUG ] detect machine type</span><br><span class="line">[lab3][DEBUG ] write cluster configuration to /etc/ceph/&#123;cluster&#125;.conf</span><br><span class="line">[ceph_deploy.mon][DEBUG ] Adding mon to cluster ceph, host lab3</span><br><span class="line">[ceph_deploy.mon][DEBUG ] using mon address by resolving host: 192.168.105.94</span><br><span class="line">[ceph_deploy.mon][DEBUG ] detecting platform for host lab3 ...</span><br><span class="line">[lab3][DEBUG ] connection detected need for sudo</span><br><span class="line">[lab3][DEBUG ] connected to host: lab3 </span><br><span class="line">[lab3][DEBUG ] detect platform information from remote host</span><br><span class="line">[lab3][DEBUG ] detect machine type</span><br><span class="line">[lab3][DEBUG ] find the location of an executable</span><br><span class="line">[ceph_deploy.mon][INFO ] distro info: CentOS Linux 7.5.1804 Core</span><br><span class="line">[lab3][DEBUG ] determining if provided host has same hostname in remote</span><br><span class="line">[lab3][DEBUG ] get remote short hostname</span><br><span class="line">[lab3][DEBUG ] adding mon to lab3</span><br><span class="line">[lab3][DEBUG ] get remote short hostname</span><br><span class="line">[lab3][DEBUG ] write cluster configuration to /etc/ceph/&#123;cluster&#125;.conf</span><br><span class="line">[lab3][DEBUG ] create the mon path if it does not exist</span><br><span class="line">[lab3][DEBUG ] checking for done path: /var/lib/ceph/mon/ceph-lab3/done</span><br><span class="line">[lab3][DEBUG ] done path does not exist: /var/lib/ceph/mon/ceph-lab3/done</span><br><span class="line">[lab3][INFO ] creating keyring file: /var/lib/ceph/tmp/ceph-lab3.mon.keyring</span><br><span class="line">[lab3][DEBUG ] create the monitor keyring file</span><br><span class="line">[lab3][INFO ] Running command: sudo ceph --cluster ceph mon getmap -o /var/lib/ceph/tmp/ceph.lab3.monmap</span><br><span class="line">[lab3][WARNIN] got monmap epoch 2</span><br><span class="line">[lab3][INFO ] Running command: sudo ceph-mon --cluster ceph --mkfs -i lab3 --monmap /var/lib/ceph/tmp/ceph.lab3.monmap --keyring /var/lib/ceph/tmp/ceph-lab3.mon.keyring --setuser 167 --setgroup 167</span><br><span class="line">[lab3][INFO ] unlinking keyring file /var/lib/ceph/tmp/ceph-lab3.mon.keyring</span><br><span class="line">[lab3][DEBUG ] create a done file to avoid re-doing the mon deployment</span><br><span class="line">[lab3][DEBUG ] create the init path if it does not exist</span><br><span class="line">[lab3][INFO ] Running command: sudo systemctl enable ceph.target</span><br><span class="line">[lab3][INFO ] Running command: sudo systemctl enable ceph-mon@lab3</span><br><span class="line">[lab3][WARNIN] Created symlink from /etc/systemd/system/ceph-mon.target.wants/ceph-mon@lab3.service to /usr/lib/systemd/system/ceph-mon@.service.</span><br><span class="line">[lab3][INFO ] Running command: sudo systemctl start ceph-mon@lab3</span><br><span class="line">[lab3][INFO ] Running command: sudo ceph --cluster=ceph --admin-daemon /var/run/ceph/ceph-mon.lab3.asok mon_status</span><br><span class="line">[lab3][WARNIN] lab3 is not defined in `mon initial members`</span><br><span class="line">[lab3][WARNIN] monitor lab3 does not exist in monmap</span><br><span class="line">[lab3][INFO ] Running command: sudo ceph --cluster=ceph --admin-daemon /var/run/ceph/ceph-mon.lab3.asok mon_status</span><br><span class="line">[lab3][DEBUG ] ********************************************************************************</span><br><span class="line">[lab3][DEBUG ] status for monitor: mon.lab3</span><br><span class="line">[lab3][DEBUG ] &#123;</span><br><span class="line">[lab3][DEBUG ]   "election_epoch": 0, </span><br><span class="line">[lab3][DEBUG ]   "extra_probe_peers": [</span><br><span class="line">[lab3][DEBUG ]     "192.168.105.93:6789/0"</span><br><span class="line">[lab3][DEBUG ]   ], </span><br><span class="line">[lab3][DEBUG ]   "feature_map": &#123;</span><br><span class="line">[lab3][DEBUG ]     "mon": &#123;</span><br><span class="line">[lab3][DEBUG ]       "group": &#123;</span><br><span class="line">[lab3][DEBUG ]         "features": "0x3ffddff8eea4fffb", </span><br><span class="line">[lab3][DEBUG ]         "num": 1, </span><br><span class="line">[lab3][DEBUG ]         "release": "luminous"</span><br><span class="line">[lab3][DEBUG ]       &#125;</span><br><span class="line">[lab3][DEBUG ]     &#125;</span><br><span class="line">[lab3][DEBUG ]   &#125;, </span><br><span class="line">[lab3][DEBUG ]   "features": &#123;</span><br><span class="line">[lab3][DEBUG ]     "quorum_con": "0", </span><br><span class="line">[lab3][DEBUG ]     "quorum_mon": [], </span><br><span class="line">[lab3][DEBUG ]     "required_con": "144115188077969408", </span><br><span class="line">[lab3][DEBUG ]     "required_mon": [</span><br><span class="line">[lab3][DEBUG ]       "kraken", </span><br><span class="line">[lab3][DEBUG ]       "luminous"</span><br><span class="line">[lab3][DEBUG ]     ]</span><br><span class="line">[lab3][DEBUG ]   &#125;, </span><br><span class="line">[lab3][DEBUG ]   "monmap": &#123;</span><br><span class="line">[lab3][DEBUG ]     "created": "2018-08-17 16:38:21.075805", </span><br><span class="line">[lab3][DEBUG ]     "epoch": 3, </span><br><span class="line">[lab3][DEBUG ]     "features": &#123;</span><br><span class="line">[lab3][DEBUG ]       "optional": [], </span><br><span class="line">[lab3][DEBUG ]       "persistent": [</span><br><span class="line">[lab3][DEBUG ]         "kraken", </span><br><span class="line">[lab3][DEBUG ]         "luminous"</span><br><span class="line">[lab3][DEBUG ]       ]</span><br><span class="line">[lab3][DEBUG ]     &#125;, </span><br><span class="line">[lab3][DEBUG ]     "fsid": "4395328d-17fc-4039-96d0-1d3241a4cafa", </span><br><span class="line">[lab3][DEBUG ]     "modified": "2018-08-17 17:58:23.179585", </span><br><span class="line">[lab3][DEBUG ]     "mons": [</span><br><span class="line">[lab3][DEBUG ]       &#123;</span><br><span class="line">[lab3][DEBUG ]         "addr": "192.168.105.92:6789/0", </span><br><span class="line">[lab3][DEBUG ]         "name": "lab1", </span><br><span class="line">[lab3][DEBUG ]         "public_addr": "192.168.105.92:6789/0", </span><br><span class="line">[lab3][DEBUG ]         "rank": 0</span><br><span class="line">[lab3][DEBUG ]       &#125;, </span><br><span class="line">[lab3][DEBUG ]       &#123;</span><br><span class="line">[lab3][DEBUG ]         "addr": "192.168.105.93:6789/0", </span><br><span class="line">[lab3][DEBUG ]         "name": "lab2", </span><br><span class="line">[lab3][DEBUG ]         "public_addr": "192.168.105.93:6789/0", </span><br><span class="line">[lab3][DEBUG ]         "rank": 1</span><br><span class="line">[lab3][DEBUG ]       &#125;, </span><br><span class="line">[lab3][DEBUG ]       &#123;</span><br><span class="line">[lab3][DEBUG ]         "addr": "192.168.105.94:6789/0", </span><br><span class="line">[lab3][DEBUG ]         "name": "lab3", </span><br><span class="line">[lab3][DEBUG ]         "public_addr": "192.168.105.94:6789/0", </span><br><span class="line">[lab3][DEBUG ]         "rank": 2</span><br><span class="line">[lab3][DEBUG ]       &#125;</span><br><span class="line">[lab3][DEBUG ]     ]</span><br><span class="line">[lab3][DEBUG ]   &#125;, </span><br><span class="line">[lab3][DEBUG ]   "name": "lab3", </span><br><span class="line">[lab3][DEBUG ]   "outside_quorum": [</span><br><span class="line">[lab3][DEBUG ]     "lab3"</span><br><span class="line">[lab3][DEBUG ]   ], </span><br><span class="line">[lab3][DEBUG ]   "quorum": [], </span><br><span class="line">[lab3][DEBUG ]   "rank": 2, </span><br><span class="line">[lab3][DEBUG ]   "state": "probing", </span><br><span class="line">[lab3][DEBUG ]   "sync_provider": []</span><br><span class="line">[lab3][DEBUG ] &#125;</span><br><span class="line">[lab3][DEBUG ] ********************************************************************************</span><br><span class="line">[lab3][INFO ] monitor: mon.lab3 is running</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">[ceph-admin@lab1 ceph-cluster]$ ceph quorum_status --format json-pretty</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    "election_epoch": 12,</span><br><span class="line">    "quorum": [</span><br><span class="line">        0,</span><br><span class="line">        1,</span><br><span class="line">        2</span><br><span class="line">    ],</span><br><span class="line">    "quorum_names": [</span><br><span class="line">        "lab1",</span><br><span class="line">        "lab2",</span><br><span class="line">        "lab3"</span><br><span class="line">    ],</span><br><span class="line">    "quorum_leader_name": "lab1",</span><br><span class="line">    "monmap": &#123;</span><br><span class="line">        "epoch": 3,</span><br><span class="line">        "fsid": "4395328d-17fc-4039-96d0-1d3241a4cafa",</span><br><span class="line">        "modified": "2018-08-17 17:58:23.179585",</span><br><span class="line">        "created": "2018-08-17 16:38:21.075805",</span><br><span class="line">        "features": &#123;</span><br><span class="line">            "persistent": [</span><br><span class="line">                "kraken",</span><br><span class="line">                "luminous"</span><br><span class="line">            ],</span><br><span class="line">            "optional": []</span><br><span class="line">        &#125;,</span><br><span class="line">        "mons": [</span><br><span class="line">            &#123;</span><br><span class="line">                "rank": 0,</span><br><span class="line">                "name": "lab1",</span><br><span class="line">                "addr": "192.168.105.92:6789/0",</span><br><span class="line">                "public_addr": "192.168.105.92:6789/0"</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                "rank": 1,</span><br><span class="line">                "name": "lab2",</span><br><span class="line">                "addr": "192.168.105.93:6789/0",</span><br><span class="line">                "public_addr": "192.168.105.93:6789/0"</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                "rank": 2,</span><br><span class="line">                "name": "lab3",</span><br><span class="line">                "addr": "192.168.105.94:6789/0",</span><br><span class="line">                "public_addr": "192.168.105.94:6789/0"</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><em>添加元数据服务器</em></p>
+<p>至少需要一个元数据服务器才能使用 CephFS ，执行下列命令创建元数据服务器：</p>
+<p><code>ceph-deploy mds create lab4</code></p>
+<p>到此，可以创建RBD和cephFS的ceph集群搭建完成。</p>
+<h4 id="Ceph使用技巧"><a href="#Ceph使用技巧" class="headerlink" title="Ceph使用技巧"></a>Ceph使用技巧</h4><p><em>推送配置文件</em></p>
+<p>只推送配置文件</p>
+<p><code>ceph-deploy --overwrite-conf config push lab1 lab2</code></p>
+<p>推送配置文件和client.admin key</p>
+<p><code>ceph-deploy admin lab1 lab2</code></p>
+<p><em>查看状态的常用命令</em></p>
+<p>集群状态</p>
+<p><code>ceph -s</code></p>
+<p>查看正在操作的动作</p>
+<p><code>ceph -w</code></p>
+<p>查看已经创建的磁盘</p>
+<p><code>rbd ls -l</code></p>
+<p>查看ceph集群 </p>
+<p><code>ceph osd tree</code></p>
+<p>查看ceph授权信息</p>
+<p><code>ceph auth get client.admin</code></p>
+<p>移除monitor节点</p>
+<p><code>ceph-deploy mon destroy lab1</code></p>
+<p>详细列出集群每块磁盘的使用情况</p>
+<p><code>ceph osd df</code></p>
+<p>检查 MDS 状态:</p>
+<p><code>ceph mds stat</code></p>
+<p><em>开启Dashbord管理界面</em></p>
+<p>创建管理域密钥<br><code>ceph auth get-or-create mgr.lab1 mon &#39;allow profile mgr&#39; osd &#39;allow *&#39; mds &#39;allow *&#39;</code><br>或：<br><code>ceph auth get-key client.admin | base64</code></p>
+<p><em>开启 ceph-mgr 管理域</em></p>
+<p><code>ceph-mgr -i master</code></p>
+<p>开启dashboard</p>
+<p><code>ceph mgr module enable dashboard</code></p>
+<p>绑定开启 dashboard 模块的 ceph-mgr 节点的 ip 地址</p>
+<p><code>ceph config-key set mgr/dashboard/master/server_addr 192.168.105.92</code></p>
+<p>dashboard 默认运行在7000端口</p>
+<p><em>RBD常用命令</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">创建pool</span><br><span class="line">若少于5个OSD， 设置pg_num为128。</span><br><span class="line">5~10个OSD，设置pg_num为512。</span><br><span class="line">10~50个OSD，设置pg_num为4096。</span><br><span class="line"></span><br><span class="line">超过50个OSD，可以参考pgcalc计算。</span><br><span class="line">ceph osd pool create rbd 128 128 </span><br><span class="line">rbd pool init rbd</span><br><span class="line"></span><br><span class="line">删除pool</span><br><span class="line">ceph osd pool rm rbd rbd –yes-i-really-really-mean-it </span><br><span class="line">## ceph.conf 添加 </span><br><span class="line">## mon_allow_pool_delete = true</span><br><span class="line"></span><br><span class="line">手动创建一个rbd磁盘</span><br><span class="line">rbd create --image-feature layering [rbd-name] -s 10240</span><br></pre></td></tr></table></figure>
+<p><em>OSD常用命令</em></p>
+<p>清除磁盘上的逻辑卷</p>
+<p><code>ceph-volume lvm zap --destroy /dev/vdc</code>   # 本机操作<br><code>ceph-deploy disk zap lab4 /dev/sdb</code>           # 远程操作</p>
+<p>创建osd</p>
+<p><code>ceph-deploy osd create lab4 --fs-type btrfs --data vg1/lvol0</code></p>
+<p>删除osd节点的node4</p>
+<p>查看节点node4上的所有osd，比如osd.9 osd.10：</p>
+<p><code>ceph osd tree</code>                                                        #查看目前cluster状态</p>
+<p>把node4上的所欲osd踢出集群：（node1节点上执行）</p>
+<p><code>ceph osd out osd.9</code><br><code>ceph osd out osd.10</code></p>
+<p>让node4上的所有osd停止工作：（node4上执行）</p>
+<p><code>service ceph stop osd.9</code><br><code>service ceph stop osd.10</code></p>
+<p>查看node4上osd的状态是否为down，权重为0</p>
+<p><code>ceph osd tree</code></p>
+<p>移除node4上的所有osd：</p>
+<p><code>ceph osd crush remove osd.9</code><br><code>ceph osd crush remove osd.10</code></p>
+<p>删除节点node4：</p>
+<p><code>ceph osd crush remove ceph-node4</code></p>
+<p>替换一个失效的磁盘驱动</p>
+<p>首先<code>ceph osd tree</code> 查看down掉的osd，将因盘问题down掉的osd及相关key删除</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ceph osd out osd.0                         # 都在node1节点下执行</span><br><span class="line">ceph osd crush rm osd.0</span><br><span class="line">ceph auth del osd.0</span><br><span class="line">ceph osd rm osd.0</span><br></pre></td></tr></table></figure>
+<p>zap新磁盘 清理新磁盘：<br><code>ceph-deploy disk zap node1 /dev/sdb</code><br>在磁盘上新建一个osd，ceph会把它添加为osd:0：<br><code>ceph-deploy --overwrite-conf osd create node1 /dev/sdb</code></p>
+<h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><p>[1] <a href="http://docs.ceph.com/docs/master/start/" target="_blank" rel="noopener">http://docs.ceph.com/docs/master/start/</a><br>[2] <a href="http://docs.ceph.org.cn/start/" target="_blank" rel="noopener">http://docs.ceph.org.cn/start/</a><br>[3] <a href="http://docs.ceph.org.cn/install/manual-deployment/" target="_blank" rel="noopener">http://docs.ceph.org.cn/install/manual-deployment/</a><br>[4] <a href="http://www.cnblogs.com/freedom314/p/9247602.html" target="_blank" rel="noopener">http://www.cnblogs.com/freedom314/p/9247602.html</a><br>[5] <a href="http://docs.ceph.org.cn/rados/operations/monitoring/" target="_blank" rel="noopener">http://docs.ceph.org.cn/rados/operations/monitoring/</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/学习杂记/" rel="tag"><i class="fa fa-tag"></i> 学习杂记</a>
+            <!--<a href="/tags/学习杂记/" rel="tag"># 学习杂记</a>-->
+          
+            <a href="/tags/Ceph/" rel="tag"><i class="fa fa-tag"></i> Ceph</a>
+            <!--<a href="/tags/Ceph/" rel="tag"># Ceph</a>-->
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/passages/学习杂记之Ceph单节点部署/" rel="next" title="学习杂记之Ceph单节点部署">
+                <i class="fa fa-chevron-left"></i> 学习杂记之Ceph单节点部署
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/passages/React相关/" rel="prev" title="React相关">
+                React相关 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Sheldon Lu">
+            
+              <p class="site-author-name" itemprop="name">Sheldon Lu</p>
+              <div class="site-description motion-element" itemprop="description">静下心来写点东西</div>
+          </div>
+          
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">58</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">32</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/sheldon-lu" title="GitHub &rarr; https://github.com/sheldon-lu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+            </div>
+          
+
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#CentOS7下安装Ceph供Kubernetes使用"><span class="nav-number">1.</span> <span class="nav-text">CentOS7下安装Ceph供Kubernetes使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#环境说明"><span class="nav-number">1.1.</span> <span class="nav-text">环境说明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Ceph部署准备"><span class="nav-number">1.2.</span> <span class="nav-text">Ceph部署准备</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#节点规划"><span class="nav-number">1.2.1.</span> <span class="nav-text">节点规划</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#添加yum源"><span class="nav-number">1.2.2.</span> <span class="nav-text">添加yum源</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装Ceph部署工具"><span class="nav-number">1.2.3.</span> <span class="nav-text">安装Ceph部署工具</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装时间同步工具chrony"><span class="nav-number">1.2.4.</span> <span class="nav-text">安装时间同步工具chrony</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装SSH服务"><span class="nav-number">1.2.5.</span> <span class="nav-text">安装SSH服务</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#创建部署-CEPH-的用户"><span class="nav-number">1.2.6.</span> <span class="nav-text">创建部署 CEPH 的用户</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#允许无密码-SSH-登录"><span class="nav-number">1.2.7.</span> <span class="nav-text">允许无密码 SSH 登录</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#开放所需端口"><span class="nav-number">1.2.8.</span> <span class="nav-text">开放所需端口</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#终端（-TTY-）"><span class="nav-number">1.2.9.</span> <span class="nav-text">终端（ TTY ）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#SELINUX"><span class="nav-number">1.2.10.</span> <span class="nav-text">SELINUX</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#整理以上所有ceph节点操作"><span class="nav-number">1.2.11.</span> <span class="nav-text">整理以上所有ceph节点操作</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#存储集群部署"><span class="nav-number">1.3.</span> <span class="nav-text">存储集群部署</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#创建集群并准备配置"><span class="nav-number">1.3.1.</span> <span class="nav-text">创建集群并准备配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#增加OSD"><span class="nav-number">1.3.2.</span> <span class="nav-text">增加OSD</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#扩展集群"><span class="nav-number">1.4.</span> <span class="nav-text">扩展集群</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Ceph使用技巧"><span class="nav-number">1.5.</span> <span class="nav-text">Ceph使用技巧</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考资料"><span class="nav-number">1.6.</span> <span class="nav-text">参考资料</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+        <script>
+//暂时储存文章中的内容
+var div = $('.post-body');
+//暂时储存目录的内容
+var toc=$('.post-toc-wrap')
+function password() {
+  if(''){
+  //将文章内容删除
+    div.remove();
+ //将目录删除 
+    toc.remove();
+  //将文章删除后，向原来文章的地方添加，应该出现的提示用户输入密码的样式
+  //下面这里的第一个用textarea是因为如果在手机端的时候只能显示一部分文字，
+  //只是拓展:input里面的字只能显示一行，不会自动换行，目前上网搜索没有发现好的办法，所以用了textarea，右下角的小三角通过resize:none 去掉。
+   $('.post-header').after('<textarea class="description" value="Please enter your password and press enter to build" style="border: none;display: block;' +'width: 60%;margin: 0 auto;text-align: center;outline: none;margin-bottom: 50px;resize:none ">
+      Please enter your password and press enter to build</textarea>' +
+      '<div class="qiang" style="height: 100px;width: 60%;margin:0 auto">' +
+      '<input class="password"  type="text" value="" style="border: none;display: block;border-bottom: 1px solid #ccc;' +
+      'margin: 0 auto;outline: none;width:95%"/>' +
+      '</div>')
+      //绑定点击事件，如果是点击的.password 这个div就改变样式，如果是document中除了div之外的其他任何元素，就变回原来的样式。
+    document.onclick = function (event) {
+      var e = event || window.event;
+      var elem = e.srcElement || e.target;
+
+      while (elem) {
+        if (elem != document) {
+          if (elem.className == "password") {
+            $(".password").animate({paddingTop:"30px",width:"100%",borderWidth:"2px"},300)
+            return;
+          }
+          elem = elem.parentNode;
+        } else {
+          $(".password").animate({paddingTop:"0px",width:"95%",borderWidth:"1px"},300)
+          return;
+        }
+      }
+    }
+    //绑定enter键按下后离开的事件
+    $(document).keyup(function(event){
+      if(event.keyCode ==13&&$('.password').length>0){
+        //console.log($('.password').val())
+        //console.log('')
+        if ($('.password').val() == '') {
+        //恢复文章内容
+          (div).appendTo($(".post-header"))
+          //恢复目录
+          toc.appendTo($(".sidebar-inner"))
+                 //删除本页面的输入密码组件
+           $(".description").remove();
+          $(".qiang").remove();
+          $(".password").remove();
+          //重新处理pjax事件,如果没有加pjax的从下面这行起到下面的else之间的代码需要去掉。
+          //图片懒加载，没有加入此功能的这个函数需要去掉
+	          $('img').lazyload({
+	             placeholder: '../images/loading.gif',
+	             effect: 'fadeIn',
+	             threshold : 100,
+	             failure_limit : 20,
+	             skip_invisible : false
+	           });
+	           //pjax后出现文章不显示，没有pjax的下面四行需要去掉
+	            $(".post-block").css({opacity:1});
+	            $(".post-header").css({opacity:1});
+	            $(".post-body").css({opacity:1});
+	            $(".pagination").css({opacity:1});
+        }else {
+          alert("Sorry, the password is wrong.")
+        }
+      }
+      //将document的keyup移除，防止在pjax的情况下会重复绑定事件
+    });
+  }
+}
+password();
+</script>
+      </div>
+      <script>
+//暂时储存文章中的内容
+var div = $('.post-body');
+//暂时储存目录的内容
+var toc=$('.post-toc-wrap')
+function password() {
+  if(''){
+  //将文章内容删除
+    div.remove();
+ //将目录删除 
+    toc.remove();
+  //将文章删除后，向原来文章的地方添加，应该出现的提示用户输入密码的样式
+  //下面这里的第一个用textarea是因为如果在手机端的时候只能显示一部分文字，
+  //只是拓展:input里面的字只能显示一行，不会自动换行，目前上网搜索没有发现好的办法，所以用了textarea，右下角的小三角通过resize:none 去掉。
+   $('.post-header').after('<textarea class="description" value="Please enter your password and press enter to build" style="border: none;display: block;' +'width: 60%;margin: 0 auto;text-align: center;outline: none;margin-bottom: 50px;resize:none ">
+      Please enter your password and press enter to build</textarea>' +
+      '<div class="qiang" style="height: 100px;width: 60%;margin:0 auto">' +
+      '<input class="password"  type="text" value="" style="border: none;display: block;border-bottom: 1px solid #ccc;' +
+      'margin: 0 auto;outline: none;width:95%"/>' +
+      '</div>')
+      //绑定点击事件，如果是点击的.password 这个div就改变样式，如果是document中除了div之外的其他任何元素，就变回原来的样式。
+    document.onclick = function (event) {
+      var e = event || window.event;
+      var elem = e.srcElement || e.target;
+
+      while (elem) {
+        if (elem != document) {
+          if (elem.className == "password") {
+            $(".password").animate({paddingTop:"30px",width:"100%",borderWidth:"2px"},300)
+            return;
+          }
+          elem = elem.parentNode;
+        } else {
+          $(".password").animate({paddingTop:"0px",width:"95%",borderWidth:"1px"},300)
+          return;
+        }
+      }
+    }
+    //绑定enter键按下后离开的事件
+    $(document).keyup(function(event){
+      if(event.keyCode ==13&&$('.password').length>0){
+        //console.log($('.password').val())
+        //console.log('')
+        if ($('.password').val() == '') {
+        //恢复文章内容
+          (div).appendTo($(".post-header"))
+          //恢复目录
+          toc.appendTo($(".sidebar-inner"))
+                 //删除本页面的输入密码组件
+           $(".description").remove();
+          $(".qiang").remove();
+          $(".password").remove();
+          //重新处理pjax事件,如果没有加pjax的从下面这行起到下面的else之间的代码需要去掉。
+          //图片懒加载，没有加入此功能的这个函数需要去掉
+	          $('img').lazyload({
+	             placeholder: '../images/loading.gif',
+	             effect: 'fadeIn',
+	             threshold : 100,
+	             failure_limit : 20,
+	             skip_invisible : false
+	           });
+	           //pjax后出现文章不显示，没有pjax的下面四行需要去掉
+	            $(".post-block").css({opacity:1});
+	            $(".post-header").css({opacity:1});
+	            $(".post-body").css({opacity:1});
+	            $(".pagination").css({opacity:1});
+        }else {
+          alert("Sorry, the password is wrong.")
+        }
+      }
+      //将document的keyup移除，防止在pjax的情况下会重复绑定事件
+    });
+  }
+}
+password();
+</script>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 – <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <!--<i class="fa fa-user"></i>-->
+    <i class="fa fa-heart" aria-hidden="true"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sheldon Lu</span>
+  
+  
+
+  
+</div>
+
+<!--
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a><span>　<i class="fa fa-bomb"></i></span>
+  <span id="showDays"></span>
+  </div>
+
+-->
+<span><i class="fa fa-bomb"></i></span>
+<span id="showDays"></span>
+
+<div>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<!--<span id="busuanzi_container_site_pv" style='display:none'>
+    本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+    <span class="post-meta-divider">|</span>
+</span>-->
+<span id="busuanzi_container_site_uv" style="display:none">
+    有<span id="busuanzi_value_site_uv"></span>人看过我的博客啦
+</span>
+</div>
+
+
+
+<script>
+  var seconds = 1000;
+  var minutes = seconds * 60;
+  var hours = minutes * 60;
+  var days = hours * 24;
+  var years = days * 365;
+  var birthDay = Date.UTC(2019,03,15,00,00,00); // 这里设置建站时间
+  setInterval(function() {
+    var today = new Date();
+    var todayYear = today.getFullYear();
+    var todayMonth = today.getMonth()+1;
+    var todayDate = today.getDate();
+    var todayHour = today.getHours();
+    var todayMinute = today.getMinutes();
+    var todaySecond = today.getSeconds();
+    var now = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+    var diff = now - birthDay;
+    var diffYears = Math.floor(diff/years);
+    var diffDays = Math.floor((diff/days)-diffYears*365);
+    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById('showDays').innerHTML="本站已运行 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+  }, 1000);
+</script>
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'wcykO4AM4RdvFXlzAJAOVgGz-gzGzoHsz',
+    appKey: '1okhim5n5Pq6KwHuFKmTRC9t',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn'
+  });
+</script>
+
+
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $('.leancloud_visitors');
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', '/classes/Counter/' + counter.objectId, JSON.stringify({ time: { '__op': 'Increment', 'amount': 1 } }))
+            
+              .done(function() {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.time + 1);
+              })
+            
+              .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+              })
+          } else {
+            
+              Counter('post', '/classes/Counter', JSON.stringify({ title: title, url: url, time: 1 }))
+                .done(function() {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(1);
+                })
+                .fail(function() {
+                  console.log('Failed to create');
+                });
+            
+          }
+        })
+        .fail(function ({ responseJSON }) {
+          console.log('LeanCloud Counter Error: ' + responseJSON.code + ' ' + responseJSON.error);
+        });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + 'wcykO4AM4RdvFXlzAJAOVgGz-gzGzoHsz')
+        .done(function({ api_server }) {
+          var Counter = function(method, url, data) {
+            return $.ajax({
+              method: method,
+              url: 'https://' + api_server + '/1.1' + url,
+              headers: {
+                'X-LC-Id': 'wcykO4AM4RdvFXlzAJAOVgGz-gzGzoHsz',
+                'X-LC-Key': '1okhim5n5Pq6KwHuFKmTRC9t',
+                'Content-Type': 'application/json',
+              },
+              data: data
+            });
+          };
+          
+            addCount(Counter);
+          
+        });
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
