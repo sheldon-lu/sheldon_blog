@@ -554,7 +554,7 @@
 <p>1 2 INFO[2018-09-15T10:47:40.220046362+08:00] Creating filesystem xfs on device docker-253:4-17133027-base, mkfs args: [-m crc=0,finobt=0 /dev/mapper/docker-253:4-17133027-base]  storage-driver=devicemapper </p>
 </blockquote>
 <p>* 解决问题 </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yum install xfsprogs </span><br><span class="line"><span class="meta">#</span> 但是内核版本过低，操作系统7.0</span><br><span class="line"><span class="meta">#</span> 18.06最好升级系统版本到7.4，只能装会1.12版本,问题来了，私有镜像库登入不了</span><br><span class="line"><span class="meta">#</span> 17.12.0兼容</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yum install xfsprogs </span><br><span class="line"><span class="meta">#</span><span class="bash"> 但是内核版本过低，操作系统7.0</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 18.06最好升级系统版本到7.4，只能装会1.12版本,问题来了，私有镜像库登入不了</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 17.12.0兼容</span></span><br></pre></td></tr></table></figure>
 <h4 id="2、docker-rm-container-失败"><a href="#2、docker-rm-container-失败" class="headerlink" title="2、docker rm container 失败"></a>2、docker rm container 失败</h4><p>现象：</p>
 <blockquote>
 <p>docker version：17.12.0-ce </p>
@@ -709,7 +709,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">58</span>
+                    <span class="site-state-item-count">59</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -829,7 +829,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">32</span>
+                      
+                    
+                    <span class="site-state-item-count">33</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>

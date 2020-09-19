@@ -548,7 +548,7 @@
 <h5 id="安装Ceph部署工具"><a href="#安装Ceph部署工具" class="headerlink" title="安装Ceph部署工具"></a>安装Ceph部署工具</h5><p><strong>以下操作在lab1上root用户操作</strong></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">安装 ceph-deploy</span><br><span class="line">yum -y install ceph-deploy</span><br></pre></td></tr></table></figure>
 <h5 id="安装时间同步工具chrony"><a href="#安装时间同步工具chrony" class="headerlink" title="安装时间同步工具chrony"></a>安装时间同步工具chrony</h5><p>以下操作在所有ceph节点root用户操作</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">yum -y install chrony</span><br><span class="line">systemctl start chronyd</span><br><span class="line">systemctl enable chronyd</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 修改/etc/chrony.conf前面的server段为如下</span><br><span class="line">server ntp1.aliyun.com iburst</span><br><span class="line">server ntp2.aliyun.com iburst</span><br><span class="line">server ntp3.aliyun.com iburst</span><br><span class="line">server ntp4.aliyun.com iburst</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">yum -y install chrony</span><br><span class="line">systemctl start chronyd</span><br><span class="line">systemctl enable chronyd</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 修改/etc/chrony.conf前面的server段为如下</span></span><br><span class="line">server ntp1.aliyun.com iburst</span><br><span class="line">server ntp2.aliyun.com iburst</span><br><span class="line">server ntp3.aliyun.com iburst</span><br><span class="line">server ntp4.aliyun.com iburst</span><br></pre></td></tr></table></figure>
 <h5 id="安装SSH服务"><a href="#安装SSH服务" class="headerlink" title="安装SSH服务"></a>安装SSH服务</h5><p>默认已正常运行，略</p>
 <h5 id="创建部署-CEPH-的用户"><a href="#创建部署-CEPH-的用户" class="headerlink" title="创建部署 CEPH 的用户"></a>创建部署 CEPH 的用户</h5><p><strong>以下操作在所有ceph节点root用户操作</strong></p>
 <p>ceph-deploy 工具必须以普通用户登录 Ceph 节点，且此用户拥有无密码使用 sudo 的权限，因为它需要在安装软件及配置文件的过程中，不必输入密码。</p>
@@ -565,7 +565,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">username="ceph-admin"</span><br><span class="line">ssh-copy-id $&#123;username&#125;@lab1</span><br><span class="line">ssh-copy-id $&#123;username&#125;@lab2</span><br><span class="line">ssh-copy-id $&#123;username&#125;@lab3</span><br></pre></td></tr></table></figure>
 <p>（推荐做法）修改 ceph-deploy 管理节点上的 ~/.ssh/config 文件，这样 ceph-deploy 就能用你所建的用户名登录 Ceph 节点了，而无需每次执行 ceph-deploy 都要指定 –username {username} 。这样做同时也简化了 ssh 和 scp 的用法。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Host lab1</span><br><span class="line">   Hostname lab1</span><br><span class="line">   User ceph-admin</span><br><span class="line">Host lab2</span><br><span class="line">   Hostname lab2</span><br><span class="line">   User ceph-admin</span><br><span class="line">Host lab3</span><br><span class="line">   Hostname lab3</span><br><span class="line">   User ceph-admin</span><br></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Bad owner or permissions on /home/ceph-admin/.ssh/config</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 需要用chmod 600 ~/.ssh/config解决。</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Bad owner or permissions on /home/ceph-admin/.ssh/config</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 需要用chmod 600 ~/.ssh/config解决。</span></span><br></pre></td></tr></table></figure>
 <h5 id="开放所需端口"><a href="#开放所需端口" class="headerlink" title="开放所需端口"></a>开放所需端口</h5><blockquote>
 <p>以下操作在所有监视器节点<code>root</code>用户操作</p>
 </blockquote>
@@ -813,7 +813,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">58</span>
+                    <span class="site-state-item-count">59</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -933,7 +933,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">32</span>
+                      
+                    
+                    <span class="site-state-item-count">33</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>

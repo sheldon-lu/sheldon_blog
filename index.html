@@ -592,6 +592,279 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.sheldonlu.com/passages/Kubernetes安装-kubeadm-1-17-1-18/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sheldon Lu">
+      <meta itemprop="description" content="静下心来写点东西">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sheldon_Lu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/passages/Kubernetes安装-kubeadm-1-17-1-18/" class="post-title-link" itemprop="url">Kubernetes安装-kubeadm-1.17/1.18</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2020-09-19 09:50:06 / Modified: 16:32:52" itemprop="dateCreated datePublished" datetime="2020-09-19T09:50:06+08:00">2020-09-19</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Kubernetes/" itemprop="url" rel="index"><span itemprop="name">Kubernetes</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/passages/Kubernetes安装-kubeadm-1-17-1-18/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/passages/Kubernetes安装-kubeadm-1-17-1-18/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/passages/Kubernetes安装-kubeadm-1-17-1-18/" class="leancloud_visitors" data-flag-title="Kubernetes安装-kubeadm-1.17/1.18">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Views: </span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article">5.9k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">5 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>离线包下载</p>
+<p>在没有互联网到企业内网部署Kubernetes集群</p>
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><ul>
+<li>CentOS Linux release 7.8.2003 (Core)</li>
+<li>Docker 19.03.5</li>
+<li>Kubernetes 1.17.1/1.18.0</li>
+</ul>
+<h2 id="准备安装包"><a href="#准备安装包" class="headerlink" title="准备安装包"></a>准备安装包</h2><h3 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h3><ul>
+<li>在这里<a href="https://docs.docker.com/engine/release-notes/" target="_blank" rel="noopener">查看Docker最新发布的版本号</a></li>
+</ul>
+<h3 id="Kubernetes"><a href="#Kubernetes" class="headerlink" title="Kubernetes"></a>Kubernetes</h3><ul>
+<li>最新版本号：<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fstorage.googleapis.com%2Fkubernetes-release%2Frelease%2Fstable.txt" target="_blank" rel="noopener">https://storage.googleapis.com/kubernetes-release/release/stable.txt</a></li>
+<li>版本发型说明：<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fkubernetes.io%2Fdocs%2Fsetup%2Frelease%2Fnotes" target="_blank" rel="noopener">https://kubernetes.io/docs/setup/release/notes</a></li>
+</ul>
+<h3 id="使用yum获取依赖包"><a href="#使用yum获取依赖包" class="headerlink" title="使用yum获取依赖包"></a>使用yum获取依赖包</h3><p>首先在一台能联网Centos 7中下载依赖包</p>
+<p>PS：注意这个系统要是全新minimal安装的，干净的，如果已经通过yum安装过一些软件，下载的依赖包可能不完整。</p>
+<ul>
+<li>Centos 7 minimal下载地址：<a href="http://mirrors.aliyun.com/centos/7.7.1908/isos/x86_64/CentOS-7-x86_64-Minimal-1908.iso" target="_blank" rel="noopener">http://mirrors.aliyun.com/centos/7.7.1908/isos/x86_64/CentOS-7-x86_64-Minimal-1908.iso</a></li>
+</ul>
+<p>/root/下创建一个packages目录，所有依赖包会下载到<code>/root/packages</code>目录。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /root/packages/docker</span><br><span class="line">mkdir -p /root/packages/kubernetes</span><br><span class="line">mkdir -p /root/packages/<span class="built_in">source</span></span><br><span class="line">mkdir -p /root/packages/images</span><br><span class="line">mkdir -p /root/packages/plugins</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用阿里云镜像源</span></span><br><span class="line">curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo</span><br><span class="line"></span><br><span class="line"><span class="comment"># 本地仓库包，用来创建本地仓库用的</span></span><br><span class="line">yum install --downloadonly --downloaddir=/root/packages/<span class="built_in">source</span> \</span><br><span class="line">    createrepo</span><br><span class="line"></span><br><span class="line"><span class="comment"># 实用工具，不做共享存储的话，nfs可不下载。</span></span><br><span class="line">yum install --downloadonly --downloaddir=/root/packages/<span class="built_in">source</span> \</span><br><span class="line">    yum-utils \</span><br><span class="line">    nfs-utils \</span><br><span class="line">    wget</span><br><span class="line">  </span><br><span class="line"><span class="comment"># 时间同步</span></span><br><span class="line">yum install --downloadonly --downloaddir=/root/packages/<span class="built_in">source</span> \</span><br><span class="line">    chrony</span><br><span class="line"></span><br><span class="line"><span class="comment"># HAProxy 和 KeepAlived，一般做高可用安装包</span></span><br><span class="line">yum install --downloadonly --downloaddir=/root/packages/<span class="built_in">source</span> \</span><br><span class="line">    haproxy \</span><br><span class="line">    keepalived</span><br><span class="line"></span><br><span class="line"><span class="comment"># docker 依赖包</span></span><br><span class="line">yum install -y --downloadonly --downloaddir=/root/packages/docker \</span><br><span class="line">    device-mapper-persistent-data \</span><br><span class="line">    lvm2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加阿里云Docker源</span></span><br><span class="line">yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br><span class="line"></span><br><span class="line"><span class="comment"># docker</span></span><br><span class="line">yum install -y --downloadonly --downloaddir=/root/packages/docker \</span><br><span class="line">    docker-ce-19.03.5 \</span><br><span class="line">    docker-ce-cli-19.03.5 \</span><br><span class="line">    containerd.io</span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置K8S的yum源</span></span><br><span class="line">cat &lt;&lt;EOF &gt; /etc/yum.repos.d/kubernetes.repo</span><br><span class="line">[kubernetes]</span><br><span class="line">name=Kubernetes</span><br><span class="line">baseurl=http://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=0</span><br><span class="line">repo_gpgcheck=0</span><br><span class="line">gpgkey=http://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg</span><br><span class="line">       http://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="comment"># kubelet/kubeadm/kubectl(版本自选)</span></span><br><span class="line">yum install -y --downloadonly --downloaddir=/root/packages/kubernetes \</span><br><span class="line">    kubelet-1.18.0 \</span><br><span class="line">    kubeadm-1.18.0 \</span><br><span class="line">    kubectl-1.18.0</span><br></pre></td></tr></table></figure>
+<h3 id="获取kubeadm依赖镜像"><a href="#获取kubeadm依赖镜像" class="headerlink" title="获取kubeadm依赖镜像"></a>获取kubeadm依赖镜像</h3><p>离线包下载完成后，准备获取kubeadm用到的镜像列表，这步操作要在一台安装好Docker环境的计算机上进行，拉取完成后打包复制到资源包<code>/root/packages/images</code>目录中。</p>
+<p>如果安装了kubeadm，可使用一下命令获取kubernetes镜像。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubeadm config images <span class="built_in">list</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- k8s.gcr.io/kube-apiserver:v1.18.0</span><br><span class="line">- k8s.gcr.io/kube-controller-manager:v1.18.0</span><br><span class="line">- k8s.gcr.io/kube-scheduler:v1.18.0</span><br><span class="line">- k8s.gcr.io/kube-proxy:v1.18.0</span><br><span class="line">- k8s.gcr.io/pause:3.2</span><br><span class="line">- k8s.gcr.io/etcd:3.4.3-0</span><br><span class="line">- k8s.gcr.io/coredns:1.6.7</span><br></pre></td></tr></table></figure>
+<p>国内拉阿里云对应镜像。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 从阿里云拉取镜像</span></span><br><span class="line">docker pull registry.cn-qingdao.aliyuncs.com/kubernetes-image/kube-apiserver:v1.18.0</span><br><span class="line">docker pull registry.cn-qingdao.aliyuncs.com/kubernetes-image/kube-controller-manager:v1.18.0</span><br><span class="line">docker pull registry.cn-qingdao.aliyuncs.com/kubernetes-image/kube-scheduler:v1.18.0</span><br><span class="line">docker pull registry.cn-qingdao.aliyuncs.com/kubernetes-image/kube-proxy:v1.18.0</span><br><span class="line">docker pull registry.cn-qingdao.aliyuncs.com/kubernetes-image/pause:3.2</span><br><span class="line">docker pull registry.cn-qingdao.aliyuncs.com/kubernetes-image/etcd:3.4.3-0</span><br><span class="line">docker pull registry.cn-qingdao.aliyuncs.com/kubernetes-image/coredns:1.6.7</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重新tag镜像</span></span><br><span class="line">docker images \</span><br><span class="line">    | grep registry.cn-qingdao.aliyuncs.com/kubernetes-image \</span><br><span class="line">    | sed <span class="string">'s/registry.cn-qingdao.aliyuncs.com\/kubernetes-image/k8s.gcr.io/'</span> \</span><br><span class="line">    | awk <span class="string">'&#123;print "docker tag " $3 " " $1 ":" $2&#125;'</span> \</span><br><span class="line">    | sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除旧镜像</span></span><br><span class="line">docker images \</span><br><span class="line">    | grep registry.cn-qingdao.aliyuncs.com/kubernetes-image \</span><br><span class="line">    | awk <span class="string">'&#123;print "docker rmi " $1 ":" $2&#125;'</span> \</span><br><span class="line">    | sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在 /root/packages/images 目录下导出镜像为压缩包</span></span><br><span class="line">docker save -o kube-controller-manager-v1.18.0.tar k8s.gcr.io/kube-controller-manager:v1.18.0</span><br><span class="line">docker save -o kube-apiserver-v1.18.0.tar k8s.gcr.io/kube-apiserver:v1.18.0</span><br><span class="line">docker save -o kube-scheduler-v1.18.0.tar k8s.gcr.io/kube-scheduler:v1.18.0</span><br><span class="line">docker save -o kube-proxy-v1.18.0.tar k8s.gcr.io/kube-proxy:v1.18.0</span><br><span class="line">docker save -o coredns-1.6.7.tar k8s.gcr.io/coredns:1.6.7</span><br><span class="line">docker save -o etcd-3.4.3-0.tar k8s.gcr.io/etcd:3.4.3-0</span><br><span class="line">docker save -o pause-3.2.tar k8s.gcr.io/pause:3.2</span><br></pre></td></tr></table></figure>
+<h3 id="calico网络插件依赖镜像"><a href="#calico网络插件依赖镜像" class="headerlink" title="calico网络插件依赖镜像"></a>calico网络插件依赖镜像</h3><p>从<a href="https://docs.projectcalico.org/v3.10/getting-started/kubernetes/" target="_blank" rel="noopener">Quickstart for Calico on Kubernetes</a>找到<code>calico.yaml</code>文件，命名为<code>calico-v3.10.3.yaml</code>保存到资源包<code>/root/packages/plugins</code>目录中。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat calico-v3.10.3.yaml | grep image: | awk <span class="string">'&#123;print $2&#125;'</span></span><br></pre></td></tr></table></figure>
+<p>从文件中搜索<code>image</code>关键字找到如下依赖镜像。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- calico/cni:v3.10.3</span><br><span class="line">- calico/pod2daemon-flexvol:v3.10.3</span><br><span class="line">- calico/node:v3.10.3</span><br><span class="line">- calico/kube-controllers:v3.10.3</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 拉取全部镜像</span></span><br><span class="line">cat calico-v3.10.3.yaml \</span><br><span class="line">    | grep image: \</span><br><span class="line">    | awk <span class="string">'&#123;print "docker pull " $2&#125;'</span> \</span><br><span class="line">    | sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在 /root/packages/images 目录下导出镜像为压缩包</span></span><br><span class="line">docker save -o calico-cni-v3.10.3.tar calico/cni:v3.10.3</span><br><span class="line">docker save -o calico-pod2daemon-flexvol-v3.10.3.tar calico/pod2daemon-flexvol:v3.10.3</span><br><span class="line">docker save -o calico-node-v3.10.3.tar calico/node:v3.10.3</span><br><span class="line">docker save -o calico-kube-controllers-v3.10.3.tar calico/kube-controllers:v3.10.3</span><br></pre></td></tr></table></figure>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><h4 id="1、kubernetes-dashboard"><a href="#1、kubernetes-dashboard" class="headerlink" title="1、kubernetes dashboard"></a>1、kubernetes dashboard</h4><p>从GitHub上找到Dashboard最新版本部署文件。</p>
+<ul>
+<li>Dashboard版本发布地址：<a href="https://github.com/kubernetes/dashboard/releases" target="_blank" rel="noopener">https://github.com/kubernetes/dashboard/releases</a></li>
+</ul>
+<h4 id="2、NGINX-Ingress-Controller"><a href="#2、NGINX-Ingress-Controller" class="headerlink" title="2、NGINX Ingress Controller"></a>2、NGINX Ingress Controller</h4><p>同样在官方网站找到部署<code>yaml</code>文件，并获取镜像列。</p>
+<ul>
+<li><a href="https://kubernetes.github.io/ingress-nginx/deploy/" target="_blank" rel="noopener">https://kubernetes.github.io/ingress-nginx/deploy/</a></li>
+</ul>
+<h2 id="准备工作后，离线安装"><a href="#准备工作后，离线安装" class="headerlink" title="准备工作后，离线安装"></a>准备工作后，离线安装</h2><h3 id="环境-1"><a href="#环境-1" class="headerlink" title="环境"></a>环境</h3><ul>
+<li>Master节点 192.168.1.30</li>
+<li>Worker节点 192.168.1.31</li>
+</ul>
+<h3 id="安装Master"><a href="#安装Master" class="headerlink" title="安装Master"></a>安装Master</h3><p>在<code>master</code>节点上执行。</p>
+<ol>
+<li><code>scp</code>命令上传资源包到<code>/root</code>目录下解压，<code>192.168.1.30</code>改为你节点的IP。</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp packages.tar root@192.168.1.30:/root/</span><br></pre></td></tr></table></figure>
+<ol>
+<li>解压到<code>/root/packages</code>目录</li>
+</ol>
+<p><strong>注意</strong>：解压路径不能修改。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir /root/packages</span><br><span class="line">tar -xzvf packages.tar -C /root/packages</span><br></pre></td></tr></table></figure>
+<ol>
+<li>设置参数并安装</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># master节点的主机名</span></span><br><span class="line"><span class="built_in">export</span> HOSTNAMES=k8smaster</span><br><span class="line"><span class="comment"># kubernetes apiserver的主机地址</span></span><br><span class="line"><span class="built_in">export</span> APISERVER_NAME=192.168.1.30</span><br><span class="line"><span class="comment"># 镜像仓库私有仓库名，默认k8s.gcr.io</span></span><br><span class="line"><span class="built_in">export</span> IMAGEREPO=&lt;harbor_address&gt;/kubernetes-image</span><br><span class="line"><span class="comment"># Pod 使用的网段</span></span><br><span class="line"><span class="built_in">export</span> PODSUBNET=10.11.0.0/16</span><br><span class="line"><span class="comment"># etcd数据路径，默认/var/lib/etcd</span></span><br><span class="line"><span class="built_in">export</span> ETCD_DIR=/home/etcd</span><br><span class="line"><span class="comment"># kube的版本信息</span></span><br><span class="line"><span class="built_in">export</span> KUBEVERSION=v1.18.0</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> /root/packages</span><br><span class="line">./main_master.sh</span><br></pre></td></tr></table></figure>
+<h3 id="安装Worker"><a href="#安装Worker" class="headerlink" title="安装Worker"></a>安装Worker</h3><p>如果需要添加节点的话，在<code>worker</code>节点上执行。。。。</p>
+<h3 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h3><h4 id="Pod启动报镜像拉取失败"><a href="#Pod启动报镜像拉取失败" class="headerlink" title="Pod启动报镜像拉取失败"></a>Pod启动报镜像拉取失败</h4><p>有些部署文件中设置了镜像拉取策略为<code>imagePullPolicy:Always</code>，意思是每次启动都要拉取镜像，修改为<code>imagePullPolicy:IfNotPresent</code>如果不存在才拉取就行了，或者搭建私有仓库亦可。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.sheldonlu.com/passages/设计篇之Paas基础学习/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2371,231 +2644,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.sheldonlu.com/passages/学习杂记之Jenkins系列/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sheldon Lu">
-      <meta itemprop="description" content="静下心来写点东西">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sheldon_Lu">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/passages/学习杂记之Jenkins系列/" class="post-title-link" itemprop="url">学习杂记之Jenkins系列</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2020-06-24 21:24:58" itemprop="dateCreated datePublished" datetime="2020-06-24T21:24:58+08:00">2020-06-24</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2020-06-30 22:53:39" itemprop="dateModified" datetime="2020-06-30T22:53:39+08:00">2020-06-30</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Study/" itemprop="url" rel="index"><span itemprop="name">Study</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-            
-                <span class="post-meta-item-text">Comments: </span>
-                <a href="/passages/学习杂记之Jenkins系列/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/passages/学习杂记之Jenkins系列/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-            <span id="/passages/学习杂记之Jenkins系列/" class="leancloud_visitors" data-flag-title="学习杂记之Jenkins系列">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Views: </span>
-              
-                <span class="leancloud-visitors-count"></span>
-            </span>
-          
-
-          
-
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Symbols count in article: </span>
-                
-                <span title="Symbols count in article">0</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Reading time &asymp;</span>
-                
-                <span title="Reading time">1 mins.</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <a id="more"></a>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2644,7 +2692,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">58</span>
+                    <span class="site-state-item-count">59</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2764,7 +2812,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">32</span>
+                      
+                    
+                    <span class="site-state-item-count">33</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
