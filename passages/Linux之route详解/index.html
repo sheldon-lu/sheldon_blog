@@ -100,18 +100,18 @@
 
 
 
-  <meta name="description" content="Linux 路由表详解及 route 命令详解Linux 内核的路由表通过 route 命令查看 Linux 内核的路由表： 12345678910111213141516171819202122[root@VM_139_74_centos ~]# routeKernel IP routing tableDestination     Gateway         Genmask">
+  <meta name="description" content="Linux 路由表详解及 route 命令详解Linux 内核的路由表通过 route 命令查看 Linux 内核的路由表：">
 <meta name="keywords" content="Linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux之route详解">
 <meta property="og:url" content="https://www.sheldonlu.com/passages/Linux之route详解/index.html">
 <meta property="og:site_name" content="Sheldon_Lu">
-<meta property="og:description" content="Linux 路由表详解及 route 命令详解Linux 内核的路由表通过 route 命令查看 Linux 内核的路由表： 12345678910111213141516171819202122[root@VM_139_74_centos ~]# routeKernel IP routing tableDestination     Gateway         Genmask">
+<meta property="og:description" content="Linux 路由表详解及 route 命令详解Linux 内核的路由表通过 route 命令查看 Linux 内核的路由表：">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-09-24T06:37:22.630Z">
+<meta property="og:updated_time" content="2020-09-24T07:35:38.944Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux之route详解">
-<meta name="twitter:description" content="Linux 路由表详解及 route 命令详解Linux 内核的路由表通过 route 命令查看 Linux 内核的路由表： 12345678910111213141516171819202122[root@VM_139_74_centos ~]# routeKernel IP routing tableDestination     Gateway         Genmask">
+<meta name="twitter:description" content="Linux 路由表详解及 route 命令详解Linux 内核的路由表通过 route 命令查看 Linux 内核的路由表：">
 
 
 
@@ -418,7 +418,7 @@
                 
               
 
-              <time title="Created: 2020-09-24 14:31:03 / Modified: 14:37:22" itemprop="dateCreated datePublished" datetime="2020-09-24T14:31:03+08:00">2020-09-24</time>
+              <time title="Created: 2020-09-24 14:31:03 / Modified: 15:35:38" itemprop="dateCreated datePublished" datetime="2020-09-24T14:31:03+08:00">2020-09-24</time>
             
 
             
@@ -509,7 +509,7 @@
       
 
       
-        <h2 id="Linux-路由表详解及-route-命令详解"><a href="#Linux-路由表详解及-route-命令详解" class="headerlink" title="Linux 路由表详解及 route 命令详解"></a>Linux 路由表详解及 route 命令详解</h2><h3 id="Linux-内核的路由表"><a href="#Linux-内核的路由表" class="headerlink" title="Linux 内核的路由表"></a>Linux 内核的路由表</h3><p>通过 <code>route</code> 命令查看 Linux 内核的路由表：</p>
+        <h2 id="Linux-路由表详解及-route-命令详解"><a href="#Linux-路由表详解及-route-命令详解" class="headerlink" title="Linux 路由表详解及 route 命令详解"></a>Linux 路由表详解及 route 命令详解</h2><h3 id="Linux-内核的路由表"><a href="#Linux-内核的路由表" class="headerlink" title="Linux 内核的路由表"></a>Linux 内核的路由表</h3><p>通过 <code>route</code> 命令查看 Linux 内核的路由表：<a id="more"></a></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_139_74_centos ~]<span class="comment"># route</span></span><br><span class="line">Kernel IP routing table</span><br><span class="line">Destination     Gateway         Genmask         Flags Metric Ref    Use Iface</span><br><span class="line">default         gateway         0.0.0.0         UG    0      0        0 eth0</span><br><span class="line">10.0.0.10       10.139.128.1    255.255.255.255 UGH   0      0        0 eth0</span><br><span class="line">10.139.128.0    0.0.0.0         255.255.224.0   U     0      0        0 eth0</span><br><span class="line">link-local      0.0.0.0         255.255.0.0     U     1002   0        0 eth0</span><br><span class="line">172.17.0.0      0.0.0.0         255.255.0.0     U     0      0        0 docker0</span><br><span class="line">172.18.0.0      0.0.0.0         255.255.0.0     U     0      0        0 br-0ab63c131848</span><br><span class="line">172.19.0.0      0.0.0.0         255.255.0.0     U     0      0        0 br-bccbfb788da0</span><br><span class="line">172.20.0.0      0.0.0.0         255.255.0.0     U     0      0        0 br-7485db25f958</span><br><span class="line">[root@VM_139_74_centos ~]<span class="comment"># route -n</span></span><br><span class="line">Kernel IP routing table</span><br><span class="line">Destination     Gateway         Genmask         Flags Metric Ref    Use Iface</span><br><span class="line">0.0.0.0         10.139.128.1    0.0.0.0         UG    0      0        0 eth0</span><br><span class="line">10.0.0.10       10.139.128.1    255.255.255.255 UGH   0      0        0 eth0</span><br><span class="line">10.139.128.0    0.0.0.0         255.255.224.0   U     0      0        0 eth0</span><br><span class="line">169.254.0.0     0.0.0.0         255.255.0.0     U     1002   0        0 eth0</span><br><span class="line">172.17.0.0      0.0.0.0         255.255.0.0     U     0      0        0 docker0</span><br><span class="line">172.18.0.0      0.0.0.0         255.255.0.0     U     0      0        0 br-0ab63c131848</span><br><span class="line">172.19.0.0      0.0.0.0         255.255.0.0     U     0      0        0 br-bccbfb788da0</span><br><span class="line">172.20.0.0      0.0.0.0         255.255.0.0     U     0      0        0 br-7485db25f95812345678910111213141516171819202122</span><br></pre></td></tr></table></figure>
 <p>各列字段说明：</p>
 <table>
