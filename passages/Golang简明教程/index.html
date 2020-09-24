@@ -1,0 +1,1876 @@
+<!--崩溃欺骗-->
+<script type="text/javascript" src="/js/src/crash_cheat.js"></script>
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="pM3LIEUO3X">
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/faviconz.ico?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Go 语言 简明教程概述Go 是一个开源的编程语言，它能让构造简单、可靠且高效的软件变得容易。Go是从2007年末由Robert Griesemer, Rob Pike, Ken Thompson主持开发，后来还加入了Ian Lance Taylor, Russ Cox等人，并最终于2009年11月开源，在2012年早些时候发布了Go 1稳定版本。现在Go的开发已经是完全开放的，并且拥有一个活跃的">
+<meta name="keywords" content="Golang">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Golang简明教程">
+<meta property="og:url" content="https://www.sheldonlu.com/passages/Golang简明教程/index.html">
+<meta property="og:site_name" content="Sheldon_Lu">
+<meta property="og:description" content="Go 语言 简明教程概述Go 是一个开源的编程语言，它能让构造简单、可靠且高效的软件变得容易。Go是从2007年末由Robert Griesemer, Rob Pike, Ken Thompson主持开发，后来还加入了Ian Lance Taylor, Russ Cox等人，并最终于2009年11月开源，在2012年早些时候发布了Go 1稳定版本。现在Go的开发已经是完全开放的，并且拥有一个活跃的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://static.studygolang.com/190927/a6639f0384843c736113e484e6556d18.png">
+<meta property="og:image" content="https://static.studygolang.com/190927/59e336051578f6136d1c318ed3ce19eb.png">
+<meta property="og:image" content="https://static.studygolang.com/190927/c231eb2bcfb1f895b2aa51ce3e39f0e6.png">
+<meta property="og:image" content="https://static.studygolang.com/190927/07b54d588437f8df20d3e7555aadedcf.png">
+<meta property="og:image" content="https://static.studygolang.com/190927/c6daa5b5f6099f532d7fed210b4d9408.png">
+<meta property="og:image" content="https://static.studygolang.com/190927/8f028c1a13e77e5f90e8757ed78afe60.png">
+<meta property="og:image" content="https://static.studygolang.com/190927/f19c0608b3bda1fa5179412c45a5a307.png">
+<meta property="og:image" content="https://static.studygolang.com/190927/0ac890708a97a7be7c28b6a208bac660.png">
+<meta property="og:updated_time" content="2020-09-24T07:34:17.210Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Golang简明教程">
+<meta name="twitter:description" content="Go 语言 简明教程概述Go 是一个开源的编程语言，它能让构造简单、可靠且高效的软件变得容易。Go是从2007年末由Robert Griesemer, Rob Pike, Ken Thompson主持开发，后来还加入了Ian Lance Taylor, Russ Cox等人，并最终于2009年11月开源，在2012年早些时候发布了Go 1稳定版本。现在Go的开发已经是完全开放的，并且拥有一个活跃的">
+<meta name="twitter:image" content="https://static.studygolang.com/190927/a6639f0384843c736113e484e6556d18.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://www.sheldonlu.com/passages/Golang简明教程/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Golang简明教程 | Sheldon_Lu</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sheldon_Lu</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.sheldonlu.com/passages/Golang简明教程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sheldon Lu">
+      <meta itemprop="description" content="静下心来写点东西">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sheldon_Lu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Golang简明教程
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2020-09-24 15:21:15 / Modified: 15:34:17" itemprop="dateCreated datePublished" datetime="2020-09-24T15:21:15+08:00">2020-09-24</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/passages/Golang简明教程/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/passages/Golang简明教程/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/passages/Golang简明教程/" class="leancloud_visitors" data-flag-title="Golang简明教程">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Views: </span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article">14k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">13 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Go-语言-简明教程"><a href="#Go-语言-简明教程" class="headerlink" title="Go 语言 简明教程"></a>Go 语言 简明教程</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>Go 是一个开源的编程语言，它能让构造简单、可靠且高效的软件变得容易。Go是从2007年末由Robert Griesemer, Rob Pike, Ken Thompson主持开发，后来还加入了Ian Lance Taylor, Russ Cox等人，并最终于2009年11月开源，在2012年早些时候发布了Go 1稳定版本。现在Go的开发已经是完全开放的，并且拥有一个活跃的社区。</p>
+<h3 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h3><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ul>
+<li>开源</li>
+<li>编译性语言, 运行高速</li>
+<li>语法简洁</li>
+<li>并行处理封装</li>
+<li>内存管理、数组安全</li>
+</ul>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><ul>
+<li>作为编译性语言调试不如脚本方便</li>
+<li>在数据分析上没有脚本适用</li>
+<li>对底层的控制没有基础语言灵活</li>
+</ul>
+<h3 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h3><p>常应用于搭载 Web 服务器，存储集群或类似用途的巨型中央服务器的系统编程语言。对于高性能分布式系统领域而言，Go 语言无疑比大多数其它语言有着更高的开发效率。它提供了海量并行的支持，在服务端的开发优势较大。</p>
+<h3 id="语言基础"><a href="#语言基础" class="headerlink" title="语言基础"></a>语言基础</h3><h4 id="基本数据类型"><a href="#基本数据类型" class="headerlink" title="基本数据类型"></a>基本数据类型</h4><h5 id="变量和常量"><a href="#变量和常量" class="headerlink" title="变量和常量"></a>变量和常量</h5><p>普通赋值:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// var 变量名称 变量类型 = 值</span></span><br><span class="line"><span class="keyword">var</span> num <span class="keyword">int</span> = <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>平行赋值</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> num1,num2 <span class="keyword">int</span> = <span class="number">1</span>, <span class="number">2</span></span><br></pre></td></tr></table></figure>
+<p>多行赋值</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> (</span><br><span class="line">    num1 <span class="keyword">int</span> = <span class="number">1</span></span><br><span class="line">    num2 <span class="keyword">int</span> = <span class="number">2</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h5 id="整数类型的命名和宽度"><a href="#整数类型的命名和宽度" class="headerlink" title="整数类型的命名和宽度"></a>整数类型的命名和宽度</h5><p>Go的整数类型一共有10个其中计算架构相关的整数类型有两个:</p>
+<ul>
+<li>有符号的整数类型 int</li>
+<li>无符号的整数类型 uint<br>在不同计算架构的计算机上，它们体现的宽度(存储某个类型的值所需要的空间)是不一样的。空间的单位可以是bit也可以是字节byte。</li>
+</ul>
+<p><img src="https://static.studygolang.com/190927/a6639f0384843c736113e484e6556d18.png" alt="img"></p>
+<p>除了这两个计算架构相关的整数类型之外，还有8个可以显式表达自身宽度的整数类型:</p>
+<p><img src="https://static.studygolang.com/190927/59e336051578f6136d1c318ed3ce19eb.png" alt="img"></p>
+<h5 id="整数类型值的表示法"><a href="#整数类型值的表示法" class="headerlink" title="整数类型值的表示法"></a>整数类型值的表示法</h5><p><img src="https://static.studygolang.com/190927/c231eb2bcfb1f895b2aa51ce3e39f0e6.png" alt="img"></p>
+<p>如果以8进制为变量num赋值:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">num = <span class="number">039</span> <span class="comment">// 用"0"作为前缀以表明这是8进制表示法</span></span><br></pre></td></tr></table></figure>
+<p>如果以16进制为变量num赋值:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">num = <span class="number">0x39</span></span><br></pre></td></tr></table></figure>
+<h5 id="浮点数类型"><a href="#浮点数类型" class="headerlink" title="浮点数类型"></a>浮点数类型</h5><p>浮点数类型有两个：float32/float64 浮点数类型的值一般由整数部分、小数点”.”和小数部分组成。另外一种表示方法是在其中加入指数部分。指数部分由”E”或”e”以及带正负号的10进制整数表示。例:3.9E-2表示浮点数0.039。3.9E+1表示浮点数39。<br>有时候浮点数类型值也可以被简化。比如39.0可以被简化为39。0.039可以被简化为.039。 在Go中浮点数的相关部分只能由10进制表示法表示。</p>
+<h5 id="复数类型"><a href="#复数类型" class="headerlink" title="复数类型"></a>复数类型</h5><p>复数类型有两个:complex64和complex128。实际上，complex64类型的值会由两个float32类型的值分别表示复数的实数部分和虚数部分。而complex128类型的值会由两个float64类型的值表示复数的实数部分和虚数部分。<br>负数类型的值一般由浮点数表示的实数部分、加号”+”、浮点数表示的虚数部分以及小写字母”i”组成，比如3.9E+1 + 9.99E-2i。</p>
+<h5 id="byte与rune"><a href="#byte与rune" class="headerlink" title="byte与rune"></a>byte与rune</h5><p>byte与rune都属于别名类型。byte是uint8的别名类型，而rune是int32的别名类型。<br>一个rune的类型值即可表示一个Unicode字符。一个Unicode代码点通常由”U+”和一个以十六进制表示法表示的整数表示，例如英文字母’A’的Unicode代码点为”U+0041”。<br>rune类型的值需要由单引号”‘“包裹，不过我们还可以用另外几种方式表示:</p>
+<p><img src="https://static.studygolang.com/190927/07b54d588437f8df20d3e7555aadedcf.png" alt="img"></p>
+<p>另外在rune类型值的表示中支持几种特殊的字符序列，即:转义符。如下图:</p>
+<p><img src="https://static.studygolang.com/190927/c6daa5b5f6099f532d7fed210b4d9408.png" alt="img"></p>
+<h5 id="字符串类型"><a href="#字符串类型" class="headerlink" title="字符串类型"></a>字符串类型</h5><p>字符串的表示法有两种，即：原生表示法和解释型表示法。原生表示法，需用用反引号”`”把字符序列包起来，如果用解释型表示法，则需要用双引号”””包裹字符序列。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str1 <span class="keyword">string</span> = “str”</span><br><span class="line"><span class="keyword">var</span> str1 <span class="keyword">string</span> = <span class="string">`str`</span></span><br></pre></td></tr></table></figure>
+<p>二者的区别是，前者表示的是所见即所得的(除了回车符)。后者所表示的值中转义符会起作用。<br>字符串值是不可变的，如果我们创建了一个此类型的值，就不可能再对它本身做任何修改。</p>
+<h5 id="数组类型"><a href="#数组类型" class="headerlink" title="数组类型"></a>数组类型</h5><p>一个数组是可以容纳若干相同类型的元素的容器。数组的长度是固定的。如下声明一个数组类型:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> MyNumbers [<span class="number">3</span>]<span class="keyword">int</span></span><br></pre></td></tr></table></figure>
+<p>类型声明语句由关键字type、类型名称和类型字面量组成<br>上面这条类型声明语句实际上是为数组类型[3]int声明了一个别名类型。这使得我们可以把MyNumbers当作数组类型[3]int来使用。<br>我们表示这样一个数组类型的值的时候。应该把该类型的类型字面量写在最左边，然后用花括号包裹该值包含的若干元素，各元素之间以(英文半角)逗号分割，即:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">3</span>]<span class="keyword">int</span>&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>现在我们把这个数组字面量赋给一个名为numbers的变量:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> numbers = [<span class="number">3</span>]<span class="keyword">int</span>&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>这是一条变量声明语句，它在声明变量的同时为该变量赋值</p>
+<p>另一种方式是在其中的类型字面量中省略代表其长度的数组，例：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> numbers = [...]<span class="keyword">int</span>&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>可以用如下方式访问该变量中的任何一个元素。例:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">numbers[<span class="number">0</span>]</span><br><span class="line">numbers[<span class="number">1</span>]</span><br><span class="line">numbers[<span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+<p>如果要修改数组值中的某一个元素值，可以：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">numbers[<span class="number">1</span>] = <span class="number">4</span></span><br></pre></td></tr></table></figure>
+<p>可以用如下方式获取数组长度:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> length = <span class="built_in">len</span>(numbers)</span><br></pre></td></tr></table></figure>
+<p>如果一个数组没有赋值，则它的默认值为</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[length]<span class="keyword">type</span>&#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>…&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="切片类型"><a href="#切片类型" class="headerlink" title="切片类型"></a>切片类型</h5><p>切片(slice)与数组一样也是可以若干相同类型元素的容器。与数组不同的是切片类型的长度不确定。每个切片值都会将数组作为其底层数据结构。表示切片类型的字面量如:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[]<span class="keyword">int</span></span><br></pre></td></tr></table></figure>
+<p>或者是:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[]<span class="keyword">string</span></span><br></pre></td></tr></table></figure>
+<p>切片类型的声明可以这样:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> MySlice []<span class="keyword">int</span></span><br></pre></td></tr></table></figure>
+<p>对切片值的表示也与数组值相似</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[]<span class="keyword">int</span>&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>操作数组值的方法同样适用于切片值。还有一种操作数组的方式叫做“切片”，实施切片操作的方式就是切片表达式。例:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> number3 = [<span class="number">5</span>]<span class="keyword">int</span>&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;</span><br><span class="line"><span class="keyword">var</span> slice1 = numbers3[<span class="number">1</span>:<span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+<p>上例中切片表达式numbers3[1:4]的结果为[]int{2,3,4}很明显被切下的部分不包含元素上界索引指向的元素。实际上slice1这个切片值的底层数组正是number3的值。<br>我们也可以在切片值上实施切片操作：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> slice2 = slice1[<span class="number">1</span>:<span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+<p>除了长度切片值以及数组值还有另外一个属性–容量。数组的容量总是等于其长度，而切片值的容量往往与其长度不同。如下图:</p>
+<p><img src="https://static.studygolang.com/190927/8f028c1a13e77e5f90e8757ed78afe60.png" alt="img"></p>
+<p>如图所示，一个切片值的容量即为它的第一个元素值在其底层数组中的索引值与该数组长度的差值的绝对值。可以使用cap()内建函数获取数组、切片、通道类型的值的容量:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> capacity2 <span class="keyword">int</span> = <span class="built_in">cap</span>(slice2)</span><br></pre></td></tr></table></figure>
+<p>切片类型属于引用类型，它的零值即为nil，即空值。如果我们只声明了一个切片类型而不为它赋值，则它的默认值 nil。</p>
+<p>切片的更多操作方法有些时候我们可以在方括号中放入第三个正整数。如下图所示:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">numbers3[<span class="number">1</span>:<span class="number">4</span>:<span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+<p>第三个正整数为容量上界索引，它意义在于可以把作为结果的切片值的容量设置的更小。它可以限制我们通过这个切片值对其底层数组中的更多元素的访问。上节中numbers3和slice的赋值语句如下:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> numbers3 = [<span class="number">5</span>]<span class="keyword">int</span>&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;</span><br><span class="line"><span class="keyword">var</span> slice1 = numbers3[<span class="number">1</span>:<span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+<p>这时，变量slice1的值是[]int{2,3,4}。但是我们可以通过如下操作将其长度延展与其容量相同:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">slice1 = slice1[:<span class="built_in">cap</span>(slice1)]</span><br></pre></td></tr></table></figure>
+<p>通过此操作，变量slice1的值变为了[]int{2,3,4,5}，且其长度和容量均为4。现在number3的值中的索引值在(1,5)范围内的元素都被体现在了slice1的值中。这是以number3的值是slice1的值的底层数组为前提的。这意味着我们可以轻而易举地通过切片访问其底层数组中对应索引值更大的更多元素。如果我们编写的函数返回了这样一个切片值，那么得到它的程序很可能会通过这种技巧访问到本不应该暴露给它的元素。<br>如果我们在切片中加入了第三个索引(即容量上限索引)，如：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> slice1 = numbers3[<span class="number">1</span>:<span class="number">4</span>:<span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+<p>那么在此之后，我们将无法通过slice1访问到number3的值中的第五个元素。<br>虽然切片值在上述方面受到了其容量的限制。但是我们可以通过另外一种手段对其进行不受限制的扩展。这需要用到内建函数append。append会对切片值进行扩展并返回一个新的切片值，使用方法如下:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">slice1 = <span class="built_in">append</span>(slice1, <span class="number">6</span>, <span class="number">7</span>)</span><br></pre></td></tr></table></figure>
+<p>通过上述操作，slice1的值变为了[]int{2,3,4,6,7}。一旦扩展操作超出了被操作的切片值的容量，那么该切片的底层数组就会被替换 最后一种操作切片的方式是“复制”。该操作的实施方法是调用copy函数。该函数接收两个类型相同的切片值作为参数，并把第二个参数值中的元素复制到第一个参数值中的相应位置(索引值相同)上。这里有两点需要注意:</p>
+<ol>
+<li>这种复制遵循最小复制原则，即：被复制的元素的个数总是等于长度较短的那个参值的长度。</li>
+<li>与append函数不同，copy函数会直接对其第一个参数值进行修改。</li>
+</ol>
+<p>例:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> slice4 = []<span class="keyword">int</span>&#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>&#125;</span><br><span class="line"><span class="built_in">copy</span>(slice4, slice1)</span><br></pre></td></tr></table></figure>
+<p>通过上述复制操作，slice4会变成[]int{2,3,4,6,7,0,0}。</p>
+<h5 id="字典类型"><a href="#字典类型" class="headerlink" title="字典类型"></a>字典类型</h5><p>Go语言的字典(Map)类型是一个哈希表的实现。字典类型的字面量如下:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">map</span>[K]T</span><br></pre></td></tr></table></figure>
+<p>其中，”K”为键的类型，而”T”则代表元素(值)的类型。如果我们描述一个键类型为int，值类型为string的字典类型的话：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span></span><br></pre></td></tr></table></figure>
+<p>字典的键类型必须是可比较的，否则会引起错误，即键不能是切片、字典、函数类型</p>
+<p>字典值的字面量表示法实际上与数组的切片的字面量表示法很相似。最左边仍然是类型字面量，右边紧挨着由花括号包裹且有英文逗号分隔的键值对。每个键值对的键和值之间由冒号分隔。以字典类型map[int]string为例。他的值的字面量可以是这样的：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>&#123;<span class="number">1</span>:<span class="string">"a"</span>,<span class="number">2</span>:<span class="string">"b"</span>m,<span class="number">3</span>:<span class="string">"c"</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>我们可以把这个值赋给一个变量</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mm := <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>&#123;<span class="number">1</span>:<span class="string">"a"</span>,<span class="number">2</span>:<span class="string">"b"</span>,<span class="number">3</span>:<span class="string">"c"</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>可用索引表达式取出字典中的值：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">b := mm[<span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+<p>可以用索引表达式赋值:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mm[<span class="number">2</span>] = b + <span class="string">"2"</span></span><br></pre></td></tr></table></figure>
+<p>这样mm中键为2的值变为了”b2”。可以用如下方式向字典中添加一个键值对:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mm[<span class="number">4</span>] = <span class="string">""</span></span><br></pre></td></tr></table></figure>
+<p>对于字典值来说，如果指定键没有对应的值则默认为该类型的空值。所以mm[5]会返回一个””。但是这样的话我们就不知道mm[5]到底是””还是mm[5]没有这个值。所以go提供了另外一种写法:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">e, ok := mm[<span class="number">5</span>]</span><br></pre></td></tr></table></figure>
+<p>针对字典的索引表达式可以有两个求职结果，第二个求职结果是bool类型的。它用于表明字典值中是否存在指定的键值对。 从字典中删除键值对的方法非常简单，仅仅是调用内建函数delete：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">delete</span>(mm, <span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+<p>无论mm中是否存在以4为键的键值对，delete都删除。 字典类型属于引用类型，它的零值即为nil</p>
+<h5 id="通道类型"><a href="#通道类型" class="headerlink" title="通道类型"></a>通道类型</h5><p>通道(Channel)是Go语言中一种非常独特的数据结构。它可用于在不同Goroutine之间传递类型化的数据。并且是并发安全的。相比之下，之前几种数据类型都不是并发安全的。<br>Goroutine可以被看作是承载可被并发执行的代码块的载体。它们由Go语言的运行时系统调度，并依托操作系统线程(又称内核线程)来并发地执行其中的代码块。<br>通道类型的表示方法很简单，仅由两部分组成:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">chan</span> T</span><br></pre></td></tr></table></figure>
+<p>在这个类型字面量中，左边是代表通道类型的关键字chan,而右边则是一个可变的部分，即代表该通道类型允许传递的数据的类型(或称通道的元素类型)。<br>与其他的数据类型不同，我们无法表示一个通道类型的值，因此，我们无法用字面量来为通道类型的变量赋值。只能通过调用内建函数make来达到目的。make参数可接受两个参数，第一个参数是代表了将被初始化的值的类型的字面量(例: chan int),而第二个参数则是值的长度，例如,若我们想要初始化一个长度为5且元素类型为int的通道值，则需要这样写:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+<p>make函数也可以被用来初始化切片类型或字典类型的值。<br>暂存在通道值中的数据是先进先出。下面，我们声明一个通道类型的变量，并为其赋值:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ch1 := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>, <span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+<p>这样一来，我们就可以使用接受操作符&lt;-向通道值发送数据了。当然，也可以使用它从通道值接收数据，例如，如果我们要向通道ch1 发送字符串”value1”，那么应该这样做:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ch1 &lt;- “value1<span class="string">"</span></span><br></pre></td></tr></table></figure>
+<p>如果我们从ch1那里接收字符串，则要这样:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;- ch1</span><br></pre></td></tr></table></figure>
+<p>我们可以把接受到字符串赋给一个变量，如:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">value := &lt;- ch1</span><br></pre></td></tr></table></figure>
+<p>与针对字典值的索引表达式一样，针对通道值的接受操作也可以有第二个结果值:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">value, ok := &lt;- ch1</span><br></pre></td></tr></table></figure>
+<p>这里的ok的值是bool类型的。它代表了通道值的状态，true代表通道值有效，而false则代表通道值已无效(或称已关闭)，更深层次的原因是，如果在接受操作进行之前或过程中通道值被关闭了，则接收操作会立即结束并返回一个该通道值的元素类型的零值。<br>可以通过函数close来关闭通道:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">close(ch1)</span><br></pre></td></tr></table></figure>
+<p>对通道值的重复关闭会引发运行时异常，会使程序崩溃。在通道值有效的前提下，针对它的发送操作会在通道值已满(其中缓存的数据的个数已等于它的长度)时被阻塞。而向一个已被关闭的通道值发送数据会引发运行时异常。针对有效通道值的接收操作会在它已经为空时被阻塞。通道类型属于引用类型，它的零值为nil。</p>
+<h4 id="流程控制"><a href="#流程控制" class="headerlink" title="流程控制"></a>流程控制</h4><h5 id="条件语句"><a href="#条件语句" class="headerlink" title="条件语句"></a>条件语句</h5><p>对应的关键字为if、 else和else if；</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> a := <span class="number">1</span>; a &gt;= <span class="number">1</span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">"OK"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="选择语句"><a href="#选择语句" class="headerlink" title="选择语句"></a>选择语句</h5><p>对应的关键字为switch、 case和select</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> i &#123;</span><br><span class="line"> <span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line"> fmt.Printf(<span class="string">"0"</span>)</span><br><span class="line"> <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line"> fmt.Printf(<span class="string">"1"</span>)</span><br><span class="line"> <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line"> <span class="keyword">fallthrough</span></span><br><span class="line"> <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line"> fmt.Printf(<span class="string">"3"</span>)</span><br><span class="line"> <span class="keyword">case</span> <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>:</span><br><span class="line"> fmt.Printf(<span class="string">"4, 5, 6"</span>)</span><br><span class="line"> <span class="keyword">default</span>:</span><br><span class="line"> fmt.Printf(<span class="string">"Default"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="循环语句"><a href="#循环语句" class="headerlink" title="循环语句"></a>循环语句</h5><p>对应的关键字为for和range；</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sum := <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line"> sum += i</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="跳转语句"><a href="#跳转语句" class="headerlink" title="跳转语句"></a>跳转语句</h5><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">myfunc</span><span class="params">()</span></span> &#123;</span><br><span class="line"> i := <span class="number">0</span></span><br><span class="line"> HERE:</span><br><span class="line"> fmt.Println(i)</span><br><span class="line"> i++</span><br><span class="line"> <span class="keyword">if</span> i &lt; <span class="number">10</span> &#123;</span><br><span class="line"> <span class="keyword">goto</span> HERE</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h4><h5 id="概述-1"><a href="#概述-1" class="headerlink" title="概述"></a>概述</h5><p>首先函数的格式是固定的，func＋函数名＋ 参数 ＋ 返回值（可选） ＋ 函数体。例 :</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span>（） </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">fmt.Println(<span class="string">"Hello go"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在golang中有两个特殊的函数，main函数和init函数，main函数不用介绍在所有语言中都一样，它作为一个程序的入口，只能有一个。init函数在每个package是可选的，可有可无，甚至可以有多个(但是强烈建议一个package中一个init函数)，init函数在你导入该package时程序会自动调用init函数，所以init函数不用我们手动调用,另外它只会被调用一次，因为当一个package被多次引用时，它只会被导入一次。</p>
+<h5 id="参数传递"><a href="#参数传递" class="headerlink" title="参数传递"></a>参数传递</h5><ul>
+<li>普通变量<br>使用普通变量作为函数参数的时候，在传递参数时只是对变量值得拷贝，即将实参的值复制给变参，当函数对变参进行处理时，并不会影响原来实参的值。</li>
+<li>指针<br>函数的变量不仅可以使用普通变量，还可以使用指针变量，使用指针变量作为函数的参数时，在进行参数传递时将是一个地址看呗，即将实参的内存地址复制给变参，这时对变参的修改也将会影响到实参的值。</li>
+<li>数组<br>和其他语言不同的是，go语言在将数组名作为函数参数的时候，参数传递即是对数组的复制。在形参中对数组元素的修改都不会影响到数组元素原来的值。</li>
+<li>slice, map, chan<br>在使用slice, map, chan 作为函数参数时，进行参数传递将是一个地址拷贝，即将底层数组的内存地址复制给参数slice, map, chan 。这时，对slice, map, chan 元素的操作就是对底层数组元素的操作。</li>
+<li>函数名字<br>在go语言中，函数也作为一种数据类型，所以函数也可以作为函数的参数来使用。</li>
+</ul>
+<h5 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h5><p>go语言可以返回局部变量的指针，因为go语言的回收机制是当销毁栈上的临时数据且发现有被外部引用的栈上变量时，会自动转移到堆上。</p>
+<h5 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h5><p>和其他语言类似，golang也支持闭包函数</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">adder</span><span class="params">()</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">     sum := <span class="number">0</span></span><br><span class="line">     <span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">(x <span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">          sum += x</span><br><span class="line">          <span class="keyword">return</span> sum</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">     pos, neg := adder(), adder()</span><br><span class="line">     <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">          fmt.Println(</span><br><span class="line">               pos(i),</span><br><span class="line">               neg(<span class="number">-2</span>*i),</span><br><span class="line">          )</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="类"><a href="#类" class="headerlink" title="类"></a>类</h4><h5 id="概述-2"><a href="#概述-2" class="headerlink" title="概述"></a>概述</h5><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Poem <span class="keyword">struct</span> &#123;</span><br><span class="line">    Title  <span class="keyword">string</span></span><br><span class="line">    Author <span class="keyword">string</span></span><br><span class="line">    intro  <span class="keyword">string</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样就声明了一个类，其中没有public、protected、private的的声明。<strong>golang用另外一种做法来实现属性的访问权限：属性的开头字母是大写的则在其它包中可以被访问，否则只能在本包中访问。类的声明和方法亦是如此</strong>。</p>
+<h5 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h5><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(poem *Poem)</span> <span class="title">publish</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">"poem publish"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(poem Poem)</span> <span class="title">publish</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">"poem publish"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>和其它语言不一样，golang声明方法和普通方法一致，只是在func后增加了poem <em>Poem这样的声明。加</em>和没有加*的区别在于一个是传递指针对象，一个是传递值对象。</p>
+<p>注意当创建了方法1后将会默认创建出方法2,反之则不会。</p>
+<h5 id="类的实例化"><a href="#类的实例化" class="headerlink" title="类的实例化"></a>类的实例化</h5><p>实例化对象有好几种方式</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">poem := &amp;Poem&#123;&#125;</span><br><span class="line"></span><br><span class="line">poem.Author = <span class="string">"Heine"</span></span><br><span class="line"></span><br><span class="line">poem2 := &amp;Poem&#123;Author: <span class="string">"Heine"</span>&#125;</span><br><span class="line"></span><br><span class="line">poem3 := <span class="built_in">new</span>(Poem)</span><br><span class="line"></span><br><span class="line">poem3.Author = <span class="string">"Heine"</span></span><br><span class="line"></span><br><span class="line">poem4 := Poem&#123;&#125;</span><br><span class="line"></span><br><span class="line">poem4.Author = <span class="string">"Heine"</span></span><br><span class="line"></span><br><span class="line">poem5 := Poem&#123;Author: <span class="string">"Heine"</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>实例化的时候可以初始化属性值，如果没有指明则默认为系统默认值。</p>
+<h5 id="伪继承"><a href="#伪继承" class="headerlink" title="伪继承"></a>伪继承</h5><p>golang中不存在继承，但可以使用组合的方式达到类似的效果.</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(e *Poem)</span> <span class="title">ShowTitle</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Printf(e.Title)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> Poem <span class="keyword">struct</span> &#123;</span><br><span class="line">    Title  <span class="keyword">string</span></span><br><span class="line">    Author <span class="keyword">string</span></span><br><span class="line">    intro  <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> ProsePoem <span class="keyword">struct</span> &#123;</span><br><span class="line">    Poem</span><br><span class="line">    Author <span class="keyword">string</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>ProsePoem属性中声明了Poem，表示组合了Poem的属性和方法<strong>(属性和方法都会被继承)</strong>。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">prosePoem := &amp;ProsePoem&#123;</span><br><span class="line">        Poem: Poem&#123;</span><br><span class="line">            Title:  <span class="string">"Jack"</span>,</span><br><span class="line">            Author: <span class="string">"slow"</span>,</span><br><span class="line">            intro:  <span class="string">"simple"</span>,</span><br><span class="line">        &#125;,</span><br><span class="line">        Author: <span class="string">"test"</span>,</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>如果其中属性有冲突，则以外围的为主，也就是说会被覆盖。同样类方法出现冲突时也会覆盖，并不会支持重载</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> ProsePoem <span class="keyword">struct</span> &#123;</span><br><span class="line">    Poem</span><br><span class="line">    Author <span class="keyword">string</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>当访问Author的时候默认为ProsePoem的Author，如果需要访问Poem的Author属性可以使用</strong><br><strong>prosePoem.Poem.Author来访问方法同理</strong>。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">prosePoem := &amp;ProsePoem&#123;&#125;</span><br><span class="line"></span><br><span class="line">prosePoem.Author = <span class="string">"Shelley"</span></span><br><span class="line"></span><br><span class="line">prosePoem.Poem.Author = <span class="string">"Heine"</span></span><br><span class="line"></span><br><span class="line">fmt.Println(prosePoem)</span><br></pre></td></tr></table></figure>
+<p>从输出中可以很直观看到这一点。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&amp;&#123;&#123; Heine &#125; Shelley&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h4><p>Golang的interface是方法的集合也是一种类型</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Animal <span class="keyword">interface</span> &#123;</span><br><span class="line">    Speak() <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Cat <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c Cat)</span> <span class="title">Speak</span><span class="params">()</span> <span class="title">string</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"cat"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Dog <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(d Dog)</span> <span class="title">Speak</span><span class="params">()</span> <span class="title">string</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"dog"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Test</span><span class="params">(params <span class="keyword">interface</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">    fmt.Println(params)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    animals := []Animal&#123;Cat&#123;&#125;, Dog&#123;&#125;&#125;</span><br><span class="line">    <span class="keyword">for</span> _, animal := <span class="keyword">range</span> animals &#123;</span><br><span class="line">        fmt.Println(animal.Speak())</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Test(<span class="string">"string"</span>)</span><br><span class="line">    Test(<span class="number">123</span>)</span><br><span class="line">    Test(<span class="literal">true</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如上所示，将Struct 向 Interface变量赋值，实际作用是Interface获取了Struct中方法的实现集合。</p>
+<h4 id="断言和反射"><a href="#断言和反射" class="headerlink" title="断言和反射"></a>断言和反射</h4><p>断言是预判确认变量的类型</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    v := <span class="string">"hello world"</span></span><br><span class="line">    fmt.Println(typeof(v))</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">typeof</span><span class="params">(v <span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">    <span class="keyword">switch</span> t := v.(<span class="keyword">type</span>) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="keyword">int</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"int"</span></span><br><span class="line">    <span class="keyword">case</span> <span class="keyword">float64</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"float64"</span></span><br><span class="line">    <span class="comment">//... etc</span></span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        _ = t</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"unknown"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>反射则是因为interface中实际记录的有存储对象的类型，可以提取出变量的类型</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"reflect"</span></span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    v := <span class="string">"hello world"</span></span><br><span class="line">    fmt.Println(typeof(v))</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">typeof</span><span class="params">(v <span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> reflect.TypeOf(v).String()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="4-7-回收处理"><a href="#4-7-回收处理" class="headerlink" title="4.7 回收处理"></a>4.7 回收处理</h4><p>在golang当中，defer代码块会在函数调用链表中增加一个函数调用。这个函数调用不是普通的函数调用，而是会在函数正常返回，也就是return之后添加一个函数调用。因此，defer通常用来释放函数内部变量。</p>
+<p>如下示例</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">CopyFile</span><span class="params">(dstName, srcName <span class="keyword">string</span>)</span> <span class="params">(written <span class="keyword">int64</span>, err error)</span></span> &#123;</span><br><span class="line">src, err := os.Open(srcName)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line"><span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">defer</span> src.Close()</span><br><span class="line"></span><br><span class="line">dst, err := os.Create(dstName)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line"><span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">defer</span> dst.Close()</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> io.Copy(dst, src)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过defer，我们可以在代码中优雅的关闭/清理代码中所使用的变量。defer作为golang清理变量的特性，有其独有且明确的行为。以下是defer三条使用规则。</p>
+<ul>
+<li>当defer被声明时，其参数就会被实时解析<br>即defer的参数的变量值，在代码中defer使用后的位置改变并不会对改变defer用到的值</li>
+<li>defer执行顺序为先进后出<br>在函数中，先定义的defer将会后执行</li>
+<li>defer可以读取有名返回值<br>defer代码块的作用域仍然在函数之内，因此defer仍然可以读取函数内的变量</li>
+</ul>
+<h4 id="make和new的区别"><a href="#make和new的区别" class="headerlink" title="make和new的区别"></a>make和new的区别</h4><p>new 的作用是初始化一个指向类型的指针(*T)，make 的作用是为 slice，map 或 chan 初始化并返回引用(T)。</p>
+<h4 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h4><p>对于异常处理，golang提供了recover和panic。</p>
+<p>如下示例</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        fmt.Println(<span class="string">"1"</span>)</span><br><span class="line">    &#125;()</span><br><span class="line">    <span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">if</span> err := <span class="built_in">recover</span>(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">            fmt.Println(err)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;()</span><br><span class="line">    <span class="built_in">panic</span>(<span class="string">"fault"</span>)</span><br><span class="line">    fmt.Println(<span class="string">"2"</span>)</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">运行结果：</span><br><span class="line">fault</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>程序首先运行panic，出现故障，此时跳转到包含recover()的defer函数执行，recover捕获panic，此时panic就不继续传递．但是recover之后，程序并不会返回到panic那个点继续执行以后的动作，而是在recover这个点继续执行以后的动作，即执行上面的defer函数，输出１.</p>
+<p>利用recover处理panic指令，必须利用defer在panic之前声明，否则当panic时，recover无法捕获到panic，无法防止panic扩散．</p>
+<h4 id="协程"><a href="#协程" class="headerlink" title="协程"></a>协程</h4><p>Go调度的几个概念：</p>
+<p>M：内核线程；<br>G：go routine，并发的最小逻辑单元，由程序员创建；<br>P：处理器，执行G的上下文环境，每个P会维护一个本地的go routine队列；</p>
+<p><img src="https://static.studygolang.com/190927/f19c0608b3bda1fa5179412c45a5a307.png" alt="img"></p>
+<p>除了每个P拥有一个本地的go routine队列外，还存在一个全局的go routine队列。</p>
+<p>具体调度原理：</p>
+<ol>
+<li>P的数量在初始化由GOMAXPROCS决定；</li>
+<li>我们要做的就是添加G；</li>
+<li>G的数量超出了M的处理能力，且还有空余P的话，runtime就会自动创建新的M；</li>
+<li>M拿到P后才能干活，取G的顺序：本地队列&gt;全局队列&gt;其他P的队列，如果所有队列都没有可用的G，M会归还P并进入休眠；</li>
+</ol>
+<p>一个G如果发生阻塞等事件会进行阻塞，如下图：</p>
+<p><img src="https://static.studygolang.com/190927/0ac890708a97a7be7c28b6a208bac660.png" alt="img"></p>
+<p>G发生上下文切换条件：</p>
+<ul>
+<li>系统调用；</li>
+<li>读写channel；</li>
+<li>gosched主动放弃，会将G扔进全局队列；</li>
+</ul>
+<p>如上图，一个G发生阻塞时，M0让出P，由M1接管其任务队列；当M0执行的阻塞调用返回后，再将G0扔到全局队列，自己则进入睡眠（没有P了无法干活）；</p>
+<p>下面例子说明协程的使用</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"runtime"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">say</span><span class="params">(s <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">2</span>; i++ &#123;</span><br><span class="line">        runtime.Gosched()</span><br><span class="line">        fmt.Println(s)</span><br><span class="line">    &#125;   </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">go</span> say(<span class="string">"world"</span>)</span><br><span class="line">    say(<span class="string">"hello"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输出结果：</span><br><span class="line"></span><br><span class="line">hello</span><br><span class="line">world</span><br><span class="line">hello</span><br></pre></td></tr></table></figure>
+<p>1、先输出了hello,后输出了world.</p>
+<p>2、hello输出了2个，world输出了1个（因为第2个hello输出完，主线程就退出了，第2个world没机会了）</p>
+<p>把代码中的runtime.Gosched()注释掉，执行结果是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hello</span><br><span class="line">hello</span><br></pre></td></tr></table></figure>
+<p>因为say(“hello”)这句占用了时间，等它执行完，线程也结束了，say(“world”)就没有机会了。</p>
+<p>这里同时可以看出，go中的goroutins并不是同时在运行。事实上，如果没有在代码中通过</p>
+<p>runtime.GOMAXPROCS(n) 其中n是整数，</p>
+<p>指定使用多核的话，goroutins都是在一个线程里的，它们之间通过不停的让出时间片轮流运行，达到类似同时运行的效果。</p>
+<h4 id="包管理"><a href="#包管理" class="headerlink" title="包管理"></a>包管理</h4><h5 id="package-的导入语法"><a href="#package-的导入语法" class="headerlink" title="package 的导入语法"></a>package 的导入语法</h5><p>写 Go 代码的时经常用到 import 这个命令用来导入包，参考如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import( &quot;fmt&quot; )</span><br></pre></td></tr></table></figure>
+<p>然后在代码里面调用该包的方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fmt.Println( &quot;hello go&quot; )</span><br></pre></td></tr></table></figure>
+<p>fmt 是 Go 的标准库，它其实是去 GOROOT 下去加载该模块，当然 Go 的 import 还支持如下两种方式来加载自己写的模块：</p>
+<ul>
+<li>相对路径<br>import “./model” // 当前文件同一目录的 model 目录，但是不建议这种方式 import</li>
+<li>绝对路径<br>import “shorturl/model” // 加载 GOPATH/src/shorturl/model 模块</li>
+</ul>
+<h5 id="package-的导入的特殊用法"><a href="#package-的导入的特殊用法" class="headerlink" title="package 的导入的特殊用法"></a>package 的导入的特殊用法</h5><p>上面展示了一些 import 常用的几种方式，但是还有一些特殊的 import ，让很多新手很费解，下面是三种导入包的使用方法。</p>
+<p><strong>点操作</strong></p>
+<p>有时候会看到如下的方式导入包：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import( </span><br><span class="line">    . &quot;fmt&quot; </span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>这个点操作的含义就是这个包导入之后在你调用这个包的函数时，你可以省略前缀的包名，也就是前面你调用的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fmt.Println( &quot;hello go&quot; )</span><br></pre></td></tr></table></figure>
+<p>可以写成：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Println( &quot;hello go&quot; )</span><br></pre></td></tr></table></figure>
+<p><strong> 别名操作</strong><br>别名操作顾名思义可以把包命名成另一个用起来容易记忆的名字：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import( </span><br><span class="line">    f &quot;fmt&quot; </span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>别名操作调用包函数时前缀变成了重命名的前缀，即：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f.Println( &quot;hello go&quot; )</span><br></pre></td></tr></table></figure>
+<p><strong>下划线操作</strong><br>这个操作经常是让很多人费解的一个操作符，请看下面这个 import</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import ( </span><br><span class="line">    _ “github.com/xiyanxiyan10/misakago&quot; </span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>下划线操作并不想引用该包中的方法等，只是希望导入包时自动执行其中的Init()函数来做需要的初始化工作。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Golang/" rel="tag"><i class="fa fa-tag"></i> Golang</a>
+            <!--<a href="/tags/Golang/" rel="tag"># Golang</a>-->
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/passages/Linux之route详解/" rel="next" title="Linux之route详解">
+                <i class="fa fa-chevron-left"></i> Linux之route详解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Sheldon Lu">
+            
+              <p class="site-author-name" itemprop="name">Sheldon Lu</p>
+              <div class="site-description motion-element" itemprop="description">静下心来写点东西</div>
+          </div>
+          
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">62</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">34</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/sheldon-lu" title="GitHub &rarr; https://github.com/sheldon-lu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+            </div>
+          
+
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Go-语言-简明教程"><span class="nav-number">1.</span> <span class="nav-text">Go 语言 简明教程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概述"><span class="nav-number">1.1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优缺点"><span class="nav-number">1.2.</span> <span class="nav-text">优缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优点"><span class="nav-number">1.2.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺点"><span class="nav-number">1.2.2.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用途"><span class="nav-number">1.3.</span> <span class="nav-text">用途</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#语言基础"><span class="nav-number">1.4.</span> <span class="nav-text">语言基础</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本数据类型"><span class="nav-number">1.4.1.</span> <span class="nav-text">基本数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#变量和常量"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">变量和常量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#整数类型的命名和宽度"><span class="nav-number">1.4.1.2.</span> <span class="nav-text">整数类型的命名和宽度</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#整数类型值的表示法"><span class="nav-number">1.4.1.3.</span> <span class="nav-text">整数类型值的表示法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#浮点数类型"><span class="nav-number">1.4.1.4.</span> <span class="nav-text">浮点数类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#复数类型"><span class="nav-number">1.4.1.5.</span> <span class="nav-text">复数类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#byte与rune"><span class="nav-number">1.4.1.6.</span> <span class="nav-text">byte与rune</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#字符串类型"><span class="nav-number">1.4.1.7.</span> <span class="nav-text">字符串类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数组类型"><span class="nav-number">1.4.1.8.</span> <span class="nav-text">数组类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#切片类型"><span class="nav-number">1.4.1.9.</span> <span class="nav-text">切片类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#字典类型"><span class="nav-number">1.4.1.10.</span> <span class="nav-text">字典类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#通道类型"><span class="nav-number">1.4.1.11.</span> <span class="nav-text">通道类型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#流程控制"><span class="nav-number">1.4.2.</span> <span class="nav-text">流程控制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#条件语句"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">条件语句</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#选择语句"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">选择语句</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#循环语句"><span class="nav-number">1.4.2.3.</span> <span class="nav-text">循环语句</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#跳转语句"><span class="nav-number">1.4.2.4.</span> <span class="nav-text">跳转语句</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#函数"><span class="nav-number">1.4.3.</span> <span class="nav-text">函数</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#概述-1"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#参数传递"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">参数传递</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#返回值"><span class="nav-number">1.4.3.3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#闭包"><span class="nav-number">1.4.3.4.</span> <span class="nav-text">闭包</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类"><span class="nav-number">1.4.4.</span> <span class="nav-text">类</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#概述-2"><span class="nav-number">1.4.4.1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#方法"><span class="nav-number">1.4.4.2.</span> <span class="nav-text">方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#类的实例化"><span class="nav-number">1.4.4.3.</span> <span class="nav-text">类的实例化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#伪继承"><span class="nav-number">1.4.4.4.</span> <span class="nav-text">伪继承</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#接口"><span class="nav-number">1.4.5.</span> <span class="nav-text">接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#断言和反射"><span class="nav-number">1.4.6.</span> <span class="nav-text">断言和反射</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-7-回收处理"><span class="nav-number">1.4.7.</span> <span class="nav-text">4.7 回收处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#make和new的区别"><span class="nav-number">1.4.8.</span> <span class="nav-text">make和new的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#异常处理"><span class="nav-number">1.4.9.</span> <span class="nav-text">异常处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#协程"><span class="nav-number">1.4.10.</span> <span class="nav-text">协程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#包管理"><span class="nav-number">1.4.11.</span> <span class="nav-text">包管理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#package-的导入语法"><span class="nav-number">1.4.11.1.</span> <span class="nav-text">package 的导入语法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#package-的导入的特殊用法"><span class="nav-number">1.4.11.2.</span> <span class="nav-text">package 的导入的特殊用法</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+        <script>
+//暂时储存文章中的内容
+var div = $('.post-body');
+//暂时储存目录的内容
+var toc=$('.post-toc-wrap')
+function password() {
+  if(''){
+  //将文章内容删除
+    div.remove();
+ //将目录删除 
+    toc.remove();
+  //将文章删除后，向原来文章的地方添加，应该出现的提示用户输入密码的样式
+  //下面这里的第一个用textarea是因为如果在手机端的时候只能显示一部分文字，
+  //只是拓展:input里面的字只能显示一行，不会自动换行，目前上网搜索没有发现好的办法，所以用了textarea，右下角的小三角通过resize:none 去掉。
+   $('.post-header').after('<textarea class="description" value="Please enter your password and press enter to build" style="border: none;display: block;' +'width: 60%;margin: 0 auto;text-align: center;outline: none;margin-bottom: 50px;resize:none ">
+      Please enter your password and press enter to build</textarea>' +
+      '<div class="qiang" style="height: 100px;width: 60%;margin:0 auto">' +
+      '<input class="password"  type="text" value="" style="border: none;display: block;border-bottom: 1px solid #ccc;' +
+      'margin: 0 auto;outline: none;width:95%"/>' +
+      '</div>')
+      //绑定点击事件，如果是点击的.password 这个div就改变样式，如果是document中除了div之外的其他任何元素，就变回原来的样式。
+    document.onclick = function (event) {
+      var e = event || window.event;
+      var elem = e.srcElement || e.target;
+
+      while (elem) {
+        if (elem != document) {
+          if (elem.className == "password") {
+            $(".password").animate({paddingTop:"30px",width:"100%",borderWidth:"2px"},300)
+            return;
+          }
+          elem = elem.parentNode;
+        } else {
+          $(".password").animate({paddingTop:"0px",width:"95%",borderWidth:"1px"},300)
+          return;
+        }
+      }
+    }
+    //绑定enter键按下后离开的事件
+    $(document).keyup(function(event){
+      if(event.keyCode ==13&&$('.password').length>0){
+        //console.log($('.password').val())
+        //console.log('')
+        if ($('.password').val() == '') {
+        //恢复文章内容
+          (div).appendTo($(".post-header"))
+          //恢复目录
+          toc.appendTo($(".sidebar-inner"))
+                 //删除本页面的输入密码组件
+           $(".description").remove();
+          $(".qiang").remove();
+          $(".password").remove();
+          //重新处理pjax事件,如果没有加pjax的从下面这行起到下面的else之间的代码需要去掉。
+          //图片懒加载，没有加入此功能的这个函数需要去掉
+	          $('img').lazyload({
+	             placeholder: '../images/loading.gif',
+	             effect: 'fadeIn',
+	             threshold : 100,
+	             failure_limit : 20,
+	             skip_invisible : false
+	           });
+	           //pjax后出现文章不显示，没有pjax的下面四行需要去掉
+	            $(".post-block").css({opacity:1});
+	            $(".post-header").css({opacity:1});
+	            $(".post-body").css({opacity:1});
+	            $(".pagination").css({opacity:1});
+        }else {
+          alert("Sorry, the password is wrong.")
+        }
+      }
+      //将document的keyup移除，防止在pjax的情况下会重复绑定事件
+    });
+  }
+}
+password();
+</script>
+      </div>
+      <script>
+//暂时储存文章中的内容
+var div = $('.post-body');
+//暂时储存目录的内容
+var toc=$('.post-toc-wrap')
+function password() {
+  if(''){
+  //将文章内容删除
+    div.remove();
+ //将目录删除 
+    toc.remove();
+  //将文章删除后，向原来文章的地方添加，应该出现的提示用户输入密码的样式
+  //下面这里的第一个用textarea是因为如果在手机端的时候只能显示一部分文字，
+  //只是拓展:input里面的字只能显示一行，不会自动换行，目前上网搜索没有发现好的办法，所以用了textarea，右下角的小三角通过resize:none 去掉。
+   $('.post-header').after('<textarea class="description" value="Please enter your password and press enter to build" style="border: none;display: block;' +'width: 60%;margin: 0 auto;text-align: center;outline: none;margin-bottom: 50px;resize:none ">
+      Please enter your password and press enter to build</textarea>' +
+      '<div class="qiang" style="height: 100px;width: 60%;margin:0 auto">' +
+      '<input class="password"  type="text" value="" style="border: none;display: block;border-bottom: 1px solid #ccc;' +
+      'margin: 0 auto;outline: none;width:95%"/>' +
+      '</div>')
+      //绑定点击事件，如果是点击的.password 这个div就改变样式，如果是document中除了div之外的其他任何元素，就变回原来的样式。
+    document.onclick = function (event) {
+      var e = event || window.event;
+      var elem = e.srcElement || e.target;
+
+      while (elem) {
+        if (elem != document) {
+          if (elem.className == "password") {
+            $(".password").animate({paddingTop:"30px",width:"100%",borderWidth:"2px"},300)
+            return;
+          }
+          elem = elem.parentNode;
+        } else {
+          $(".password").animate({paddingTop:"0px",width:"95%",borderWidth:"1px"},300)
+          return;
+        }
+      }
+    }
+    //绑定enter键按下后离开的事件
+    $(document).keyup(function(event){
+      if(event.keyCode ==13&&$('.password').length>0){
+        //console.log($('.password').val())
+        //console.log('')
+        if ($('.password').val() == '') {
+        //恢复文章内容
+          (div).appendTo($(".post-header"))
+          //恢复目录
+          toc.appendTo($(".sidebar-inner"))
+                 //删除本页面的输入密码组件
+           $(".description").remove();
+          $(".qiang").remove();
+          $(".password").remove();
+          //重新处理pjax事件,如果没有加pjax的从下面这行起到下面的else之间的代码需要去掉。
+          //图片懒加载，没有加入此功能的这个函数需要去掉
+	          $('img').lazyload({
+	             placeholder: '../images/loading.gif',
+	             effect: 'fadeIn',
+	             threshold : 100,
+	             failure_limit : 20,
+	             skip_invisible : false
+	           });
+	           //pjax后出现文章不显示，没有pjax的下面四行需要去掉
+	            $(".post-block").css({opacity:1});
+	            $(".post-header").css({opacity:1});
+	            $(".post-body").css({opacity:1});
+	            $(".pagination").css({opacity:1});
+        }else {
+          alert("Sorry, the password is wrong.")
+        }
+      }
+      //将document的keyup移除，防止在pjax的情况下会重复绑定事件
+    });
+  }
+}
+password();
+</script>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 – <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <!--<i class="fa fa-user"></i>-->
+    <i class="fa fa-heart" aria-hidden="true"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sheldon Lu</span>
+  
+  
+
+  
+</div>
+
+<!--
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a><span>　<i class="fa fa-bomb"></i></span>
+  <span id="showDays"></span>
+  </div>
+
+-->
+<span><i class="fa fa-bomb"></i></span>
+<span id="showDays"></span>
+
+<div>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<!--<span id="busuanzi_container_site_pv" style='display:none'>
+    本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+    <span class="post-meta-divider">|</span>
+</span>-->
+<span id="busuanzi_container_site_uv" style="display:none">
+    有<span id="busuanzi_value_site_uv"></span>人看过我的博客啦
+</span>
+</div>
+
+
+
+<script>
+  var seconds = 1000;
+  var minutes = seconds * 60;
+  var hours = minutes * 60;
+  var days = hours * 24;
+  var years = days * 365;
+  var birthDay = Date.UTC(2019,03,15,00,00,00); // 这里设置建站时间
+  setInterval(function() {
+    var today = new Date();
+    var todayYear = today.getFullYear();
+    var todayMonth = today.getMonth()+1;
+    var todayDate = today.getDate();
+    var todayHour = today.getHours();
+    var todayMinute = today.getMinutes();
+    var todaySecond = today.getSeconds();
+    var now = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+    var diff = now - birthDay;
+    var diffYears = Math.floor(diff/years);
+    var diffDays = Math.floor((diff/days)-diffYears*365);
+    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById('showDays').innerHTML="本站已运行 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+  }, 1000);
+</script>
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'wcykO4AM4RdvFXlzAJAOVgGz-gzGzoHsz',
+    appKey: '1okhim5n5Pq6KwHuFKmTRC9t',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn'
+  });
+</script>
+
+
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $('.leancloud_visitors');
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', '/classes/Counter/' + counter.objectId, JSON.stringify({ time: { '__op': 'Increment', 'amount': 1 } }))
+            
+              .done(function() {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.time + 1);
+              })
+            
+              .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+              })
+          } else {
+            
+              Counter('post', '/classes/Counter', JSON.stringify({ title: title, url: url, time: 1 }))
+                .done(function() {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(1);
+                })
+                .fail(function() {
+                  console.log('Failed to create');
+                });
+            
+          }
+        })
+        .fail(function ({ responseJSON }) {
+          console.log('LeanCloud Counter Error: ' + responseJSON.code + ' ' + responseJSON.error);
+        });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + 'wcykO4AM4RdvFXlzAJAOVgGz-gzGzoHsz')
+        .done(function({ api_server }) {
+          var Counter = function(method, url, data) {
+            return $.ajax({
+              method: method,
+              url: 'https://' + api_server + '/1.1' + url,
+              headers: {
+                'X-LC-Id': 'wcykO4AM4RdvFXlzAJAOVgGz-gzGzoHsz',
+                'X-LC-Key': '1okhim5n5Pq6KwHuFKmTRC9t',
+                'Content-Type': 'application/json',
+              },
+              data: data
+            });
+          };
+          
+            addCount(Counter);
+          
+        });
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

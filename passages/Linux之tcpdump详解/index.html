@@ -1,0 +1,1757 @@
+<!--崩溃欺骗-->
+<script type="text/javascript" src="/js/src/crash_cheat.js"></script>
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="pM3LIEUO3X">
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/faviconz.ico?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="超详细的网络抓包神器 Tcpdump 使用指南前言  本文主要内容翻译自《Tcpdump Examples》[1]。  tcpdump 是一款强大的网络抓包工具，它使用 libpcap 库来抓取网络数据包，这个库在几乎在所有的 Linux/Unix 中都有。熟悉 tcpdump 的使用能够帮助你分析调试网络数据，本文将通过一个个具体的示例来介绍它在不同场景下的使用方法。不管你是系统管理员，程序员，">
+<meta name="keywords" content="Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux之tcpdump详解">
+<meta property="og:url" content="https://www.sheldonlu.com/passages/Linux之tcpdump详解/index.html">
+<meta property="og:site_name" content="Sheldon_Lu">
+<meta property="og:description" content="超详细的网络抓包神器 Tcpdump 使用指南前言  本文主要内容翻译自《Tcpdump Examples》[1]。  tcpdump 是一款强大的网络抓包工具，它使用 libpcap 库来抓取网络数据包，这个库在几乎在所有的 Linux/Unix 中都有。熟悉 tcpdump 的使用能够帮助你分析调试网络数据，本文将通过一个个具体的示例来介绍它在不同场景下的使用方法。不管你是系统管理员，程序员，">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-09-22T05:55:28.037Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux之tcpdump详解">
+<meta name="twitter:description" content="超详细的网络抓包神器 Tcpdump 使用指南前言  本文主要内容翻译自《Tcpdump Examples》[1]。  tcpdump 是一款强大的网络抓包工具，它使用 libpcap 库来抓取网络数据包，这个库在几乎在所有的 Linux/Unix 中都有。熟悉 tcpdump 的使用能够帮助你分析调试网络数据，本文将通过一个个具体的示例来介绍它在不同场景下的使用方法。不管你是系统管理员，程序员，">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://www.sheldonlu.com/passages/Linux之tcpdump详解/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Linux之tcpdump详解 | Sheldon_Lu</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sheldon_Lu</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.sheldonlu.com/passages/Linux之tcpdump详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sheldon Lu">
+      <meta itemprop="description" content="静下心来写点东西">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sheldon_Lu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux之tcpdump详解
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2020-09-22 13:43:31 / Modified: 13:55:28" itemprop="dateCreated datePublished" datetime="2020-09-22T13:43:31+08:00">2020-09-22</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/passages/Linux之tcpdump详解/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/passages/Linux之tcpdump详解/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/passages/Linux之tcpdump详解/" class="leancloud_visitors" data-flag-title="Linux之tcpdump详解">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Views: </span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article">18k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">16 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="超详细的网络抓包神器-Tcpdump-使用指南"><a href="#超详细的网络抓包神器-Tcpdump-使用指南" class="headerlink" title="超详细的网络抓包神器 Tcpdump 使用指南"></a>超详细的网络抓包神器 Tcpdump 使用指南</h2><p><strong>前言</strong></p>
+<blockquote>
+<p>本文主要内容翻译自<strong>《Tcpdump Examples》[1]</strong>。</p>
+</blockquote>
+<p><code>tcpdump</code> 是一款强大的网络抓包工具，它使用 <code>libpcap</code> 库来抓取网络数据包，这个库在几乎在所有的 Linux/Unix 中都有。熟悉 tcpdump 的使用能够帮助你分析调试网络数据，本文将通过一个个具体的示例来介绍它在不同场景下的使用方法。不管你是系统管理员，程序员，云原生工程师还是 yaml 工程师，掌握 tcpdump 的使用都能让你如虎添翼，升职加薪。</p>
+<h3 id="01基本语法和使用方法"><a href="#01基本语法和使用方法" class="headerlink" title="01基本语法和使用方法"></a>01基本语法和使用方法</h3><p><code>tcpdump</code> 的常用参数如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump -i eth0 -nn -s0 -v port <span class="number">80</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>-i</strong> : 选择要捕获的接口，通常是以太网卡或无线网卡，也可以是 <code>vlan</code> 或其他特殊接口。如果该系统上只有一个网络接口，则无需指定。</li>
+<li><strong>-nn</strong> : 单个 n 表示不解析域名，直接显示 IP；两个 n 表示不解析域名和端口。这样不仅方便查看 IP 和端口号，而且在抓取大量数据时非常高效，因为<a href="https://cloud.tencent.com/product/cns?from=10680" target="_blank" rel="noopener">域名解析</a>会降低抓取速度。</li>
+<li><strong>-s0</strong> : tcpdump 默认只会截取前 <code>96</code> 字节的内容，要想截取所有的报文内容，可以使用 <code>-s number</code>， <code>number</code> 就是你要截取的报文字节数，如果是 0 的话，表示截取报文全部内容。</li>
+<li><strong>-v</strong> : 使用 <code>-v</code>，<code>-vv</code> 和 <code>-vvv</code> 来显示更多的详细信息，通常会显示更多与特定协议相关的信息。</li>
+<li><code>port 80</code> : 这是一个常见的端口过滤器，表示仅抓取 <code>80</code> 端口上的流量，通常是 HTTP。</li>
+</ul>
+<p>额外再介绍几个常用参数：</p>
+<ul>
+<li><strong>-p</strong> : 不让网络接口进入混杂模式。默认情况下使用 tcpdump 抓包时，会让网络接口进入混杂模式。一般计算机网卡都工作在非混杂模式下，此时网卡只接受来自网络端口的目的地址指向自己的数据。当网卡工作在混杂模式下时，网卡将来自接口的所有数据都捕获并交给相应的驱动程序。如果设备接入的交换机开启了混杂模式，使用 <code>-p</code> 选项可以有效地过滤噪声。</li>
+<li><strong>-e</strong> : 显示数据链路层信息。默认情况下 tcpdump 不会显示数据链路层信息，使用 <code>-e</code> 选项可以显示源和目的 MAC 地址，以及 VLAN tag 信息。例如：</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump -n -e -c <span class="number">5</span> not ip6</span><br><span class="line"></span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv <span class="keyword">for</span> full protocol decode</span><br><span class="line">listening on br-lan, link-type EN10MB (Ethernet), capture size <span class="number">262144</span> bytes</span><br><span class="line"><span class="number">18</span>:<span class="number">27</span>:<span class="number">53.619865</span> <span class="number">24</span>:<span class="number">5</span>e:be:<span class="number">0</span>c:<span class="number">17</span>:af &gt; <span class="number">00</span>:e2:<span class="number">69</span>:<span class="number">23</span>:d3:<span class="number">3</span>b, ethertype IPv4 (<span class="number">0x0800</span>), length <span class="number">1162</span>: <span class="number">192.168</span><span class="number">.100</span><span class="number">.20</span><span class="number">.51410</span> &gt; <span class="number">180.176</span><span class="number">.26</span><span class="number">.193</span><span class="number">.58695</span>: Flags [.], seq <span class="number">2045333376</span>:<span class="number">2045334484</span>, ack <span class="number">3398690514</span>, win <span class="number">751</span>, length <span class="number">1108</span></span><br><span class="line"><span class="number">18</span>:<span class="number">27</span>:<span class="number">53.626490</span> <span class="number">00</span>:e2:<span class="number">69</span>:<span class="number">23</span>:d3:<span class="number">3</span>b &gt; <span class="number">24</span>:<span class="number">5</span>e:be:<span class="number">0</span>c:<span class="number">17</span>:af, ethertype IPv4 (<span class="number">0x0800</span>), length <span class="number">68</span>: <span class="number">220.173</span><span class="number">.179</span><span class="number">.66</span><span class="number">.36017</span> &gt; <span class="number">192.168</span><span class="number">.100</span><span class="number">.20</span><span class="number">.51410</span>: UDP, length <span class="number">26</span></span><br><span class="line"><span class="number">18</span>:<span class="number">27</span>:<span class="number">53.626893</span> <span class="number">24</span>:<span class="number">5</span>e:be:<span class="number">0</span>c:<span class="number">17</span>:af &gt; <span class="number">00</span>:e2:<span class="number">69</span>:<span class="number">23</span>:d3:<span class="number">3</span>b, ethertype IPv4 (<span class="number">0x0800</span>), length <span class="number">1444</span>: <span class="number">192.168</span><span class="number">.100</span><span class="number">.20</span><span class="number">.51410</span> &gt; <span class="number">220.173</span><span class="number">.179</span><span class="number">.66</span><span class="number">.36017</span>: UDP, length <span class="number">1402</span></span><br><span class="line"><span class="number">18</span>:<span class="number">27</span>:<span class="number">53.628837</span> <span class="number">00</span>:e2:<span class="number">69</span>:<span class="number">23</span>:d3:<span class="number">3</span>b &gt; <span class="number">24</span>:<span class="number">5</span>e:be:<span class="number">0</span>c:<span class="number">17</span>:af, ethertype IPv4 (<span class="number">0x0800</span>), length <span class="number">1324</span>: <span class="number">46.97</span><span class="number">.169</span><span class="number">.182</span><span class="number">.6881</span> &gt; <span class="number">192.168</span><span class="number">.100</span><span class="number">.20</span><span class="number">.59145</span>: Flags [P.], seq <span class="number">3058450381</span>:<span class="number">3058451651</span>, ack <span class="number">14349180</span>, win <span class="number">502</span>, length <span class="number">1270</span></span><br><span class="line"><span class="number">18</span>:<span class="number">27</span>:<span class="number">53.629096</span> <span class="number">24</span>:<span class="number">5</span>e:be:<span class="number">0</span>c:<span class="number">17</span>:af &gt; <span class="number">00</span>:e2:<span class="number">69</span>:<span class="number">23</span>:d3:<span class="number">3</span>b, ethertype IPv4 (<span class="number">0x0800</span>), length <span class="number">54</span>: <span class="number">192.168</span><span class="number">.100</span><span class="number">.20</span><span class="number">.59145</span> &gt; <span class="number">192.168</span><span class="number">.100</span><span class="number">.1</span><span class="number">.12345</span>: Flags [.], ack <span class="number">3058451651</span>, win <span class="number">6350</span>, length <span class="number">0</span></span><br><span class="line"><span class="number">5</span> packets captured</span><br></pre></td></tr></table></figure>
+<h4 id="显示-ASCII-字符串"><a href="#显示-ASCII-字符串" class="headerlink" title="显示 ASCII 字符串"></a>显示 ASCII 字符串</h4><p><code>-A</code> 表示使用 <code>ASCII</code> 字符串打印报文的全部数据，这样可以使读取更加简单，方便使用 <code>grep</code> 等工具解析输出内容。<code>-X</code> 表示同时使用十六进制和 <code>ASCII</code> 字符串打印报文的全部数据。这两个参数不能一起使用。例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump -A -s0 port <span class="number">80</span></span><br></pre></td></tr></table></figure>
+<h4 id="抓取特定协议的数据"><a href="#抓取特定协议的数据" class="headerlink" title="抓取特定协议的数据"></a>抓取特定协议的数据</h4><p>后面可以跟上协议名称来过滤特定协议的流量，以 UDP 为例，可以加上参数 udp 或 <code>protocol 17</code>，这两个命令意思相同。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump -i eth0 udp</span><br><span class="line">$ tcpdump -i eth0 proto <span class="number">17</span></span><br></pre></td></tr></table></figure>
+<p>同理，tcp 与 <code>protocol 6</code> 意思相同。</p>
+<h4 id="抓取特定主机的数据"><a href="#抓取特定主机的数据" class="headerlink" title="抓取特定主机的数据"></a>抓取特定主机的数据</h4><p>使用过滤器 <code>host</code> 可以抓取特定目的地和源 IP 地址的流量。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump -i eth0 host <span class="number">10.10</span><span class="number">.1</span><span class="number">.1</span></span><br></pre></td></tr></table></figure>
+<p>也可以使用 <code>src</code> 或 <code>dst</code> 只抓取源或目的地：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump -i eth0 dst <span class="number">10.10</span><span class="number">.1</span><span class="number">.20</span></span><br></pre></td></tr></table></figure>
+<h4 id="将抓取的数据写入文件"><a href="#将抓取的数据写入文件" class="headerlink" title="将抓取的数据写入文件"></a>将抓取的数据写入文件</h4><p>使用 tcpdump 截取数据报文的时候，默认会打印到屏幕的默认输出，你会看到按照顺序和格式，很多的数据一行行快速闪过，根本来不及看清楚所有的内容。不过，tcpdump 提供了把截取的数据保存到文件的功能，以便后面使用其他图形工具（比如 wireshark，Snort）来分析。</p>
+<p><code>-w</code> 选项用来把数据报文输出到文件：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump -i eth0 -s0 -w test.pcap</span><br></pre></td></tr></table></figure>
+<h4 id="行缓冲模式"><a href="#行缓冲模式" class="headerlink" title="行缓冲模式"></a>行缓冲模式</h4><p>如果想实时将抓取到的数据通过管道传递给其他工具来处理，需要使用 <code>-l</code> 选项来开启行缓冲模式（或使用 <code>-c</code> 选项来开启数据包缓冲模式）。使用 <code>-l</code> 选项可以将输出通过立即发送给其他命令，其他命令会立即响应。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump -i eth0 -s0 -l port <span class="number">80</span> | grep <span class="string">'Server:'</span></span><br></pre></td></tr></table></figure>
+<h4 id="组合过滤器"><a href="#组合过滤器" class="headerlink" title="组合过滤器"></a>组合过滤器</h4><p>过滤的真正强大之处在于你可以随意组合它们，而连接它们的逻辑就是常用的 <code>与/AND/&amp;&amp;</code> 、 <code>或/OR/||</code> 和 <code>非/not/!</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">and or &amp;&amp;</span><br><span class="line">or or ||</span><br><span class="line">not or !</span><br></pre></td></tr></table></figure>
+<h3 id="02过滤器"><a href="#02过滤器" class="headerlink" title="02过滤器"></a>02过滤器</h3><p>关于 tcpdump 的过滤器，这里有必要单独介绍一下。</p>
+<p>机器上的网络报文数量异常的多，很多时候我们只关系和具体问题有关的数据报（比如访问某个网站的数据，或者 icmp 超时的报文等等），而这些数据只占到很小的一部分。把所有的数据截取下来，从里面找到想要的信息无疑是一件很费时费力的工作。而 tcpdump 提供了灵活的语法可以精确地截取关心的数据报，简化分析的工作量。这些选择数据包的语句就是过滤器（filter）！</p>
+<h4 id="Host-过滤器"><a href="#Host-过滤器" class="headerlink" title="Host 过滤器"></a>Host 过滤器</h4><p>Host 过滤器用来过滤某个主机的数据报文。例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump host <span class="number">1.2</span><span class="number">.3</span><span class="number">.4</span></span><br></pre></td></tr></table></figure>
+<p>该命令会抓取所有发往主机 <code>1.2.3.4</code> 或者从主机 <code>1.2.3.4</code> 发出的流量。如果想只抓取从该主机发出的流量，可以使用下面的命令：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump src host <span class="number">1.2</span><span class="number">.3</span><span class="number">.4</span></span><br></pre></td></tr></table></figure>
+<h4 id="Network-过滤器"><a href="#Network-过滤器" class="headerlink" title="Network 过滤器"></a>Network 过滤器</h4><p>Network 过滤器用来过滤某个网段的数据，使用的是 <strong>CIDR[2]</strong> 模式。可以使用四元组（x.x.x.x）、三元组（x.x.x）、二元组（x.x）和一元组（x）。四元组就是指定某个主机，三元组表示子网掩码为 <code>255.255.255.0</code>，二元组表示子网掩码为 <code>255.255.0.0</code>，一元组表示子网掩码为 <code>255.0.0.0</code>。例如，</p>
+<p>抓取所有发往网段 <code>192.168.1.x</code> 或从网段 <code>192.168.1.x</code> 发出的流量：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump net <span class="number">192.168</span><span class="number">.1</span></span><br></pre></td></tr></table></figure>
+<p>抓取所有发往网段 <code>10.x.x.x</code> 或从网段 <code>10.x.x.x</code> 发出的流量：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump net <span class="number">10</span></span><br></pre></td></tr></table></figure>
+<p>和 Host 过滤器一样，这里也可以指定源和目的：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump src net <span class="number">10</span></span><br></pre></td></tr></table></figure>
+<p>也可以使用 CIDR 格式：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump src net <span class="number">172.16</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">12</span></span><br></pre></td></tr></table></figure>
+<h4 id="Proto-过滤器"><a href="#Proto-过滤器" class="headerlink" title="Proto 过滤器"></a>Proto 过滤器</h4><p>Proto 过滤器用来过滤某个协议的数据，关键字为 <code>proto</code>，可省略。proto 后面可以跟上协议号或协议名称，支持 <code>icmp</code>, <code>igmp</code>, <code>igrp</code>, <code>pim</code>, <code>ah</code>, <code>esp</code>, <code>carp</code>, <code>vrrp</code>, <code>udp</code>和 <code>tcp</code>。因为通常的协议名称是保留字段，所以在与 proto 指令一起使用时，必须根据 shell 类型使用一个或两个反斜杠（/）来转义。Linux 中的 shell 需要使用两个反斜杠来转义，MacOS 只需要一个。</p>
+<p>例如，抓取 icmp 协议的报文：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump -n proto \\icmp</span><br><span class="line"># 或者</span><br><span class="line">$ tcpdump -n icmp</span><br></pre></td></tr></table></figure>
+<h4 id="Port-过滤器"><a href="#Port-过滤器" class="headerlink" title="Port 过滤器"></a>Port 过滤器</h4><p>Port 过滤器用来过滤通过某个端口的数据报文，关键字为 <code>port</code>。例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump port <span class="number">389</span></span><br></pre></td></tr></table></figure>
+<h3 id="03理解-tcpdump-的输出"><a href="#03理解-tcpdump-的输出" class="headerlink" title="03理解 tcpdump 的输出"></a>03理解 tcpdump 的输出</h3><p>截取数据只是第一步，第二步就是理解这些数据，下面就解释一下 tcpdump 命令输出各部分的意义。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">21</span>:<span class="number">27</span>:<span class="number">06.995846</span> IP (tos <span class="number">0x0</span>, ttl <span class="number">64</span>, id <span class="number">45646</span>, offset <span class="number">0</span>, flags [DF], proto TCP (<span class="number">6</span>), length <span class="number">64</span>)</span><br><span class="line">    <span class="number">192.168</span><span class="number">.1</span><span class="number">.106</span><span class="number">.56166</span> &gt; <span class="number">124.192</span><span class="number">.132</span><span class="number">.54</span><span class="number">.80</span>: Flags [S], cksum <span class="number">0xa730</span> (correct), seq <span class="number">992042666</span>, win <span class="number">65535</span>, options [mss <span class="number">1460</span>,nop,wscale <span class="number">4</span>,nop,nop,TS val <span class="number">663433143</span> ecr <span class="number">0</span>,sackOK,eol], length <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="number">21</span>:<span class="number">27</span>:<span class="number">07.030487</span> IP (tos <span class="number">0x0</span>, ttl <span class="number">51</span>, id <span class="number">0</span>, offset <span class="number">0</span>, flags [DF], proto TCP (<span class="number">6</span>), length <span class="number">44</span>)</span><br><span class="line">    <span class="number">124.192</span><span class="number">.132</span><span class="number">.54</span><span class="number">.80</span> &gt; <span class="number">192.168</span><span class="number">.1</span><span class="number">.106</span><span class="number">.56166</span>: Flags [S.], cksum <span class="number">0xedc0</span> (correct), seq <span class="number">2147006684</span>, ack <span class="number">992042667</span>, win <span class="number">14600</span>, options [mss <span class="number">1440</span>], length <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="number">21</span>:<span class="number">27</span>:<span class="number">07.030527</span> IP (tos <span class="number">0x0</span>, ttl <span class="number">64</span>, id <span class="number">59119</span>, offset <span class="number">0</span>, flags [DF], proto TCP (<span class="number">6</span>), length <span class="number">40</span>)</span><br><span class="line">    <span class="number">192.168</span><span class="number">.1</span><span class="number">.106</span><span class="number">.56166</span> &gt; <span class="number">124.192</span><span class="number">.132</span><span class="number">.54</span><span class="number">.80</span>: Flags [.], cksum <span class="number">0x3e72</span> (correct), ack <span class="number">2147006685</span>, win <span class="number">65535</span>, length <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>最基本也是最重要的信息就是数据报的源地址/端口和目的地址/端口，上面的例子第一条数据报中，源地址 ip 是 <code>192.168.1.106</code>，源端口是 <code>56166</code>，目的地址是 <code>124.192.132.54</code>，目的端口是 <code>80</code>。<code>&gt;</code> 符号代表数据的方向。</p>
+<p>此外，上面的三条数据还是 tcp 协议的三次握手过程，第一条就是 <code>SYN</code> 报文，这个可以通过 <code>Flags [S]</code> 看出。下面是常见的 TCP 报文的 Flags:</p>
+<ul>
+<li><code>[S]</code> : SYN（开始连接）</li>
+<li><code>[.]</code> : 没有 Flag</li>
+<li><code>[P]</code> : PSH（推送数据）</li>
+<li><code>[F]</code> : FIN （结束连接）</li>
+<li><code>[R]</code> : RST（重置连接）</li>
+</ul>
+<p>而第二条数据的 <code>[S.]</code> 表示 <code>SYN-ACK</code>，就是 <code>SYN</code> 报文的应答报文。</p>
+<h3 id="04例子"><a href="#04例子" class="headerlink" title="04例子"></a>04例子</h3><p>下面给出一些具体的例子，每个例子都可以使用多种方法来获得相同的输出，你使用的方法取决于所需的输出和网络上的流量。我们在排障时，通常只想获取自己想要的内容，可以通过过滤器和 ASCII 输出并结合管道与 grep、cut、awk 等工具来实现此目的。</p>
+<p>例如，在抓取 HTTP 请求和响应数据包时，可以通过删除标志 <code>SYN/ACK/FIN</code> 来过滤噪声，但还有更简单的方法，那就是通过管道传递给 <code>grep</code>。在达到目的的同时，我们要选择最简单最高效的方法。下面来看例子。</p>
+<h4 id="提取-HTTP-用户代理"><a href="#提取-HTTP-用户代理" class="headerlink" title="提取 HTTP 用户代理"></a>提取 HTTP 用户代理</h4><p>从 HTTP 请求头中提取 HTTP 用户代理：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump -nn -A -s1500 -l | grep <span class="string">"User-Agent:"</span></span><br></pre></td></tr></table></figure>
+<p>通过 <code>egrep</code> 可以同时提取用户代理和主机名（或其他头文件）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump -nn -A -s1500 -l | egrep -i <span class="string">'User-Agent:|Host:'</span></span><br></pre></td></tr></table></figure>
+<h4 id="只抓取-HTTP-GET-和-POST-流量"><a href="#只抓取-HTTP-GET-和-POST-流量" class="headerlink" title="只抓取 HTTP GET 和 POST 流量"></a>只抓取 HTTP GET 和 POST 流量</h4><p>抓取 HTTP GET 流量：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump -s <span class="number">0</span> -A -vv <span class="string">'tcp[((tcp[12:1] &amp; 0xf0) &gt;&gt; 2):4] = 0x47455420'</span></span><br></pre></td></tr></table></figure>
+<p>也可以抓取 HTTP POST 请求流量：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump -s <span class="number">0</span> -A -vv <span class="string">'tcp[((tcp[12:1] &amp; 0xf0) &gt;&gt; 2):4] = 0x504f5354'</span></span><br></pre></td></tr></table></figure>
+<p>注意：该方法不能保证抓取到 HTTP POST 有效数据流量，因为一个 POST 请求会被分割为多个 TCP 数据包。</p>
+<p>上述两个表达式中的十六进制将会与 GET 和 POST 请求的 <code>ASCII</code> 字符串匹配。例如，<code>tcp[((tcp[12:1] &amp; 0xf0) &gt;&gt; 2):4]</code> 首先会<strong>确定我们感兴趣的字节的位置[3]</strong>（在 TCP header 之后），然后选择我们希望匹配的 4 个字节。</p>
+<h4 id="提取-HTTP-请求的-URL"><a href="#提取-HTTP-请求的-URL" class="headerlink" title="提取 HTTP 请求的 URL"></a>提取 HTTP 请求的 URL</h4><p>提取 HTTP 请求的主机名和路径：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump -s <span class="number">0</span> -v -n -l | egrep -i <span class="string">"POST /|GET /|Host:"</span></span><br><span class="line"></span><br><span class="line">tcpdump: listening on enp7s0, link-type EN10MB (Ethernet), capture size <span class="number">262144</span> bytes</span><br><span class="line">	POST /wp-login.php HTTP/<span class="number">1.1</span></span><br><span class="line">	Host: dev.example.com</span><br><span class="line">	GET /wp-login.php HTTP/<span class="number">1.1</span></span><br><span class="line">	Host: dev.example.com</span><br><span class="line">	GET /favicon.ico HTTP/<span class="number">1.1</span></span><br><span class="line">	Host: dev.example.com</span><br><span class="line">	GET / HTTP/<span class="number">1.1</span></span><br><span class="line">	Host: dev.example.com</span><br></pre></td></tr></table></figure>
+<h4 id="提取-HTTP-POST-请求中的密码"><a href="#提取-HTTP-POST-请求中的密码" class="headerlink" title="提取 HTTP POST 请求中的密码"></a>提取 HTTP POST 请求中的密码</h4><p>从 HTTP POST 请求中提取密码和主机名：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump -s <span class="number">0</span> -A -n -l | egrep -i <span class="string">"POST /|pwd=|passwd=|password=|Host:"</span></span><br><span class="line"></span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv <span class="keyword">for</span> full protocol decode</span><br><span class="line">listening on enp7s0, link-type EN10MB (Ethernet), capture size <span class="number">262144</span> bytes</span><br><span class="line"><span class="number">11</span>:<span class="number">25</span>:<span class="number">54.799014</span> IP <span class="number">10.10</span><span class="number">.1</span><span class="number">.30</span><span class="number">.39224</span> &gt; <span class="number">10.10</span><span class="number">.1</span><span class="number">.125</span><span class="number">.80</span>: Flags [P.], seq <span class="number">1458768667</span>:<span class="number">1458770008</span>, ack <span class="number">2440130792</span>, win <span class="number">704</span>, options [nop,nop,TS val <span class="number">461552632</span> ecr <span class="number">208900561</span>], length <span class="number">1341</span>: HTTP: POST /wp-login.php HTTP/<span class="number">1.1</span></span><br><span class="line">.....s..POST /wp-login.php HTTP/<span class="number">1.1</span></span><br><span class="line">Host: dev.example.com</span><br><span class="line">.....s..log=admin&amp;pwd=notmypassword&amp;wp-submit=Log+In&amp;redirect_to=http%<span class="number">3</span>A%<span class="number">2</span>F%<span class="number">2</span>Fdev.example.com%<span class="number">2</span>Fwp-admin%<span class="number">2</span>F&amp;testcookie=<span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h4 id="提取-Cookies"><a href="#提取-Cookies" class="headerlink" title="提取 Cookies"></a>提取 Cookies</h4><p>提取 <code>Set-Cookie</code>（服务端的 Cookie）和 <code>Cookie</code>（客户端的 Cookie）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump -nn -A -s0 -l | egrep -i <span class="string">'Set-Cookie|Host:|Cookie:'</span></span><br><span class="line"></span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv <span class="keyword">for</span> full protocol decode</span><br><span class="line">listening on wlp58s0, link-type EN10MB (Ethernet), capture size <span class="number">262144</span> bytes</span><br><span class="line">Host: dev.example.com</span><br><span class="line">Cookie: wordpress_86be02xxxxxxxxxxxxxxxxxxxc43=admin%<span class="number">7</span>C152xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxfb3e15c744fdd6; _ga=GA1<span class="number">.2</span><span class="number">.21343434343421934</span>; _gid=GA1<span class="number">.2</span><span class="number">.927343434349426</span>; wordpress_test_cookie=WP+Cookie+check; wordpress_logged_in_86be654654645645645654645653fc43=admin%<span class="number">7</span>C15275102testtesttesttestab7a61e; wp-settings-time<span class="number">-1</span>=<span class="number">1527337439</span></span><br></pre></td></tr></table></figure>
+<h4 id="抓取-ICMP-数据包"><a href="#抓取-ICMP-数据包" class="headerlink" title="抓取 ICMP 数据包"></a>抓取 ICMP 数据包</h4><p>查看网络上的所有 ICMP 数据包：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump -n icmp</span><br><span class="line"></span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv <span class="keyword">for</span> full protocol decode</span><br><span class="line">listening on enp7s0, link-type EN10MB (Ethernet), capture size <span class="number">262144</span> bytes</span><br><span class="line"><span class="number">11</span>:<span class="number">34</span>:<span class="number">21.590380</span> IP <span class="number">10.10</span><span class="number">.1</span><span class="number">.217</span> &gt; <span class="number">10.10</span><span class="number">.1</span><span class="number">.30</span>: ICMP echo request, id <span class="number">27948</span>, seq <span class="number">1</span>, length <span class="number">64</span></span><br><span class="line"><span class="number">11</span>:<span class="number">34</span>:<span class="number">21.590434</span> IP <span class="number">10.10</span><span class="number">.1</span><span class="number">.30</span> &gt; <span class="number">10.10</span><span class="number">.1</span><span class="number">.217</span>: ICMP echo reply, id <span class="number">27948</span>, seq <span class="number">1</span>, length <span class="number">64</span></span><br><span class="line"><span class="number">11</span>:<span class="number">34</span>:<span class="number">27.680307</span> IP <span class="number">10.10</span><span class="number">.1</span><span class="number">.159</span> &gt; <span class="number">10.10</span><span class="number">.1</span><span class="number">.1</span>: ICMP <span class="number">10.10</span><span class="number">.1</span><span class="number">.189</span> udp port <span class="number">59619</span> unreachable, length <span class="number">115</span></span><br></pre></td></tr></table></figure>
+<h4 id="抓取非-ECHO-REPLY-类型的-ICMP-数据包"><a href="#抓取非-ECHO-REPLY-类型的-ICMP-数据包" class="headerlink" title="抓取非 ECHO/REPLY 类型的 ICMP 数据包"></a>抓取非 ECHO/REPLY 类型的 ICMP 数据包</h4><p>通过排除 echo 和 reply 类型的数据包使抓取到的数据包不包括标准的 <code>ping</code> 包：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump <span class="string">'icmp[icmptype] != icmp-echo and icmp[icmptype] != icmp-echoreply'</span></span><br><span class="line"></span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv <span class="keyword">for</span> full protocol decode</span><br><span class="line">listening on enp7s0, link-type EN10MB (Ethernet), capture size <span class="number">262144</span> bytes</span><br><span class="line"><span class="number">11</span>:<span class="number">37</span>:<span class="number">04.041037</span> IP <span class="number">10.10</span><span class="number">.1</span><span class="number">.189</span> &gt; <span class="number">10.10</span><span class="number">.1</span><span class="number">.20</span>: ICMP <span class="number">10.10</span><span class="number">.1</span><span class="number">.189</span> udp port <span class="number">36078</span> unreachable, length <span class="number">156</span></span><br></pre></td></tr></table></figure>
+<h4 id="抓取-SMTP-POP3-协议的邮件"><a href="#抓取-SMTP-POP3-协议的邮件" class="headerlink" title="抓取 SMTP/POP3 协议的邮件"></a>抓取 SMTP/POP3 协议的邮件</h4><p>可以提取电子邮件的正文和其他数据。例如，只提取电子邮件的收件人：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump -nn -l port <span class="number">25</span> | grep -i <span class="string">'MAIL FROM\|RCPT TO'</span></span><br></pre></td></tr></table></figure>
+<h4 id="抓取-NTP-服务的查询和响应"><a href="#抓取-NTP-服务的查询和响应" class="headerlink" title="抓取 NTP 服务的查询和响应"></a>抓取 NTP 服务的查询和响应</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump dst port <span class="number">123</span></span><br><span class="line"></span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv <span class="keyword">for</span> full protocol decode</span><br><span class="line">listening on eth0, link-type EN10MB (Ethernet), capture size <span class="number">65535</span> bytes</span><br><span class="line"><span class="number">21</span>:<span class="number">02</span>:<span class="number">19.112502</span> IP test33.ntp &gt; <span class="number">199.30</span><span class="number">.140</span><span class="number">.74</span>.ntp: NTPv4, Client, length <span class="number">48</span></span><br><span class="line"><span class="number">21</span>:<span class="number">02</span>:<span class="number">19.113888</span> IP <span class="number">216.239</span><span class="number">.35</span><span class="number">.0</span>.ntp &gt; test33.ntp: NTPv4, Server, length <span class="number">48</span></span><br><span class="line"><span class="number">21</span>:<span class="number">02</span>:<span class="number">20.150347</span> IP test33.ntp &gt; <span class="number">216.239</span><span class="number">.35</span><span class="number">.0</span>.ntp: NTPv4, Client, length <span class="number">48</span></span><br><span class="line"><span class="number">21</span>:<span class="number">02</span>:<span class="number">20.150991</span> IP <span class="number">216.239</span><span class="number">.35</span><span class="number">.0</span>.ntp &gt; test33.ntp: NTPv4, Server, length <span class="number">48</span></span><br></pre></td></tr></table></figure>
+<h4 id="抓取-SNMP-服务的查询和响应"><a href="#抓取-SNMP-服务的查询和响应" class="headerlink" title="抓取 SNMP 服务的查询和响应"></a>抓取 SNMP 服务的查询和响应</h4><p>通过 SNMP 服务，渗透测试人员可以获取大量的设备和系统信息。在这些信息中，系统信息最为关键，如操作系统版本、内核版本等。使用 SNMP 协议快速扫描程序 <code>onesixtyone</code>，可以看到目标系统的信息：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ onesixtyone <span class="number">10.10</span><span class="number">.1</span><span class="number">.10</span> public</span><br><span class="line"></span><br><span class="line">Scanning <span class="number">1</span> hosts, <span class="number">1</span> communities</span><br><span class="line">10.10.1.10 [public] Linux test33 4.15.0-20-generic #21-Ubuntu SMP Tue Apr 24 06:16:15 UTC 2018 x86_64</span><br></pre></td></tr></table></figure>
+<p>可以通过 tcpdump 抓取 <code>GetRequest</code> 和 <code>GetResponse</code>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump -n -s0  port <span class="number">161</span> and udp</span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv <span class="keyword">for</span> full protocol decode</span><br><span class="line">listening on wlp58s0, link-type EN10MB (Ethernet), capture size <span class="number">262144</span> bytes</span><br><span class="line"><span class="number">23</span>:<span class="number">39</span>:<span class="number">13.725522</span> IP <span class="number">10.10</span><span class="number">.1</span><span class="number">.159</span><span class="number">.36826</span> &gt; <span class="number">10.10</span><span class="number">.1</span><span class="number">.20</span><span class="number">.161</span>:  GetRequest(<span class="number">28</span>)  <span class="number">.1</span><span class="number">.3</span><span class="number">.6</span><span class="number">.1</span><span class="number">.2</span><span class="number">.1</span><span class="number">.1</span><span class="number">.1</span><span class="number">.0</span></span><br><span class="line"><span class="number">23</span>:<span class="number">39</span>:<span class="number">13.728789</span> IP <span class="number">10.10</span><span class="number">.1</span><span class="number">.20</span><span class="number">.161</span> &gt; <span class="number">10.10</span><span class="number">.1</span><span class="number">.159</span><span class="number">.36826</span>:  GetResponse(<span class="number">109</span>)  <span class="number">.1</span><span class="number">.3</span><span class="number">.6</span><span class="number">.1</span><span class="number">.2</span><span class="number">.1</span><span class="number">.1</span><span class="number">.1</span><span class="number">.0</span>=<span class="string">"Linux testmachine 4.15.0-20-generic #21-Ubuntu SMP Tue Apr 24 06:16:15 UTC 2018 x86_64"</span></span><br></pre></td></tr></table></figure>
+<h4 id="切割-pcap-文件"><a href="#切割-pcap-文件" class="headerlink" title="切割 pcap 文件"></a>切割 pcap 文件</h4><p>当抓取大量数据并写入文件时，可以自动切割为多个大小相同的文件。例如，下面的命令表示每 3600 秒创建一个新文件 <code>capture-(hour).pcap</code>，每个文件大小不超过 <code>200*1000000</code> 字节：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump  -w /tmp/capture-%H.pcap -G <span class="number">3600</span> -C <span class="number">200</span></span><br></pre></td></tr></table></figure>
+<p>这些文件的命名为 <code>capture-{1-24}.pcap</code>，24 小时之后，之前的文件就会被覆盖。</p>
+<h4 id="抓取-IPv6-流量"><a href="#抓取-IPv6-流量" class="headerlink" title="抓取 IPv6 流量"></a>抓取 IPv6 流量</h4><p>可以通过过滤器 <code>ip6</code> 来抓取 IPv6 流量，同时可以指定协议如 TCP：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump -nn ip6 proto <span class="number">6</span></span><br></pre></td></tr></table></figure>
+<p>从之前保存的文件中读取 IPv6 UDP 数据报文：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump -nr ipv6-test.pcap ip6 proto <span class="number">17</span></span><br></pre></td></tr></table></figure>
+<h4 id="检测端口扫描"><a href="#检测端口扫描" class="headerlink" title="检测端口扫描"></a>检测端口扫描</h4><p>在下面的例子中，你会发现抓取到的报文的源和目的一直不变，且带有标志位 <code>[S]</code> 和 <code>[R]</code>，它们与一系列看似随机的目标端口进行匹配。当发送 <code>SYN</code> 之后，如果目标主机的端口没有打开，就会返回一个 <code>RESET</code>。这是 <code>Nmap</code> 等端口扫描工具的标准做法。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump -nn</span><br><span class="line"></span><br><span class="line"><span class="number">21</span>:<span class="number">46</span>:<span class="number">19.693601</span> IP <span class="number">10.10</span><span class="number">.1</span><span class="number">.10</span><span class="number">.60460</span> &gt; <span class="number">10.10</span><span class="number">.1</span><span class="number">.199</span><span class="number">.5432</span>: Flags [S], seq <span class="number">116466344</span>, win <span class="number">29200</span>, options [mss <span class="number">1460</span>,sackOK,TS val <span class="number">3547090332</span> ecr <span class="number">0</span>,nop,wscale <span class="number">7</span>], length <span class="number">0</span></span><br><span class="line"><span class="number">21</span>:<span class="number">46</span>:<span class="number">19.693626</span> IP <span class="number">10.10</span><span class="number">.1</span><span class="number">.10</span><span class="number">.35470</span> &gt; <span class="number">10.10</span><span class="number">.1</span><span class="number">.199</span><span class="number">.513</span>: Flags [S], seq <span class="number">3400074709</span>, win <span class="number">29200</span>, options [mss <span class="number">1460</span>,sackOK,TS val <span class="number">3547090332</span> ecr <span class="number">0</span>,nop,wscale <span class="number">7</span>], length <span class="number">0</span></span><br><span class="line"><span class="number">21</span>:<span class="number">46</span>:<span class="number">19.693762</span> IP <span class="number">10.10</span><span class="number">.1</span><span class="number">.10</span><span class="number">.44244</span> &gt; <span class="number">10.10</span><span class="number">.1</span><span class="number">.199</span><span class="number">.389</span>: Flags [S], seq <span class="number">2214070267</span>, win <span class="number">29200</span>, options [mss <span class="number">1460</span>,sackOK,TS val <span class="number">3547090333</span> ecr <span class="number">0</span>,nop,wscale <span class="number">7</span>], length <span class="number">0</span></span><br><span class="line"><span class="number">21</span>:<span class="number">46</span>:<span class="number">19.693772</span> IP <span class="number">10.10</span><span class="number">.1</span><span class="number">.199</span><span class="number">.389</span> &gt; <span class="number">10.10</span><span class="number">.1</span><span class="number">.10</span><span class="number">.44244</span>: Flags [R.], seq <span class="number">0</span>, ack <span class="number">2214070268</span>, win <span class="number">0</span>, length <span class="number">0</span></span><br><span class="line"><span class="number">21</span>:<span class="number">46</span>:<span class="number">19.693783</span> IP <span class="number">10.10</span><span class="number">.1</span><span class="number">.10</span><span class="number">.35172</span> &gt; <span class="number">10.10</span><span class="number">.1</span><span class="number">.199</span><span class="number">.1433</span>: Flags [S], seq <span class="number">2358257571</span>, win <span class="number">29200</span>, options [mss <span class="number">1460</span>,sackOK,TS val <span class="number">3547090333</span> ecr <span class="number">0</span>,nop,wscale <span class="number">7</span>], length <span class="number">0</span></span><br><span class="line"><span class="number">21</span>:<span class="number">46</span>:<span class="number">19.693826</span> IP <span class="number">10.10</span><span class="number">.1</span><span class="number">.10</span><span class="number">.33022</span> &gt; <span class="number">10.10</span><span class="number">.1</span><span class="number">.199</span><span class="number">.49153</span>: Flags [S], seq <span class="number">2406028551</span>, win <span class="number">29200</span>, options [mss <span class="number">1460</span>,sackOK,TS val <span class="number">3547090333</span> ecr <span class="number">0</span>,nop,wscale <span class="number">7</span>], length <span class="number">0</span></span><br><span class="line"><span class="number">21</span>:<span class="number">46</span>:<span class="number">19.695567</span> IP <span class="number">10.10</span><span class="number">.1</span><span class="number">.10</span><span class="number">.55130</span> &gt; <span class="number">10.10</span><span class="number">.1</span><span class="number">.199</span><span class="number">.49154</span>: Flags [S], seq <span class="number">3230403372</span>, win <span class="number">29200</span>, options [mss <span class="number">1460</span>,sackOK,TS val <span class="number">3547090334</span> ecr <span class="number">0</span>,nop,wscale <span class="number">7</span>], length <span class="number">0</span></span><br><span class="line"><span class="number">21</span>:<span class="number">46</span>:<span class="number">19.695590</span> IP <span class="number">10.10</span><span class="number">.1</span><span class="number">.199</span><span class="number">.49154</span> &gt; <span class="number">10.10</span><span class="number">.1</span><span class="number">.10</span><span class="number">.55130</span>: Flags [R.], seq <span class="number">0</span>, ack <span class="number">3230403373</span>, win <span class="number">0</span>, length <span class="number">0</span></span><br><span class="line"><span class="number">21</span>:<span class="number">46</span>:<span class="number">19.695608</span> IP <span class="number">10.10</span><span class="number">.1</span><span class="number">.10</span><span class="number">.33460</span> &gt; <span class="number">10.10</span><span class="number">.1</span><span class="number">.199</span><span class="number">.49152</span>: Flags [S], seq <span class="number">3289070068</span>, win <span class="number">29200</span>, options [mss <span class="number">1460</span>,sackOK,TS val <span class="number">3547090335</span> ecr <span class="number">0</span>,nop,wscale <span class="number">7</span>], length <span class="number">0</span></span><br><span class="line"><span class="number">21</span>:<span class="number">46</span>:<span class="number">19.695622</span> IP <span class="number">10.10</span><span class="number">.1</span><span class="number">.199</span><span class="number">.49152</span> &gt; <span class="number">10.10</span><span class="number">.1</span><span class="number">.10</span><span class="number">.33460</span>: Flags [R.], seq <span class="number">0</span>, ack <span class="number">3289070069</span>, win <span class="number">0</span>, length <span class="number">0</span></span><br><span class="line"><span class="number">21</span>:<span class="number">46</span>:<span class="number">19.695637</span> IP <span class="number">10.10</span><span class="number">.1</span><span class="number">.10</span><span class="number">.34940</span> &gt; <span class="number">10.10</span><span class="number">.1</span><span class="number">.199</span><span class="number">.1029</span>: Flags [S], seq <span class="number">140319147</span>, win <span class="number">29200</span>, options [mss <span class="number">1460</span>,sackOK,TS val <span class="number">3547090335</span> ecr <span class="number">0</span>,nop,wscale <span class="number">7</span>], length <span class="number">0</span></span><br><span class="line"><span class="number">21</span>:<span class="number">46</span>:<span class="number">19.695650</span> IP <span class="number">10.10</span><span class="number">.1</span><span class="number">.199</span><span class="number">.1029</span> &gt; <span class="number">10.10</span><span class="number">.1</span><span class="number">.10</span><span class="number">.34940</span>: Flags [R.], seq <span class="number">0</span>, ack <span class="number">140319148</span>, win <span class="number">0</span>, length <span class="number">0</span></span><br><span class="line"><span class="number">21</span>:<span class="number">46</span>:<span class="number">19.695664</span> IP <span class="number">10.10</span><span class="number">.1</span><span class="number">.10</span><span class="number">.45648</span> &gt; <span class="number">10.10</span><span class="number">.1</span><span class="number">.199</span><span class="number">.5060</span>: Flags [S], seq <span class="number">2203629201</span>, win <span class="number">29200</span>, options [mss <span class="number">1460</span>,sackOK,TS val <span class="number">3547090335</span> ecr <span class="number">0</span>,nop,wscale <span class="number">7</span>], length <span class="number">0</span></span><br><span class="line"><span class="number">21</span>:<span class="number">46</span>:<span class="number">19.695775</span> IP <span class="number">10.10</span><span class="number">.1</span><span class="number">.10</span><span class="number">.49028</span> &gt; <span class="number">10.10</span><span class="number">.1</span><span class="number">.199</span><span class="number">.2000</span>: Flags [S], seq <span class="number">635990431</span>, win <span class="number">29200</span>, options [mss <span class="number">1460</span>,sackOK,TS val <span class="number">3547090335</span> ecr <span class="number">0</span>,nop,wscale <span class="number">7</span>], length <span class="number">0</span></span><br><span class="line"><span class="number">21</span>:<span class="number">46</span>:<span class="number">19.695790</span> IP <span class="number">10.10</span><span class="number">.1</span><span class="number">.199</span><span class="number">.2000</span> &gt; <span class="number">10.10</span><span class="number">.1</span><span class="number">.10</span><span class="number">.49028</span>: Flags [R.], seq <span class="number">0</span>, ack <span class="number">635990432</span>, win <span class="number">0</span>, length <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<h4 id="过滤-Nmap-NSE-脚本测试结果"><a href="#过滤-Nmap-NSE-脚本测试结果" class="headerlink" title="过滤 Nmap NSE 脚本测试结果"></a>过滤 Nmap NSE 脚本测试结果</h4><p>本例中 Nmap NSE 测试脚本 <code>http-enum.nse</code> 用来检测 HTTP 服务的合法 URL。</p>
+<p>在执行脚本测试的主机上：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nmap -p <span class="number">80</span> --script=http-enum.nse targetip</span><br></pre></td></tr></table></figure>
+<p>在目标主机上：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump -nn port <span class="number">80</span> | grep <span class="string">"GET /"</span></span><br><span class="line"></span><br><span class="line">GET /w3perl/ HTTP/<span class="number">1.1</span></span><br><span class="line">GET /w-agora/ HTTP/<span class="number">1.1</span></span><br><span class="line">GET /way-board/ HTTP/<span class="number">1.1</span></span><br><span class="line">GET /web800fo/ HTTP/<span class="number">1.1</span></span><br><span class="line">GET /webaccess/ HTTP/<span class="number">1.1</span></span><br><span class="line">GET /webadmin/ HTTP/<span class="number">1.1</span></span><br><span class="line">GET /webAdmin/ HTTP/<span class="number">1.1</span></span><br></pre></td></tr></table></figure>
+<h4 id="抓取-DNS-请求和响应"><a href="#抓取-DNS-请求和响应" class="headerlink" title="抓取 DNS 请求和响应"></a>抓取 DNS 请求和响应</h4><p>向 Google 公共 DNS 发起的出站 <code>DNS</code> 请求和 A 记录响应可以通过 tcpdump 抓取到：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump -i wlp58s0 -s0 port <span class="number">53</span></span><br><span class="line"></span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv <span class="keyword">for</span> full protocol decode</span><br><span class="line">listening on wlp58s0, link-type EN10MB (Ethernet), capture size <span class="number">262144</span> bytes</span><br><span class="line"><span class="number">14</span>:<span class="number">19</span>:<span class="number">06.879799</span> IP test<span class="number">.53852</span> &gt; google-public-dns-a.google.com.domain: <span class="number">26977</span>+ [<span class="number">1</span>au] A? play.google.com. (<span class="number">44</span>)</span><br><span class="line"><span class="number">14</span>:<span class="number">19</span>:<span class="number">07.022618</span> IP google-public-dns-a.google.com.domain &gt; test<span class="number">.53852</span>: <span class="number">26977</span> <span class="number">1</span>/<span class="number">0</span>/<span class="number">1</span> A <span class="number">216.58</span><span class="number">.203</span><span class="number">.110</span> (<span class="number">60</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="抓取-HTTP-有效数据包"><a href="#抓取-HTTP-有效数据包" class="headerlink" title="抓取 HTTP 有效数据包"></a>抓取 HTTP 有效数据包</h4><p>抓取 80 端口的 HTTP 有效数据包，排除 TCP 连接建立过程的数据包（SYN / FIN / ACK）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump <span class="string">'tcp port 80 and (((ip[2:2] - ((ip[0]&amp;0xf)&lt;&lt;2)) - ((tcp[12]&amp;0xf0)&gt;&gt;2)) != 0)'</span></span><br></pre></td></tr></table></figure>
+<h4 id="将输出内容重定向到-Wireshark"><a href="#将输出内容重定向到-Wireshark" class="headerlink" title="将输出内容重定向到 Wireshark"></a>将输出内容重定向到 Wireshark</h4><p>通常 <code>Wireshark</code>（或 tshark）比 tcpdump 更容易分析应用层协议。一般的做法是在远程服务器上先使用 <code>tcpdump</code> 抓取数据并写入文件，然后再将文件拷贝到本地工作站上用 <code>Wireshark</code> 分析。</p>
+<p>还有一种更高效的方法，可以通过 ssh 连接将抓取到的数据实时发送给 Wireshark 进行分析。以 MacOS 系统为例，可以通过 <code>brew cask install wireshark</code> 来安装，然后通过下面的命令来分析：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh root@remotesystem <span class="string">'tcpdump -s0 -c 1000 -nn -w - not port 22'</span> | <span class="regexp">/Applications/</span>Wireshark.app/Contents/MacOS/Wireshark -k -i -</span><br></pre></td></tr></table></figure>
+<p>例如，如果想分析 DNS 协议，可以使用下面的命令：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh root@remotesystem <span class="string">'tcpdump -s0 -c 1000 -nn -w - port 53'</span> | <span class="regexp">/Applications/</span>Wireshark.app/Contents/MacOS/Wireshark -k -i -</span><br></pre></td></tr></table></figure>
+<p>抓取到的数据：</p>
+<p><code>-c</code> 选项用来限制抓取数据的大小。如果不限制大小，就只能通过 <code>ctrl-c</code> 来停止抓取，这样一来不仅关闭了 tcpdump，也关闭了 wireshark。</p>
+<h4 id="找出发包最多的-IP"><a href="#找出发包最多的-IP" class="headerlink" title="找出发包最多的 IP"></a>找出发包最多的 IP</h4><p>找出一段时间内发包最多的 IP，或者从一堆报文中找出发包最多的 IP，可以使用下面的命令：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump -nnn -t -c <span class="number">200</span> | cut -f <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span> -d <span class="string">'.'</span> | sort | uniq -c | sort -nr | head -n <span class="number">20</span></span><br><span class="line"></span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv <span class="keyword">for</span> full protocol decode</span><br><span class="line">listening on enp7s0, link-type EN10MB (Ethernet), capture size <span class="number">262144</span> bytes</span><br><span class="line"><span class="number">200</span> packets captured</span><br><span class="line"><span class="number">261</span> packets received by filter</span><br><span class="line"><span class="number">0</span> packets dropped by kernel</span><br><span class="line">    <span class="number">108</span> IP <span class="number">10.10</span><span class="number">.211</span><span class="number">.181</span></span><br><span class="line">     <span class="number">91</span> IP <span class="number">10.10</span><span class="number">.1</span><span class="number">.30</span></span><br><span class="line">      <span class="number">1</span> IP <span class="number">10.10</span><span class="number">.1</span><span class="number">.50</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>cut -f 1,2,3,4 -d ‘.’</strong> : 以 <code>.</code> 为分隔符，打印出每行的前四列。即 IP 地址。</li>
+<li><strong>sort | uniq -c</strong> : 排序并计数</li>
+<li><strong>sort -nr</strong> : 按照数值大小逆向排序</li>
+</ul>
+<h4 id="抓取用户名和密码"><a href="#抓取用户名和密码" class="headerlink" title="抓取用户名和密码"></a>抓取用户名和密码</h4><p>本例将重点放在标准纯文本协议上，过滤出于用户名和密码相关的报文：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump port http or port ftp or port smtp or port imap or port pop3 or port telnet -l -A | egrep -i -B5 <span class="string">'pass=|pwd=|log=|login=|user=|username=|pw=|passw=|passwd=|password=|pass:|user:|username:|password:|login:|pass |user '</span></span><br></pre></td></tr></table></figure>
+<h4 id="抓取-DHCP-报文"><a href="#抓取-DHCP-报文" class="headerlink" title="抓取 DHCP 报文"></a>抓取 DHCP 报文</h4><p>最后一个例子，抓取 DHCP 服务的请求和响应报文，67 为 DHCP 端口，68 为客户机端口。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump -v -n port <span class="number">67</span> or <span class="number">68</span></span><br><span class="line"></span><br><span class="line">tcpdump: listening on enp7s0, link-type EN10MB (Ethernet), capture size <span class="number">262144</span> bytes</span><br><span class="line"><span class="number">14</span>:<span class="number">37</span>:<span class="number">50.059662</span> IP (tos <span class="number">0x10</span>, ttl <span class="number">128</span>, id <span class="number">0</span>, offset <span class="number">0</span>, flags [none], proto UDP (<span class="number">17</span>), length <span class="number">328</span>)</span><br><span class="line">    <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span><span class="number">.68</span> &gt; <span class="number">255.255</span><span class="number">.255</span><span class="number">.255</span><span class="number">.67</span>: BOOTP/DHCP, Request <span class="keyword">from</span> <span class="number">00</span>:<span class="number">0</span>c:xx:xx:xx:d5, length <span class="number">300</span>, xid <span class="number">0xc9779c2a</span>, Flags [none]</span><br><span class="line">	  Client-Ethernet-Address <span class="number">00</span>:<span class="number">0</span>c:xx:xx:xx:d5</span><br><span class="line">	  Vendor-rfc1048 Extensions</span><br><span class="line">	    Magic Cookie <span class="number">0x63825363</span></span><br><span class="line">	    DHCP-Message Option <span class="number">53</span>, length <span class="number">1</span>: Request</span><br><span class="line">	    Requested-IP Option <span class="number">50</span>, length <span class="number">4</span>: <span class="number">10.10</span><span class="number">.1</span><span class="number">.163</span></span><br><span class="line">	    Hostname Option <span class="number">12</span>, length <span class="number">14</span>: <span class="string">"test-ubuntu"</span></span><br><span class="line">	    Parameter-Request Option <span class="number">55</span>, length <span class="number">16</span>:</span><br><span class="line">	      Subnet-Mask, BR, Time-Zone, Default-Gateway</span><br><span class="line">	      Domain-Name, Domain-Name-Server, Option <span class="number">119</span>, Hostname</span><br><span class="line">	      Netbios-Name-Server, Netbios-Scope, MTU, Classless-Static-Route</span><br><span class="line">	      NTP, Classless-Static-Route-Microsoft, Static-Route, Option <span class="number">252</span></span><br><span class="line"><span class="number">14</span>:<span class="number">37</span>:<span class="number">50.059667</span> IP (tos <span class="number">0x10</span>, ttl <span class="number">128</span>, id <span class="number">0</span>, offset <span class="number">0</span>, flags [none], proto UDP (<span class="number">17</span>), length <span class="number">328</span>)</span><br><span class="line">    <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span><span class="number">.68</span> &gt; <span class="number">255.255</span><span class="number">.255</span><span class="number">.255</span><span class="number">.67</span>: BOOTP/DHCP, Request <span class="keyword">from</span> <span class="number">00</span>:<span class="number">0</span>c:xx:xx:xx:d5, length <span class="number">300</span>, xid <span class="number">0xc9779c2a</span>, Flags [none]</span><br><span class="line">	  Client-Ethernet-Address <span class="number">00</span>:<span class="number">0</span>c:xx:xx:xx:d5</span><br><span class="line">	  Vendor-rfc1048 Extensions</span><br><span class="line">	    Magic Cookie <span class="number">0x63825363</span></span><br><span class="line">	    DHCP-Message Option <span class="number">53</span>, length <span class="number">1</span>: Request</span><br><span class="line">	    Requested-IP Option <span class="number">50</span>, length <span class="number">4</span>: <span class="number">10.10</span><span class="number">.1</span><span class="number">.163</span></span><br><span class="line">	    Hostname Option <span class="number">12</span>, length <span class="number">14</span>: <span class="string">"test-ubuntu"</span></span><br><span class="line">	    Parameter-Request Option <span class="number">55</span>, length <span class="number">16</span>:</span><br><span class="line">	      Subnet-Mask, BR, Time-Zone, Default-Gateway</span><br><span class="line">	      Domain-Name, Domain-Name-Server, Option <span class="number">119</span>, Hostname</span><br><span class="line">	      Netbios-Name-Server, Netbios-Scope, MTU, Classless-Static-Route</span><br><span class="line">	      NTP, Classless-Static-Route-Microsoft, Static-Route, Option <span class="number">252</span></span><br><span class="line"><span class="number">14</span>:<span class="number">37</span>:<span class="number">50.060780</span> IP (tos <span class="number">0x0</span>, ttl <span class="number">64</span>, id <span class="number">53564</span>, offset <span class="number">0</span>, flags [none], proto UDP (<span class="number">17</span>), length <span class="number">339</span>)</span><br><span class="line">    <span class="number">10.10</span><span class="number">.1</span><span class="number">.1</span><span class="number">.67</span> &gt; <span class="number">10.10</span><span class="number">.1</span><span class="number">.163</span><span class="number">.68</span>: BOOTP/DHCP, Reply, length <span class="number">311</span>, xid <span class="number">0xc9779c2a</span>, Flags [none]</span><br><span class="line">	  Your-IP <span class="number">10.10</span><span class="number">.1</span><span class="number">.163</span></span><br><span class="line">	  Server-IP <span class="number">10.10</span><span class="number">.1</span><span class="number">.1</span></span><br><span class="line">	  Client-Ethernet-Address <span class="number">00</span>:<span class="number">0</span>c:xx:xx:xx:d5</span><br><span class="line">	  Vendor-rfc1048 Extensions</span><br><span class="line">	    Magic Cookie <span class="number">0x63825363</span></span><br><span class="line">	    DHCP-Message Option <span class="number">53</span>, length <span class="number">1</span>: ACK</span><br><span class="line">	    Server-ID Option <span class="number">54</span>, length <span class="number">4</span>: <span class="number">10.10</span><span class="number">.1</span><span class="number">.1</span></span><br><span class="line">	    Lease-Time Option <span class="number">51</span>, length <span class="number">4</span>: <span class="number">86400</span></span><br><span class="line">	    RN Option <span class="number">58</span>, length <span class="number">4</span>: <span class="number">43200</span></span><br><span class="line">	    RB Option <span class="number">59</span>, length <span class="number">4</span>: <span class="number">75600</span></span><br><span class="line">	    Subnet-Mask Option <span class="number">1</span>, length <span class="number">4</span>: <span class="number">255.255</span><span class="number">.255</span><span class="number">.0</span></span><br><span class="line">	    BR Option <span class="number">28</span>, length <span class="number">4</span>: <span class="number">10.10</span><span class="number">.1</span><span class="number">.255</span></span><br><span class="line">	    Domain-Name-Server Option <span class="number">6</span>, length <span class="number">4</span>: <span class="number">10.10</span><span class="number">.1</span><span class="number">.1</span></span><br><span class="line">	    Hostname Option <span class="number">12</span>, length <span class="number">14</span>: <span class="string">"test-ubuntu"</span></span><br><span class="line">	    T252 Option <span class="number">252</span>, length <span class="number">1</span>: <span class="number">10</span></span><br><span class="line">	    Default-Gateway Option <span class="number">3</span>, length <span class="number">4</span>: <span class="number">10.10</span><span class="number">.1</span><span class="number">.1</span></span><br></pre></td></tr></table></figure>
+<h3 id="05总结"><a href="#05总结" class="headerlink" title="05总结"></a>05总结</h3><p>本文主要介绍了 <code>tcpdump</code> 的基本语法和使用方法，并通过一些示例来展示它强大的过滤功能。将 tcpdump 与 wireshark 进行组合可以发挥更强大的功效，本文也展示了如何优雅顺滑地结合 tcpdump 和 wireshark。如果你想了解更多的细节，可以查看 tcpdump 的 <code>man</code> 手册。</p>
+<p><code>本文转截: https://cloud.tencent.com/developer/article/1589827</code></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+            <!--<a href="/tags/Linux/" rel="tag"># Linux</a>-->
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/passages/Kubernetes安装-kubeadm-1-17-1-18/" rel="next" title="Kubernetes安装-kubeadm-1.17/1.18">
+                <i class="fa fa-chevron-left"></i> Kubernetes安装-kubeadm-1.17/1.18
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/passages/Linux之route详解/" rel="prev" title="Linux之route详解">
+                Linux之route详解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Sheldon Lu">
+            
+              <p class="site-author-name" itemprop="name">Sheldon Lu</p>
+              <div class="site-description motion-element" itemprop="description">静下心来写点东西</div>
+          </div>
+          
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">62</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">34</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/sheldon-lu" title="GitHub &rarr; https://github.com/sheldon-lu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+            </div>
+          
+
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#超详细的网络抓包神器-Tcpdump-使用指南"><span class="nav-number">1.</span> <span class="nav-text">超详细的网络抓包神器 Tcpdump 使用指南</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#01基本语法和使用方法"><span class="nav-number">1.1.</span> <span class="nav-text">01基本语法和使用方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#显示-ASCII-字符串"><span class="nav-number">1.1.1.</span> <span class="nav-text">显示 ASCII 字符串</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#抓取特定协议的数据"><span class="nav-number">1.1.2.</span> <span class="nav-text">抓取特定协议的数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#抓取特定主机的数据"><span class="nav-number">1.1.3.</span> <span class="nav-text">抓取特定主机的数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#将抓取的数据写入文件"><span class="nav-number">1.1.4.</span> <span class="nav-text">将抓取的数据写入文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#行缓冲模式"><span class="nav-number">1.1.5.</span> <span class="nav-text">行缓冲模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#组合过滤器"><span class="nav-number">1.1.6.</span> <span class="nav-text">组合过滤器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#02过滤器"><span class="nav-number">1.2.</span> <span class="nav-text">02过滤器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Host-过滤器"><span class="nav-number">1.2.1.</span> <span class="nav-text">Host 过滤器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Network-过滤器"><span class="nav-number">1.2.2.</span> <span class="nav-text">Network 过滤器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Proto-过滤器"><span class="nav-number">1.2.3.</span> <span class="nav-text">Proto 过滤器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Port-过滤器"><span class="nav-number">1.2.4.</span> <span class="nav-text">Port 过滤器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#03理解-tcpdump-的输出"><span class="nav-number">1.3.</span> <span class="nav-text">03理解 tcpdump 的输出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#04例子"><span class="nav-number">1.4.</span> <span class="nav-text">04例子</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#提取-HTTP-用户代理"><span class="nav-number">1.4.1.</span> <span class="nav-text">提取 HTTP 用户代理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#只抓取-HTTP-GET-和-POST-流量"><span class="nav-number">1.4.2.</span> <span class="nav-text">只抓取 HTTP GET 和 POST 流量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#提取-HTTP-请求的-URL"><span class="nav-number">1.4.3.</span> <span class="nav-text">提取 HTTP 请求的 URL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#提取-HTTP-POST-请求中的密码"><span class="nav-number">1.4.4.</span> <span class="nav-text">提取 HTTP POST 请求中的密码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#提取-Cookies"><span class="nav-number">1.4.5.</span> <span class="nav-text">提取 Cookies</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#抓取-ICMP-数据包"><span class="nav-number">1.4.6.</span> <span class="nav-text">抓取 ICMP 数据包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#抓取非-ECHO-REPLY-类型的-ICMP-数据包"><span class="nav-number">1.4.7.</span> <span class="nav-text">抓取非 ECHO/REPLY 类型的 ICMP 数据包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#抓取-SMTP-POP3-协议的邮件"><span class="nav-number">1.4.8.</span> <span class="nav-text">抓取 SMTP/POP3 协议的邮件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#抓取-NTP-服务的查询和响应"><span class="nav-number">1.4.9.</span> <span class="nav-text">抓取 NTP 服务的查询和响应</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#抓取-SNMP-服务的查询和响应"><span class="nav-number">1.4.10.</span> <span class="nav-text">抓取 SNMP 服务的查询和响应</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#切割-pcap-文件"><span class="nav-number">1.4.11.</span> <span class="nav-text">切割 pcap 文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#抓取-IPv6-流量"><span class="nav-number">1.4.12.</span> <span class="nav-text">抓取 IPv6 流量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#检测端口扫描"><span class="nav-number">1.4.13.</span> <span class="nav-text">检测端口扫描</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#过滤-Nmap-NSE-脚本测试结果"><span class="nav-number">1.4.14.</span> <span class="nav-text">过滤 Nmap NSE 脚本测试结果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#抓取-DNS-请求和响应"><span class="nav-number">1.4.15.</span> <span class="nav-text">抓取 DNS 请求和响应</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#抓取-HTTP-有效数据包"><span class="nav-number">1.4.16.</span> <span class="nav-text">抓取 HTTP 有效数据包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#将输出内容重定向到-Wireshark"><span class="nav-number">1.4.17.</span> <span class="nav-text">将输出内容重定向到 Wireshark</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#找出发包最多的-IP"><span class="nav-number">1.4.18.</span> <span class="nav-text">找出发包最多的 IP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#抓取用户名和密码"><span class="nav-number">1.4.19.</span> <span class="nav-text">抓取用户名和密码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#抓取-DHCP-报文"><span class="nav-number">1.4.20.</span> <span class="nav-text">抓取 DHCP 报文</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#05总结"><span class="nav-number">1.5.</span> <span class="nav-text">05总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+        <script>
+//暂时储存文章中的内容
+var div = $('.post-body');
+//暂时储存目录的内容
+var toc=$('.post-toc-wrap')
+function password() {
+  if(''){
+  //将文章内容删除
+    div.remove();
+ //将目录删除 
+    toc.remove();
+  //将文章删除后，向原来文章的地方添加，应该出现的提示用户输入密码的样式
+  //下面这里的第一个用textarea是因为如果在手机端的时候只能显示一部分文字，
+  //只是拓展:input里面的字只能显示一行，不会自动换行，目前上网搜索没有发现好的办法，所以用了textarea，右下角的小三角通过resize:none 去掉。
+   $('.post-header').after('<textarea class="description" value="Please enter your password and press enter to build" style="border: none;display: block;' +'width: 60%;margin: 0 auto;text-align: center;outline: none;margin-bottom: 50px;resize:none ">
+      Please enter your password and press enter to build</textarea>' +
+      '<div class="qiang" style="height: 100px;width: 60%;margin:0 auto">' +
+      '<input class="password"  type="text" value="" style="border: none;display: block;border-bottom: 1px solid #ccc;' +
+      'margin: 0 auto;outline: none;width:95%"/>' +
+      '</div>')
+      //绑定点击事件，如果是点击的.password 这个div就改变样式，如果是document中除了div之外的其他任何元素，就变回原来的样式。
+    document.onclick = function (event) {
+      var e = event || window.event;
+      var elem = e.srcElement || e.target;
+
+      while (elem) {
+        if (elem != document) {
+          if (elem.className == "password") {
+            $(".password").animate({paddingTop:"30px",width:"100%",borderWidth:"2px"},300)
+            return;
+          }
+          elem = elem.parentNode;
+        } else {
+          $(".password").animate({paddingTop:"0px",width:"95%",borderWidth:"1px"},300)
+          return;
+        }
+      }
+    }
+    //绑定enter键按下后离开的事件
+    $(document).keyup(function(event){
+      if(event.keyCode ==13&&$('.password').length>0){
+        //console.log($('.password').val())
+        //console.log('')
+        if ($('.password').val() == '') {
+        //恢复文章内容
+          (div).appendTo($(".post-header"))
+          //恢复目录
+          toc.appendTo($(".sidebar-inner"))
+                 //删除本页面的输入密码组件
+           $(".description").remove();
+          $(".qiang").remove();
+          $(".password").remove();
+          //重新处理pjax事件,如果没有加pjax的从下面这行起到下面的else之间的代码需要去掉。
+          //图片懒加载，没有加入此功能的这个函数需要去掉
+	          $('img').lazyload({
+	             placeholder: '../images/loading.gif',
+	             effect: 'fadeIn',
+	             threshold : 100,
+	             failure_limit : 20,
+	             skip_invisible : false
+	           });
+	           //pjax后出现文章不显示，没有pjax的下面四行需要去掉
+	            $(".post-block").css({opacity:1});
+	            $(".post-header").css({opacity:1});
+	            $(".post-body").css({opacity:1});
+	            $(".pagination").css({opacity:1});
+        }else {
+          alert("Sorry, the password is wrong.")
+        }
+      }
+      //将document的keyup移除，防止在pjax的情况下会重复绑定事件
+    });
+  }
+}
+password();
+</script>
+      </div>
+      <script>
+//暂时储存文章中的内容
+var div = $('.post-body');
+//暂时储存目录的内容
+var toc=$('.post-toc-wrap')
+function password() {
+  if(''){
+  //将文章内容删除
+    div.remove();
+ //将目录删除 
+    toc.remove();
+  //将文章删除后，向原来文章的地方添加，应该出现的提示用户输入密码的样式
+  //下面这里的第一个用textarea是因为如果在手机端的时候只能显示一部分文字，
+  //只是拓展:input里面的字只能显示一行，不会自动换行，目前上网搜索没有发现好的办法，所以用了textarea，右下角的小三角通过resize:none 去掉。
+   $('.post-header').after('<textarea class="description" value="Please enter your password and press enter to build" style="border: none;display: block;' +'width: 60%;margin: 0 auto;text-align: center;outline: none;margin-bottom: 50px;resize:none ">
+      Please enter your password and press enter to build</textarea>' +
+      '<div class="qiang" style="height: 100px;width: 60%;margin:0 auto">' +
+      '<input class="password"  type="text" value="" style="border: none;display: block;border-bottom: 1px solid #ccc;' +
+      'margin: 0 auto;outline: none;width:95%"/>' +
+      '</div>')
+      //绑定点击事件，如果是点击的.password 这个div就改变样式，如果是document中除了div之外的其他任何元素，就变回原来的样式。
+    document.onclick = function (event) {
+      var e = event || window.event;
+      var elem = e.srcElement || e.target;
+
+      while (elem) {
+        if (elem != document) {
+          if (elem.className == "password") {
+            $(".password").animate({paddingTop:"30px",width:"100%",borderWidth:"2px"},300)
+            return;
+          }
+          elem = elem.parentNode;
+        } else {
+          $(".password").animate({paddingTop:"0px",width:"95%",borderWidth:"1px"},300)
+          return;
+        }
+      }
+    }
+    //绑定enter键按下后离开的事件
+    $(document).keyup(function(event){
+      if(event.keyCode ==13&&$('.password').length>0){
+        //console.log($('.password').val())
+        //console.log('')
+        if ($('.password').val() == '') {
+        //恢复文章内容
+          (div).appendTo($(".post-header"))
+          //恢复目录
+          toc.appendTo($(".sidebar-inner"))
+                 //删除本页面的输入密码组件
+           $(".description").remove();
+          $(".qiang").remove();
+          $(".password").remove();
+          //重新处理pjax事件,如果没有加pjax的从下面这行起到下面的else之间的代码需要去掉。
+          //图片懒加载，没有加入此功能的这个函数需要去掉
+	          $('img').lazyload({
+	             placeholder: '../images/loading.gif',
+	             effect: 'fadeIn',
+	             threshold : 100,
+	             failure_limit : 20,
+	             skip_invisible : false
+	           });
+	           //pjax后出现文章不显示，没有pjax的下面四行需要去掉
+	            $(".post-block").css({opacity:1});
+	            $(".post-header").css({opacity:1});
+	            $(".post-body").css({opacity:1});
+	            $(".pagination").css({opacity:1});
+        }else {
+          alert("Sorry, the password is wrong.")
+        }
+      }
+      //将document的keyup移除，防止在pjax的情况下会重复绑定事件
+    });
+  }
+}
+password();
+</script>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 – <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <!--<i class="fa fa-user"></i>-->
+    <i class="fa fa-heart" aria-hidden="true"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sheldon Lu</span>
+  
+  
+
+  
+</div>
+
+<!--
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a><span>　<i class="fa fa-bomb"></i></span>
+  <span id="showDays"></span>
+  </div>
+
+-->
+<span><i class="fa fa-bomb"></i></span>
+<span id="showDays"></span>
+
+<div>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<!--<span id="busuanzi_container_site_pv" style='display:none'>
+    本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+    <span class="post-meta-divider">|</span>
+</span>-->
+<span id="busuanzi_container_site_uv" style="display:none">
+    有<span id="busuanzi_value_site_uv"></span>人看过我的博客啦
+</span>
+</div>
+
+
+
+<script>
+  var seconds = 1000;
+  var minutes = seconds * 60;
+  var hours = minutes * 60;
+  var days = hours * 24;
+  var years = days * 365;
+  var birthDay = Date.UTC(2019,03,15,00,00,00); // 这里设置建站时间
+  setInterval(function() {
+    var today = new Date();
+    var todayYear = today.getFullYear();
+    var todayMonth = today.getMonth()+1;
+    var todayDate = today.getDate();
+    var todayHour = today.getHours();
+    var todayMinute = today.getMinutes();
+    var todaySecond = today.getSeconds();
+    var now = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+    var diff = now - birthDay;
+    var diffYears = Math.floor(diff/years);
+    var diffDays = Math.floor((diff/days)-diffYears*365);
+    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById('showDays').innerHTML="本站已运行 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+  }, 1000);
+</script>
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'wcykO4AM4RdvFXlzAJAOVgGz-gzGzoHsz',
+    appKey: '1okhim5n5Pq6KwHuFKmTRC9t',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn'
+  });
+</script>
+
+
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $('.leancloud_visitors');
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', '/classes/Counter/' + counter.objectId, JSON.stringify({ time: { '__op': 'Increment', 'amount': 1 } }))
+            
+              .done(function() {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.time + 1);
+              })
+            
+              .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+              })
+          } else {
+            
+              Counter('post', '/classes/Counter', JSON.stringify({ title: title, url: url, time: 1 }))
+                .done(function() {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(1);
+                })
+                .fail(function() {
+                  console.log('Failed to create');
+                });
+            
+          }
+        })
+        .fail(function ({ responseJSON }) {
+          console.log('LeanCloud Counter Error: ' + responseJSON.code + ' ' + responseJSON.error);
+        });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + 'wcykO4AM4RdvFXlzAJAOVgGz-gzGzoHsz')
+        .done(function({ api_server }) {
+          var Counter = function(method, url, data) {
+            return $.ajax({
+              method: method,
+              url: 'https://' + api_server + '/1.1' + url,
+              headers: {
+                'X-LC-Id': 'wcykO4AM4RdvFXlzAJAOVgGz-gzGzoHsz',
+                'X-LC-Key': '1okhim5n5Pq6KwHuFKmTRC9t',
+                'Content-Type': 'application/json',
+              },
+              data: data
+            });
+          };
+          
+            addCount(Counter);
+          
+        });
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
