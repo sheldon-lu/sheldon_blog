@@ -1,23 +1,495 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block title %}{{ page.title }} | {{ title }}{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
-{% block page_class %}page-post-detail{% endblock %}
 
-{% block content %}
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.sheldonlu.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="环境：未特别注明的话，均为Python 3.6.5，IDE：VS code  『1』TypeError: unbound method 问题今天执行了下之前写的Python接口文件，源码如下:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python_问题小结(1)">
+<meta property="og:url" content="https://www.sheldonlu.com/passages/Python-%E9%97%AE%E9%A2%98%E5%B0%8F%E7%BB%93-1/index.html">
+<meta property="og:site_name" content="Sheldon_Lu">
+<meta property="og:description" content="环境：未特别注明的话，均为Python 3.6.5，IDE：VS code  『1』TypeError: unbound method 问题今天执行了下之前写的Python接口文件，源码如下:">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-04-11T09:01:25.000Z">
+<meta property="article:modified_time" content="2019-04-13T00:42:18.770Z">
+<meta property="article:author" content="Sheldon Lu">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Python_problem">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://www.sheldonlu.com/passages/Python-%E9%97%AE%E9%A2%98%E5%B0%8F%E7%BB%93-1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>Python_问题小结(1) | Sheldon_Lu</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Sheldon_Lu</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://www.sheldonlu.com/passages/Python-%E9%97%AE%E9%A2%98%E5%B0%8F%E7%BB%93-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Sheldon Lu">
+      <meta itemprop="description" content="静下心来写点东西">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sheldon_Lu">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python_问题小结(1)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-04-11 17:01:25" itemprop="dateCreated datePublished" datetime="2019-04-11T17:01:25+08:00">2019-04-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-04-13 08:42:18" itemprop="dateModified" datetime="2019-04-13T08:42:18+08:00">2019-04-13</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>5.5k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>5 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>环境：未特别注明的话，均为Python 3.6.5，IDE：VS code</p>
+</blockquote>
+<h2 id="『1』TypeError-unbound-method-问题"><a href="#『1』TypeError-unbound-method-问题" class="headerlink" title="『1』TypeError: unbound method 问题"></a>『1』TypeError: unbound method 问题</h2><p>今天执行了下之前写的Python接口文件，源码如下:<span id="more"></span></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">__author__ = <span class="string">&#x27;Administrator&#x27;</span></span><br><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">from</span> readData <span class="keyword">import</span> dictionary</span><br><span class="line">readIt = &#123;&#125;</span><br><span class="line">readIt = dictionary.onlyCellValue(<span class="string">&quot;E:\python\API\eadData.xls&quot;</span>, <span class="string">&quot;Sheet1&quot;</span>, <span class="number">1</span>)</span><br><span class="line"><span class="built_in">print</span> readIt</span><br><span class="line"><span class="keyword">for</span> key <span class="keyword">in</span> readIt:</span><br><span class="line">    temp_list = readIt[key]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(temp_list)):</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&quot;第&quot;</span>+(i+<span class="number">1</span>)+<span class="string">&quot;个参数为&quot;</span>+temp_list[i]</span><br></pre></td></tr></table></figure>
+
+<p>在运行时报错：TypeError: unbound method onlyCellValue() must be called with dictionary instance as first argument (got str instance instead)，后经在网上查看，发现时由于调用其他类时，未在后面添加括号，添加括号后，运行正常。这是由于未添加括号情况下，未被认为是类的实例，故报此错；</p>
+<blockquote>
+<p>改正后的：readIt &#x3D; dictionary().onlyCellValue(“E:\python\API\eadData.xls”, “Sheet1”, 1)</p>
+</blockquote>
+<h2 id="『2』Python访问MySQL"><a href="#『2』Python访问MySQL" class="headerlink" title="『2』Python访问MySQL"></a>『2』Python访问MySQL</h2><p>听说很多人都使用著名的<a target="_blank" rel="noopener" href="http://sourceforge.net/projects/mysql-python/">MySQLdb</a>来访问MySQL(当然还有pymysql)，但是它并不支持Python 3.x的版本。所以要另寻出路。那就是<a target="_blank" rel="noopener" href="https://pypi.python.org/pypi/mysql-connector-python">mysql-connector-python</a>，这个貌似是MySQL官方提供的，并且它不依赖于MySQL C客户端library，我下载的是1.1.4版本，下载解压之后，会看到setup.py文件，这样安装：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo python3.2 setup.py install</span><br></pre></td></tr></table></figure>
+
+<p>然后在程序中就可以用了。<br>下面给出一段查询MySQL记录的示例代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> mysql.connector</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"> </span><br><span class="line">__author__ = <span class="string">&#x27;codelast&#x27;</span></span><br><span class="line"> </span><br><span class="line">username = <span class="string">&#x27;root&#x27;</span></span><br><span class="line">password = <span class="string">&#x27;xxx&#x27;</span></span><br><span class="line">host = <span class="string">&#x27;127.0.0.1&#x27;</span></span><br><span class="line">db = <span class="string">&#x27;mydb&#x27;</span></span><br><span class="line"> </span><br><span class="line">connection = mysql.connector.connect(user=username, password=password, host=host, database=db)</span><br><span class="line">cursor = connection.cursor()</span><br><span class="line"> </span><br><span class="line">sql = <span class="string">&quot;SELECT * FROM my_table WHERE id = 9&quot;</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    cursor.execute(sql)</span><br><span class="line"> </span><br><span class="line">    <span class="comment"># 打印查询到的记录的行数</span></span><br><span class="line">    data = cursor.fetchall()</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">len</span>(data))</span><br><span class="line"> </span><br><span class="line">    <span class="comment"># 输出所有记录</span></span><br><span class="line">    <span class="keyword">for</span> (ID, name) <span class="keyword">in</span> data:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;name:[%s]&quot;</span> % (name))</span><br><span class="line"> </span><br><span class="line"><span class="keyword">except</span> mysql.connector.Error <span class="keyword">as</span> err:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Failed to query table, detail: &#123;&#125;&quot;</span>.<span class="built_in">format</span>(err.msg))</span><br><span class="line">    sys.exit()</span><br><span class="line"> </span><br><span class="line">connection.commit()</span><br><span class="line">cursor.close()</span><br><span class="line">connection.close()</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码很简单，无非就是从my_table表里查询一些记录，再打印出来。<br>注意 for (ID, name) 中的括号里要写全该表中，你查询的所有字段名，否则会报错。还有其他遍历查询结果的方法，后面会继续陈述。</p>
+<h2 id="『3』逆序遍历list"><a href="#『3』逆序遍历list" class="headerlink" title="『3』逆序遍历list"></a>『3』逆序遍历list</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">myList = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> <span class="built_in">reversed</span>(myList):</span><br><span class="line">    <span class="built_in">print</span>(item)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">3</span><br><span class="line">2</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+
+<p>注意是 reversed 不是 reverse。这只是逆序遍历，myList中的数据顺序并不会改变。</p>
+<h2 id="『4』使用MySQLdb访问数据库时，“TypeError-execute-takes-at-most-3-arguments-4-given-”错误的解决办法"><a href="#『4』使用MySQLdb访问数据库时，“TypeError-execute-takes-at-most-3-arguments-4-given-”错误的解决办法" class="headerlink" title="『4』使用MySQLdb访问数据库时，“TypeError: execute() takes at most 3 arguments (4 given)”错误的解决办法"></a>『4』使用MySQLdb访问数据库时，“TypeError: execute() takes at most 3 arguments (4 given)”错误的解决办法</h2><p>Python版本：2.7.3<br>使用2.7.3版本的Python时，访问MySQL的最佳方案应该数使用<a target="_blank" rel="noopener" href="http://sourceforge.net/projects/mysql-python/">MySQLdb</a>了。<br>如果在执行SQL时，你遇到了上面所说的问题，那么你可能是像下面这样写导致的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sql = <span class="string">&quot;INSERT INTO my_table (field1, field2) VALUES (%s, %s)&quot;</span></span><br><span class="line">cursor.execute(sql, <span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这是错误的，其实这货根本不是这样用的，当参数多于一个时，你要把它们放在一个tuple里传进去：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sql = <span class="string">&quot;INSERT INTO my_table (field1, field2) VALUES (%s, %s)&quot;</span></span><br><span class="line">cursor.execute(sql, (<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>))</span><br></pre></td></tr></table></figure>
+
+<p>例如<a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/17505067/mysql-and-python-execution-only-takes-3-arguments-4-given">这个</a>链接有个例子。</p>
+<h2 id="『5』使用-lxml-库生成XML（字符串）"><a href="#『5』使用-lxml-库生成XML（字符串）" class="headerlink" title="『5』使用 lxml 库生成XML（字符串）"></a>『5』使用 lxml 库生成XML（字符串）</h2><p>Python版本：2.7.3<br>直接看代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:UTF-8</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">XML生成器。文件名：xmlGenerator.py</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"> </span><br><span class="line">__author__ = <span class="string">&#x27;Darran Zhang @ codelast.com&#x27;</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">XMLGenerator</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"> </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">generate_xml</span>(<span class="params">self</span>):</span><br><span class="line">        commands = etree.Element(<span class="string">&#x27;Commands&#x27;</span>)</span><br><span class="line">        command = etree.SubElement(commands, <span class="string">&#x27;Command&#x27;</span>)</span><br><span class="line">        from_user = etree.SubElement(command, <span class="string">&#x27;FromUser&#x27;</span>)</span><br><span class="line">        from_user.text = <span class="string">u&#x27;abc&#x27;</span></span><br><span class="line">        cmd = etree.SubElement(command, <span class="string">&#x27;Cmd&#x27;</span>)</span><br><span class="line">        cmd.text = <span class="string">u&#x27;mmmmmmmmmmmmmm&#x27;</span></span><br><span class="line">        cmd_extra_data = etree.SubElement(command, <span class="string">&#x27;CmdExtraData&#x27;</span>)</span><br><span class="line">        cmd_extra_data.text = <span class="string">u&#x27;eeeeeeeeee&#x27;</span></span><br><span class="line"> </span><br><span class="line">        <span class="keyword">return</span> etree.tostring(commands, pretty_print=<span class="literal">True</span>, xml_declaration=<span class="literal">True</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>测试代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> xmlGenerator <span class="keyword">import</span> XMLGenerator</span><br><span class="line"> </span><br><span class="line">xmlGen = XMLGenerator()</span><br><span class="line"><span class="built_in">print</span>(xmlGen.generate_xml())</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&#x27;1.0&#x27; encoding=&#x27;utf-8&#x27;?&gt;</span><br><span class="line">&lt;Commands&gt;</span><br><span class="line">  &lt;Command&gt;</span><br><span class="line">    &lt;FromUser&gt;abc&lt;/FromUser&gt;</span><br><span class="line">    &lt;Cmd&gt;mmmmmmmmmmmmmm&lt;/Cmd&gt;</span><br><span class="line">    &lt;CmdExtraData&gt;eeeeeeeeee&lt;/CmdExtraData&gt;</span><br><span class="line">  &lt;/Command&gt;</span><br><span class="line">&lt;/Commands&gt;</span><br></pre></td></tr></table></figure>
+
+<p>可见非常简单。</p>
+<h2 id="『6』在PyCharm中无法安装MySQL-python这个package的一个解决办法"><a href="#『6』在PyCharm中无法安装MySQL-python这个package的一个解决办法" class="headerlink" title="『6』在PyCharm中无法安装MySQL-python这个package的一个解决办法"></a>『6』在PyCharm中无法安装MySQL-python这个package的一个解决办法</h2><p>在PyCharm中可以直接搜索Python package并安装，我遇到的一个问题是：无法安装，错误提示的其中一段为：</p>
+<blockquote>
+<p>EnvironmentError: mysql_config not found</p>
+</blockquote>
+<p>你需要保证你的Ubuntu已经安装了以下这些东西：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install mysql-server mysql-client libmysqlclient-dev</span><br></pre></td></tr></table></figure>
+
+<p>然后再试，一切OK。</p>
+<h2 id="『7』”ValueError-zero-length-field-name-in-format”错误的解决办法"><a href="#『7』”ValueError-zero-length-field-name-in-format”错误的解决办法" class="headerlink" title="『7』”ValueError: zero length field name in format”错误的解决办法"></a>『7』”ValueError: zero length field name in format”错误的解决办法</h2><p>Python版本：2.6.6<br>错误出在如下语句：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&#123;&#125;\t&#123;&#125;&quot;</span>.<span class="built_in">format</span>(<span class="number">123</span>, <span class="number">456</span>)</span><br></pre></td></tr></table></figure>
+
+<p>我遇到的出问题的Python版本为2.6.6（不知道是不是2.6.*及低版本都有此问题），反正Python 2.7.3就没有这个问题了。<br>上面的代码无非主就是把123和456代替两个大括号。在旧版本的Python上（具体从哪个版本开始不用这样写，我不确定），你要有多个需要format的field时，需要指定它们的顺序：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&#123;0&#125;\t&#123;1&#125;&quot;</span>.<span class="built_in">format</span>(<span class="number">123</span>, <span class="number">456</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这样就没问题了。</p>
+<h2 id="『8』对一个字典-dict-，按value进行排序"><a href="#『8』对一个字典-dict-，按value进行排序" class="headerlink" title="『8』对一个字典(dict)，按value进行排序"></a>『8』对一个字典(dict)，按value进行排序</h2><p>Python版本：2.6.6，2.6.9均测试可用（Python3里没有cmp方法了，所以不能用）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sortedList = <span class="built_in">sorted</span>(myDict.items(), <span class="keyword">lambda</span> x, y: cmp(x[<span class="number">1</span>], y[<span class="number">1</span>]), reverse=<span class="literal">True</span>)</span><br><span class="line"><span class="keyword">for</span> (k, v) <span class="keyword">in</span> sortedList:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;&#123;0&#125;\t&#123;1&#125;&quot;</span>.<span class="built_in">format</span>(k,v))</span><br></pre></td></tr></table></figure>
+
+<p>其中，myDict是你要将其排序的字典，sortedList是排序之后的结果，变成了一个list，里面是若干个tuple，每个tuple里是一对(key,value)，所以后面用那样的方式对它进行了遍历。</p>
+<h2 id="『9』判断一个字典（dict）中是否包含指定的key"><a href="#『9』判断一个字典（dict）中是否包含指定的key" class="headerlink" title="『9』判断一个字典（dict）中是否包含指定的key"></a>『9』判断一个字典（dict）中是否包含指定的key</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">d = <span class="built_in">dict</span>()</span><br><span class="line"><span class="comment"># 向字典中添加两个元素</span></span><br><span class="line">d[<span class="number">1</span>] = <span class="string">&#x27;abc&#x27;</span></span><br><span class="line">d[<span class="number">2</span>] = <span class="string">&#x27;def&#x27;</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># 检查 3 这个key是否在字典中，结果输出的是“NO”</span></span><br><span class="line"><span class="keyword">if</span> <span class="number">3</span> <span class="keyword">in</span> d:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;YES&#x27;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;NO&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="『10』Python正则简单示例"><a href="#『10』Python正则简单示例" class="headerlink" title="『10』Python正则简单示例"></a>『10』Python正则简单示例</h2><p>先看代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">code = <span class="string">&#x27;String url = &quot;http://item.jd.com/1148104.html?erpad_source=abc&quot;;&#x27;</span></span><br><span class="line">pattern = re.<span class="built_in">compile</span>(<span class="string">&#x27;.*\&quot;(.*)\&quot;&#x27;</span>)</span><br><span class="line"><span class="keyword">match</span> = pattern.<span class="keyword">match</span>(code)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">match</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="keyword">match</span>.group(<span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://item.jd.com/1148104.html?erpad_source=abc</span><br></pre></td></tr></table></figure>
+
+<p>说明：上面的代码是想把字符串“code”中的双引号里的那个URL打印出来。正则表达式 .<em>&quot;(.</em>)&quot; 中的小括号就是第1个group，匹配上的话可以用 group(1) 获取之。</p>
+<h2 id="『11』try…except的示例参考"><a href="#『11』try…except的示例参考" class="headerlink" title="『11』try…except的示例参考"></a>『11』try…except的示例参考</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:               <span class="comment"># 可能会出现异常的一段代码</span></span><br><span class="line">    command_1   <span class="comment"># 如果command_1出现异常，则不执行command_1以及之后的语句</span></span><br><span class="line">    command_2   <span class="comment"># command_1如果正常，则会执行</span></span><br><span class="line"><span class="keyword">except</span>:         <span class="comment"># try中任意一行语句出现异常，直接跳转至except，程序继续运行</span></span><br><span class="line">    command_3</span><br><span class="line">    command_4</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="『』To-be-added…"><a href="#『』To-be-added…" class="headerlink" title="『』To be added…"></a>『』To be added…</h2>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/Python-problem/" rel="tag"># Python_problem</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/passages/Docker%E7%9A%84%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/" rel="prev" title="Docker的问题总结">
+      <i class="fa fa-chevron-left"></i> Docker的问题总结
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/passages/Python-%E9%97%AE%E9%A2%98%E5%B0%8F%E7%BB%93-2/" rel="next" title="Python_问题小结(2)">
+      Python_问题小结(2) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%80%8E1%E3%80%8FTypeError-unbound-method-%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">『1』TypeError: unbound method 问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%80%8E2%E3%80%8FPython%E8%AE%BF%E9%97%AEMySQL"><span class="nav-number">2.</span> <span class="nav-text">『2』Python访问MySQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%80%8E3%E3%80%8F%E9%80%86%E5%BA%8F%E9%81%8D%E5%8E%86list"><span class="nav-number">3.</span> <span class="nav-text">『3』逆序遍历list</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%80%8E4%E3%80%8F%E4%BD%BF%E7%94%A8MySQLdb%E8%AE%BF%E9%97%AE%E6%95%B0%E6%8D%AE%E5%BA%93%E6%97%B6%EF%BC%8C%E2%80%9CTypeError-execute-takes-at-most-3-arguments-4-given-%E2%80%9D%E9%94%99%E8%AF%AF%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">『4』使用MySQLdb访问数据库时，“TypeError: execute() takes at most 3 arguments (4 given)”错误的解决办法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%80%8E5%E3%80%8F%E4%BD%BF%E7%94%A8-lxml-%E5%BA%93%E7%94%9F%E6%88%90XML%EF%BC%88%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">『5』使用 lxml 库生成XML（字符串）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%80%8E6%E3%80%8F%E5%9C%A8PyCharm%E4%B8%AD%E6%97%A0%E6%B3%95%E5%AE%89%E8%A3%85MySQL-python%E8%BF%99%E4%B8%AApackage%E7%9A%84%E4%B8%80%E4%B8%AA%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95"><span class="nav-number">6.</span> <span class="nav-text">『6』在PyCharm中无法安装MySQL-python这个package的一个解决办法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%80%8E7%E3%80%8F%E2%80%9DValueError-zero-length-field-name-in-format%E2%80%9D%E9%94%99%E8%AF%AF%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95"><span class="nav-number">7.</span> <span class="nav-text">『7』”ValueError: zero length field name in format”错误的解决办法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%80%8E8%E3%80%8F%E5%AF%B9%E4%B8%80%E4%B8%AA%E5%AD%97%E5%85%B8-dict-%EF%BC%8C%E6%8C%89value%E8%BF%9B%E8%A1%8C%E6%8E%92%E5%BA%8F"><span class="nav-number">8.</span> <span class="nav-text">『8』对一个字典(dict)，按value进行排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%80%8E9%E3%80%8F%E5%88%A4%E6%96%AD%E4%B8%80%E4%B8%AA%E5%AD%97%E5%85%B8%EF%BC%88dict%EF%BC%89%E4%B8%AD%E6%98%AF%E5%90%A6%E5%8C%85%E5%90%AB%E6%8C%87%E5%AE%9A%E7%9A%84key"><span class="nav-number">9.</span> <span class="nav-text">『9』判断一个字典（dict）中是否包含指定的key</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%80%8E10%E3%80%8FPython%E6%AD%A3%E5%88%99%E7%AE%80%E5%8D%95%E7%A4%BA%E4%BE%8B"><span class="nav-number">10.</span> <span class="nav-text">『10』Python正则简单示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%80%8E11%E3%80%8Ftry%E2%80%A6except%E7%9A%84%E7%A4%BA%E4%BE%8B%E5%8F%82%E8%80%83"><span class="nav-number">11.</span> <span class="nav-text">『11』try…except的示例参考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%80%8E%E3%80%8FTo-be-added%E2%80%A6"><span class="nav-number">12.</span> <span class="nav-text">『』To be added…</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Sheldon Lu</p>
+  <div class="site-description" itemprop="description">静下心来写点东西</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/sheldon-lu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;sheldon-lu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sheldon Lu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

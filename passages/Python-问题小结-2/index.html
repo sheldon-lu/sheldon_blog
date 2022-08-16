@@ -1,23 +1,475 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block title %}{{ page.title }} | {{ title }}{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
-{% block page_class %}page-post-detail{% endblock %}
 
-{% block content %}
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.sheldonlu.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="环境：未特别注明的话，均为Python 3.6.5，IDE：VS code 遇到的都是基础问题，分了两篇。 担心一篇写多了会看不下去 https:&#x2F;&#x2F;blog.csdn.net&#x2F;xinzechen&#x2F;article&#x2F;details&#x2F;89446322  vscode的问题  『1』关于python无法显示中文的问题：SyntaxError: Non-ASCII character ‘\xe4’ in">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python_问题小结(2)">
+<meta property="og:url" content="https://www.sheldonlu.com/passages/Python-%E9%97%AE%E9%A2%98%E5%B0%8F%E7%BB%93-2/index.html">
+<meta property="og:site_name" content="Sheldon_Lu">
+<meta property="og:description" content="环境：未特别注明的话，均为Python 3.6.5，IDE：VS code 遇到的都是基础问题，分了两篇。 担心一篇写多了会看不下去 https:&#x2F;&#x2F;blog.csdn.net&#x2F;xinzechen&#x2F;article&#x2F;details&#x2F;89446322  vscode的问题  『1』关于python无法显示中文的问题：SyntaxError: Non-ASCII character ‘\xe4’ in">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-04-13T00:00:04.000Z">
+<meta property="article:modified_time" content="2019-06-27T07:59:11.985Z">
+<meta property="article:author" content="Sheldon Lu">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Python_problem">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://www.sheldonlu.com/passages/Python-%E9%97%AE%E9%A2%98%E5%B0%8F%E7%BB%93-2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>Python_问题小结(2) | Sheldon_Lu</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Sheldon_Lu</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://www.sheldonlu.com/passages/Python-%E9%97%AE%E9%A2%98%E5%B0%8F%E7%BB%93-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Sheldon Lu">
+      <meta itemprop="description" content="静下心来写点东西">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sheldon_Lu">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python_问题小结(2)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-04-13 08:00:04" itemprop="dateCreated datePublished" datetime="2019-04-13T08:00:04+08:00">2019-04-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-06-27 15:59:11" itemprop="dateModified" datetime="2019-06-27T15:59:11+08:00">2019-06-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>3.4k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>3 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>环境：未特别注明的话，均为Python 3.6.5，IDE：VS code</p>
+<p>遇到的都是基础问题，分了两篇。</p>
+<p>担心一篇写多了会看不下去</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/xinzechen/article/details/89446322">https://blog.csdn.net/xinzechen/article/details/89446322</a>  vscode的问题</p>
+</blockquote>
+<h2 id="『1』关于python无法显示中文的问题：SyntaxError-Non-ASCII-character-‘-xe4’-in-file-test-py-on-line-3-but-no-encoding-declared。"><a href="#『1』关于python无法显示中文的问题：SyntaxError-Non-ASCII-character-‘-xe4’-in-file-test-py-on-line-3-but-no-encoding-declared。" class="headerlink" title="『1』关于python无法显示中文的问题：SyntaxError: Non-ASCII character ‘\xe4’ in file test.py on line 3, but no encoding declared。"></a>『1』关于python无法显示中文的问题：SyntaxError: Non-ASCII character ‘\xe4’ in file test.py on line 3, but no encoding declared。</h2><p>python：2.7.15</p>
+<p>解决办法：  在以后的每一个需要显示汉字的python文件中， 可以采用如下方法在 #!&#x2F;usr&#x2F;bin&#x2F;python的下一行加上一句话来定义编码格式， 我以utf-8编码为例。<span id="more"></span></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">### 第一种：</span></span><br><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### 第二种：</span></span><br><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment">#-*-coding:utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### 第三种：</span></span><br><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment">#vim: set fileencoding:utf-8</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="『2』有时候在去数据的时候会遇到数据内有中文，但是取出来的是unicode码，用了很多方法也转不了中文"><a href="#『2』有时候在去数据的时候会遇到数据内有中文，但是取出来的是unicode码，用了很多方法也转不了中文" class="headerlink" title="『2』有时候在去数据的时候会遇到数据内有中文，但是取出来的是unicode码，用了很多方法也转不了中文"></a>『2』有时候在去数据的时候会遇到数据内有中文，但是取出来的是unicode码，用了很多方法也转不了中文</h2><p>解决:</p>
+<p>“反编码”我自己起的名字，大概意思就是我得到一串字符，是unicode码，如：‘\u53eb\u6211’，进行反编码后得到其对应的汉字。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">f=<span class="string">&#x27;\u53eb\u6211&#x27;</span></span><br><span class="line"><span class="built_in">print</span> f</span><br><span class="line"><span class="built_in">print</span>(f.decode(<span class="string">&#x27;unicode-escape&#x27;</span>))</span><br><span class="line"></span><br><span class="line">list_words为列表类型</span><br><span class="line"><span class="built_in">str</span>(list_words).decode( <span class="string">&#x27;string_escape&#x27;</span> )</span><br><span class="line"></span><br><span class="line"><span class="comment">#encoding=utf-8</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"> </span><br><span class="line">list_words = [ <span class="string">&#x27;你&#x27;</span>, <span class="string">&#x27;我&#x27;</span>, <span class="string">&#x27;他&#x27;</span> ]</span><br><span class="line"><span class="built_in">print</span>( list_words )                                        </span><br><span class="line"><span class="built_in">print</span>( <span class="built_in">str</span>(list_words).decode( <span class="string">&#x27;string_escape&#x27;</span> ) )         <span class="comment"># 正常显示汉字（可靠性不高，原因尚不明确）</span></span><br><span class="line"> </span><br><span class="line">list_words_result = json.dumps( list_words, encoding=<span class="string">&#x27;UTF-8&#x27;</span>, ensure_ascii=<span class="literal">False</span> )   <span class="comment"># 正常显示汉字 （经实验可靠性较高）</span></span><br></pre></td></tr></table></figure>
+
+<p>结果为: </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">\u53eb\u6211 </span><br><span class="line">叫我</span><br></pre></td></tr></table></figure>
+
+<h2 id="『3』在编译时会出现这样的错：IndentationError-expected-an-indented-block"><a href="#『3』在编译时会出现这样的错：IndentationError-expected-an-indented-block" class="headerlink" title="『3』在编译时会出现这样的错：IndentationError:expected an indented block"></a>『3』在编译时会出现这样的错：<strong>IndentationError:expected an indented block</strong></h2><p>说明此处需要缩进，你只要在出现错误的那一行，按空格或Tab（但不能混用）键缩进就行。</p>
+<h2 id="『4』SyntaxError-invalid-syntax-：语法错误。"><a href="#『4』SyntaxError-invalid-syntax-：语法错误。" class="headerlink" title="『4』SyntaxError:invalid syntax ：语法错误。"></a>『4』<strong>SyntaxError:invalid syntax</strong> ：语法错误。</h2><p>最常见的，最基础的错误</p>
+<p>英文是“非法语句”的意思。漏标点符号（例如漏分号，漏&amp;号），多标点符号，拼写错，等等都会造成这种错</p>
+<h2 id="『5』url连接超时解决："><a href="#『5』url连接超时解决：" class="headerlink" title="『5』url连接超时解决："></a>『5』<strong>url连接超时解决</strong>：</h2><p>1）使用的是urllib不是urllib2，所以无法直接在urlopen里面加timeout参数，只能是设置全局脚本的超时时间</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line">socket.setdefaulttimeout(<span class="number">60</span>)</span><br></pre></td></tr></table></figure>
+
+<p>设置全局的超时时间为60s。</p>
+<p>2）urllib，urllib2常会一起使用（两者分别提供不同的功能）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">html = urllib.urlopen(url).read()</span><br><span class="line"><span class="comment"># 修改为</span></span><br><span class="line"><span class="keyword">import</span> urllib2</span><br><span class="line">html = urllib2.urlopen(url, timeout=<span class="number">60</span>).read()</span><br></pre></td></tr></table></figure>
+
+<h2 id="『6』UnboundLocalError-local-variable-‘appname’-referenced-before-assignment："><a href="#『6』UnboundLocalError-local-variable-‘appname’-referenced-before-assignment：" class="headerlink" title="『6』UnboundLocalError: local variable ‘appname’ referenced before assignment："></a>『6』<strong>UnboundLocalError: local variable ‘appname’ referenced before assignment：</strong></h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;u&#x27;batchrealnameverifytask&#x27;: 99.41, u&#x27;bptask100000188408&#x27;: 98.77, u&#x27;clsexpflowmaintask576&#x27;: 101.28&#125;</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;get_app_cpu_from_influxdb.py&quot;, line 89, in &lt;module&gt;</span><br><span class="line">    appname = get_sql_info(key)</span><br><span class="line">  File &quot;get_app_cpu_from_influxdb.py&quot;, line 28, in get_sql_info</span><br><span class="line">    return appname</span><br></pre></td></tr></table></figure>
+
+<p>变量问题：变量在被赋值之前被使用定义</p>
+<h2 id="『7』TypeError-sequence-item-1-expected-string-or-Unicode-NoneType-found"><a href="#『7』TypeError-sequence-item-1-expected-string-or-Unicode-NoneType-found" class="headerlink" title="『7』TypeError: sequence item 1: expected string or Unicode, NoneType found"></a>『7』<strong>TypeError: sequence item 1: expected string or Unicode, NoneType found</strong></h2><p>期望值未发现：str或者unicode类型</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">message = <span class="string">u&quot;应用的CPU利用率超过%s,请检查应用:%s&quot;</span>%(<span class="built_in">str</span>(threshold)+<span class="string">&#x27;%&#x27;</span>,<span class="string">&quot;,&quot;</span>.join(app_name))</span><br><span class="line"></span><br><span class="line"><span class="comment"># =====================&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span></span><br><span class="line"></span><br><span class="line">message = <span class="string">&quot;应用的CPU利用率超过%s,请检查应用:%s&quot;</span>%(<span class="built_in">str</span>(threshold)+<span class="string">&#x27;%&#x27;</span>,<span class="string">&quot;,&quot;</span>.join(app_name))</span><br></pre></td></tr></table></figure>
+
+<h2 id="『8』UnicodeDecodeError-‘ascii’-codec-can’t-decode-byte-0xe5-in-position-1-ordinal-not-in-range-128"><a href="#『8』UnicodeDecodeError-‘ascii’-codec-can’t-decode-byte-0xe5-in-position-1-ordinal-not-in-range-128" class="headerlink" title="『8』UnicodeDecodeError: ‘ascii’ codec can’t decode byte 0xe5 in position 1: ordinal not in range(128)"></a>『8』<strong>UnicodeDecodeError: ‘ascii’ codec can’t decode byte 0xe5 in position 1: ordinal not in range(128)</strong></h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 关于编码问题：</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">reload(sys)</span><br><span class="line">sys.setdefaultencoding( <span class="string">&quot;utf-8&quot;</span> )</span><br></pre></td></tr></table></figure>
+
+<h2 id="『9』IndentationError-unindent-does-not-match-any-outer-indentation-level"><a href="#『9』IndentationError-unindent-does-not-match-any-outer-indentation-level" class="headerlink" title="『9』IndentationError: unindent does not match any outer indentation level"></a>『9』<strong>IndentationError: unindent does not match any outer indentation level</strong></h2><p>【问题】</p>
+<p>一个python脚本，本来都运行好好的，然后写了几行代码，而且也都确保每行都对齐了，但是运行的时候，却出现语法错误：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IndentationError: unindent does not match any outer indentation level</span><br></pre></td></tr></table></figure>
+
+<p>【解决过程】</p>
+<p>1.对于此错误，最常见的原因是，的确没有对齐。但是我根据错误提示的行数，去代码中看了下，没啥问题啊。</p>
+<p>都是用TAB键，对齐好了的，没有不对齐的行数啊。</p>
+<p>2.以为是前面的注释的内容影响后面的语句的语法了，所以把前面的注释也删除了。</p>
+<p>结果还是此语法错误。</p>
+<p>3.后来折腾了半天，突然想到了，把当前python脚本的所有字符都显示出来看看有没有啥特殊的字符。tab与空格混用了</p>
+<h2 id="『10』request-https报错："><a href="#『10』request-https报错：" class="headerlink" title="『10』request  https报错："></a>『10』<strong>request  https报错：</strong></h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#  忽略警告：InsecureRequestWarning: Unverified HTTPS request is being made. Adding certificate verification is strongly advised.</span></span><br><span class="line">requests.packages.urllib3.disable_warnings(）</span><br></pre></td></tr></table></figure>
+
+<h2 id="『11』python安装MySQLdb的时候一直有问题"><a href="#『11』python安装MySQLdb的时候一直有问题" class="headerlink" title="『11』python安装MySQLdb的时候一直有问题"></a>『11』<strong>python安装MySQLdb的时候一直有问题</strong></h2><p>在Linux下 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install MySQL-python </span><br></pre></td></tr></table></figure>
+
+<p>如果安装之后仍不能正常运行，尝试用yum install MySQL-python，因为这个模块需要一些第三方程序来运行的。 </p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/Python-problem/" rel="tag"># Python_problem</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/passages/Python-%E9%97%AE%E9%A2%98%E5%B0%8F%E7%BB%93-1/" rel="prev" title="Python_问题小结(1)">
+      <i class="fa fa-chevron-left"></i> Python_问题小结(1)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/passages/Python-list%E4%BA%A4%E9%9B%86%E3%80%81%E5%B7%AE%E9%9B%86%E5%92%8C%E5%B9%B6%E9%9B%86/" rel="next" title="Python_list交集、差集和并集">
+      Python_list交集、差集和并集 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%80%8E1%E3%80%8F%E5%85%B3%E4%BA%8Epython%E6%97%A0%E6%B3%95%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%9ASyntaxError-Non-ASCII-character-%E2%80%98-xe4%E2%80%99-in-file-test-py-on-line-3-but-no-encoding-declared%E3%80%82"><span class="nav-number">1.</span> <span class="nav-text">『1』关于python无法显示中文的问题：SyntaxError: Non-ASCII character ‘\xe4’ in file test.py on line 3, but no encoding declared。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%80%8E2%E3%80%8F%E6%9C%89%E6%97%B6%E5%80%99%E5%9C%A8%E5%8E%BB%E6%95%B0%E6%8D%AE%E7%9A%84%E6%97%B6%E5%80%99%E4%BC%9A%E9%81%87%E5%88%B0%E6%95%B0%E6%8D%AE%E5%86%85%E6%9C%89%E4%B8%AD%E6%96%87%EF%BC%8C%E4%BD%86%E6%98%AF%E5%8F%96%E5%87%BA%E6%9D%A5%E7%9A%84%E6%98%AFunicode%E7%A0%81%EF%BC%8C%E7%94%A8%E4%BA%86%E5%BE%88%E5%A4%9A%E6%96%B9%E6%B3%95%E4%B9%9F%E8%BD%AC%E4%B8%8D%E4%BA%86%E4%B8%AD%E6%96%87"><span class="nav-number">2.</span> <span class="nav-text">『2』有时候在去数据的时候会遇到数据内有中文，但是取出来的是unicode码，用了很多方法也转不了中文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%80%8E3%E3%80%8F%E5%9C%A8%E7%BC%96%E8%AF%91%E6%97%B6%E4%BC%9A%E5%87%BA%E7%8E%B0%E8%BF%99%E6%A0%B7%E7%9A%84%E9%94%99%EF%BC%9AIndentationError-expected-an-indented-block"><span class="nav-number">3.</span> <span class="nav-text">『3』在编译时会出现这样的错：IndentationError:expected an indented block</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%80%8E4%E3%80%8FSyntaxError-invalid-syntax-%EF%BC%9A%E8%AF%AD%E6%B3%95%E9%94%99%E8%AF%AF%E3%80%82"><span class="nav-number">4.</span> <span class="nav-text">『4』SyntaxError:invalid syntax ：语法错误。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%80%8E5%E3%80%8Furl%E8%BF%9E%E6%8E%A5%E8%B6%85%E6%97%B6%E8%A7%A3%E5%86%B3%EF%BC%9A"><span class="nav-number">5.</span> <span class="nav-text">『5』url连接超时解决：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%80%8E6%E3%80%8FUnboundLocalError-local-variable-%E2%80%98appname%E2%80%99-referenced-before-assignment%EF%BC%9A"><span class="nav-number">6.</span> <span class="nav-text">『6』UnboundLocalError: local variable ‘appname’ referenced before assignment：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%80%8E7%E3%80%8FTypeError-sequence-item-1-expected-string-or-Unicode-NoneType-found"><span class="nav-number">7.</span> <span class="nav-text">『7』TypeError: sequence item 1: expected string or Unicode, NoneType found</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%80%8E8%E3%80%8FUnicodeDecodeError-%E2%80%98ascii%E2%80%99-codec-can%E2%80%99t-decode-byte-0xe5-in-position-1-ordinal-not-in-range-128"><span class="nav-number">8.</span> <span class="nav-text">『8』UnicodeDecodeError: ‘ascii’ codec can’t decode byte 0xe5 in position 1: ordinal not in range(128)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%80%8E9%E3%80%8FIndentationError-unindent-does-not-match-any-outer-indentation-level"><span class="nav-number">9.</span> <span class="nav-text">『9』IndentationError: unindent does not match any outer indentation level</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%80%8E10%E3%80%8Frequest-https%E6%8A%A5%E9%94%99%EF%BC%9A"><span class="nav-number">10.</span> <span class="nav-text">『10』request  https报错：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%80%8E11%E3%80%8Fpython%E5%AE%89%E8%A3%85MySQLdb%E7%9A%84%E6%97%B6%E5%80%99%E4%B8%80%E7%9B%B4%E6%9C%89%E9%97%AE%E9%A2%98"><span class="nav-number">11.</span> <span class="nav-text">『11』python安装MySQLdb的时候一直有问题</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Sheldon Lu</p>
+  <div class="site-description" itemprop="description">静下心来写点东西</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/sheldon-lu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;sheldon-lu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sheldon Lu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

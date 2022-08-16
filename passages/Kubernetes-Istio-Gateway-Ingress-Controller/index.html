@@ -1,23 +1,547 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block title %}{{ page.title }} | {{ title }}{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
-{% block page_class %}page-post-detail{% endblock %}
 
-{% block content %}
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.sheldonlu.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="最近在istio，然后想总结下ingress-controller和istio-gateway的区别。 在Kubernetes环境中，Kubernetes Ingress用于配置需要在集群外部公开的服务。 但是在Istio服务网格中，更好的方法是使用新的配置模型，即Istio Gateway；Gateway允许将Istio流量管理的功能应用于进入集群的流量。 这里的ingress为nginx i">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kubernetes_Istio-Gateway_Ingress-Controller">
+<meta property="og:url" content="https://www.sheldonlu.com/passages/Kubernetes-Istio-Gateway-Ingress-Controller/index.html">
+<meta property="og:site_name" content="Sheldon_Lu">
+<meta property="og:description" content="最近在istio，然后想总结下ingress-controller和istio-gateway的区别。 在Kubernetes环境中，Kubernetes Ingress用于配置需要在集群外部公开的服务。 但是在Istio服务网格中，更好的方法是使用新的配置模型，即Istio Gateway；Gateway允许将Istio流量管理的功能应用于进入集群的流量。 这里的ingress为nginx i">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-07-01T14:37:27.000Z">
+<meta property="article:modified_time" content="2019-09-03T14:34:14.106Z">
+<meta property="article:author" content="Sheldon Lu">
+<meta property="article:tag" content="Kubernetes">
+<meta property="article:tag" content="Ingress">
+<meta property="article:tag" content="Istio">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://www.sheldonlu.com/passages/Kubernetes-Istio-Gateway-Ingress-Controller/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>Kubernetes_Istio-Gateway_Ingress-Controller | Sheldon_Lu</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Sheldon_Lu</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://www.sheldonlu.com/passages/Kubernetes-Istio-Gateway-Ingress-Controller/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Sheldon Lu">
+      <meta itemprop="description" content="静下心来写点东西">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sheldon_Lu">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Kubernetes_Istio-Gateway_Ingress-Controller
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-07-01 22:37:27" itemprop="dateCreated datePublished" datetime="2019-07-01T22:37:27+08:00">2019-07-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-09-03 22:34:14" itemprop="dateModified" datetime="2019-09-03T22:34:14+08:00">2019-09-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kubernetes/" itemprop="url" rel="index"><span itemprop="name">Kubernetes</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>9k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>8 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>最近在istio，然后想总结下ingress-controller和istio-gateway的区别。</p>
+<p>在Kubernetes环境中，Kubernetes Ingress用于配置需要在集群外部公开的服务。</p>
+<p>但是在Istio服务网格中，更好的方法是使用新的配置模型，即Istio Gateway；Gateway允许将Istio流量管理的功能应用于进入集群的流量。</p>
+<p>这里的ingress为nginx ingress</p>
+</blockquote>
+<p>通过灰度发布，来看一下ingress与istio的实现方式的差异 <span id="more"></span></p>
+<h3 id="环境准备："><a href="#环境准备：" class="headerlink" title="环境准备："></a>环境准备：</h3><blockquote>
+<p>kubernetes环境     1.13.5</p>
+<p>部署istio                 1.1.1</p>
+</blockquote>
+<h3 id="Istio："><a href="#Istio：" class="headerlink" title="Istio："></a>Istio：</h3><blockquote>
+<p>部署两个服务：</p>
+<p>old</p>
+</blockquote>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">old-nginx</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">old-nginx</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">old-nginx</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">registry.cn-hangzhou.aliyuncs.com/xxxxx/old-nginx</span></span><br><span class="line">        <span class="attr">imagePullPolicy:</span> <span class="string">Always</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">old-nginx</span></span><br><span class="line">        <span class="attr">ports:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">80</span></span><br><span class="line">          <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">      <span class="attr">restartPolicy:</span> <span class="string">Always</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">old-nginx</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">port:</span> <span class="number">80</span></span><br><span class="line">    <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">    <span class="attr">targetPort:</span> <span class="number">80</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">run:</span> <span class="string">old-nginx</span></span><br><span class="line">  <span class="attr">sessionAffinity:</span> <span class="string">None</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">NodePort</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>new</p>
+</blockquote>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">new-nginx</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">1</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">new-nginx</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">new-nginx</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">registry.cn-hangzhou.aliyuncs.com/xxxxx/new-nginx</span></span><br><span class="line">        <span class="attr">imagePullPolicy:</span> <span class="string">Always</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">new-nginx</span></span><br><span class="line">        <span class="attr">ports:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">80</span></span><br><span class="line">          <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">      <span class="attr">restartPolicy:</span> <span class="string">Always</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">new-nginx</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">port:</span> <span class="number">80</span></span><br><span class="line">    <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">    <span class="attr">targetPort:</span> <span class="number">80</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">run:</span> <span class="string">new-nginx</span></span><br><span class="line">  <span class="attr">sessionAffinity:</span> <span class="string">None</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">NodePort</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>输出</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">kubectl get svc</span></span><br><span class="line">NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE</span><br><span class="line">kubernetes   ClusterIP   172.19.0.1      &lt;none&gt;        443/TCP        9h</span><br><span class="line">new-nginx    NodePort    172.19.8.168    &lt;none&gt;        80:31904/TCP   4h</span><br><span class="line">old-nginx    NodePort    172.19.12.148   &lt;none&gt;        80:31545/TCP   4h</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>测试两个服务</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">kubectl run -it --<span class="built_in">rm</span> bash --image=appropriate/curl --restart=Never curl 172.19.8.168</span></span><br><span class="line">new</span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">kubectl run -it --<span class="built_in">rm</span> bash --image=appropriate/curl --restart=Never curl 172.19.12.148</span></span><br><span class="line">old</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>创建Gateway对象&#x2F;用的istio官方yaml</p>
+</blockquote>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">networking.istio.io/v1alpha3</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Gateway</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">helloworld-gateway</span> <span class="comment"># name</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">istio:</span> <span class="string">ingressgateway</span>  <span class="comment"># use istio default controller</span></span><br><span class="line">  <span class="attr">servers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">port:</span></span><br><span class="line">      <span class="attr">number:</span> <span class="number">80</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">http</span></span><br><span class="line">      <span class="attr">protocol:</span> <span class="string">HTTP</span></span><br><span class="line">    <span class="attr">hosts:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;*&quot;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>确定Istio入口IP和port</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">kubectl get svc istio-ingressgateway -n istio-system</span></span><br><span class="line">NAME                   TYPE           CLUSTER-IP      EXTERNAL-IP    PORT(S)                                      AGE</span><br><span class="line">istio-ingressgateway   LoadBalancer   172.19.14.182   (pending)   80:31380/TCP,443:31390/TCP,31400:31400/...   10h</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>确认<code>EXTERNAL-IP</code>设置了值</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export INGRESS_HOST= $(kubectl -n istio-system get service istio-ingressgateway -o jsonpath=&#x27;&#123;.status.loadBalancer.ingress[0].ip&#125;&#x27;)</span><br><span class="line">export INGRESS_PORT= $(kubectl -n istio-system get service istio-ingressgateway -o jsonpath=&#x27;&#123;.spec.ports[?(@.name==&quot;http&quot;)].port&#125;&#x27;)</span><br><span class="line">export SECURE_INGRESS_PORT= $(kubectl -n istio-system get service istio-ingressgateway -o jsonpath=&#x27;&#123;.spec.ports[?(@.name==&quot;https&quot;)].port&#125;&#x27;)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>满足特定规则：</p>
+<p>例如，我们希望请求头中带有user且值为new的客户端请求才能访问new service</p>
+<p>我们可以创建一个对应的<code>VirtualService</code>为通过<code>Gateway</code>进入的流量配置路由</p>
+</blockquote>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">networking.istio.io/v1alpha3</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">VirtualService</span>   <span class="comment"># istio route rule </span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">helloworld</span>     <span class="comment"># name</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">gateways:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">helloworld-gateway</span> <span class="comment"># link Gateway</span></span><br><span class="line">  <span class="attr">hosts:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">&#x27;*&#x27;</span></span><br><span class="line">  <span class="attr">http:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">match:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">headers:</span></span><br><span class="line">        <span class="attr">user:</span></span><br><span class="line">          <span class="attr">exact:</span> <span class="string">new</span>       <span class="comment"># match headers -&gt; user (-&gt; exact -&gt;) new  [headers: user: new]</span></span><br><span class="line">    <span class="attr">route:</span>                 <span class="comment"># 会访问new-nginx，满足头部要求即可</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">destination:</span></span><br><span class="line">        <span class="attr">host:</span> <span class="string">new-nginx</span></span><br><span class="line">        <span class="attr">port:</span></span><br><span class="line">          <span class="attr">number:</span> <span class="number">80</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">route:</span>                 <span class="comment"># 否则就访问old-nginx</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">destination:</span></span><br><span class="line">        <span class="attr">host:</span> <span class="string">old-nginx</span></span><br><span class="line">        <span class="attr">port:</span></span><br><span class="line">          <span class="attr">number:</span> <span class="number">80</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>客户端测试</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">curl -H <span class="string">&quot;user: new&quot;</span> http://<span class="variable">$INGRESS_HOST</span>:<span class="variable">$INGRESS_PORT</span></span></span><br><span class="line">new</span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">curl -H <span class="string">&quot;user: new&quot;</span> http://<span class="variable">$INGRESS_HOST</span>:<span class="variable">$INGRESS_PORT</span></span></span><br><span class="line">new</span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">curl -H <span class="string">&quot;user: new&quot;</span> http://<span class="variable">$INGRESS_HOST</span>:<span class="variable">$INGRESS_PORT</span></span></span><br><span class="line">new</span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">curl http://<span class="variable">$INGRESS_HOST</span>:<span class="variable">$INGRESS_PORT</span></span></span><br><span class="line">old</span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">curl http://<span class="variable">$INGRESS_HOST</span>:<span class="variable">$INGRESS_PORT</span></span></span><br><span class="line">old</span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">curl http://<span class="variable">$INGRESS_HOST</span>:<span class="variable">$INGRESS_PORT</span></span></span><br><span class="line">old</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在满足特定规则和权重：</p>
+<p>例如，我们希望请求头中带有user且值为new的客户端请求有50%的比例访问new service，那么我们可以创建一个这样的<code>VirtualService</code></p>
+</blockquote>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">networking.istio.io/v1alpha3</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">VirtualService</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">helloworld</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">gateways:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">helloworld-gateway</span></span><br><span class="line">  <span class="attr">hosts:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">&#x27;*&#x27;</span></span><br><span class="line">  <span class="attr">http:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">match:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">headers:</span></span><br><span class="line">        <span class="attr">user:</span></span><br><span class="line">          <span class="attr">exact:</span> <span class="string">new</span>          <span class="comment"># 这里跟上面的一样，符合头部 user: new就会访问到这一层</span></span><br><span class="line">    <span class="attr">route:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">destination:</span></span><br><span class="line">        <span class="attr">host:</span> <span class="string">new-nginx</span></span><br><span class="line">        <span class="attr">port:</span></span><br><span class="line">          <span class="attr">number:</span> <span class="number">80</span></span><br><span class="line">      <span class="attr">weight:</span> <span class="number">50</span>              </span><br><span class="line">                             <span class="comment"># 另外因为这里设置了两个访问规则，即首先符合头部，然后会有50%的几率会访问到new-nginx，另外50%会访问到old-nginx</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">destination:</span></span><br><span class="line">        <span class="attr">host:</span> <span class="string">old-nginx</span></span><br><span class="line">        <span class="attr">port:</span></span><br><span class="line">          <span class="attr">number:</span> <span class="number">80</span></span><br><span class="line">      <span class="attr">weight:</span> <span class="number">50</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">route:</span>                    <span class="comment"># 如果不匹配头部，那就全部访问到old-nginx</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">destination:</span></span><br><span class="line">        <span class="attr">host:</span> <span class="string">old-nginx</span></span><br><span class="line">        <span class="attr">port:</span></span><br><span class="line">          <span class="attr">number:</span> <span class="number">80</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>客户端测试</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">curl -H <span class="string">&quot;user: new&quot;</span> http://<span class="variable">$INGRESS_HOST</span>:<span class="variable">$INGRESS_PORT</span></span></span><br><span class="line">new</span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">curl -H <span class="string">&quot;user: new&quot;</span> http://<span class="variable">$INGRESS_HOST</span>:<span class="variable">$INGRESS_PORT</span></span></span><br><span class="line">old</span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">curl -H <span class="string">&quot;user: new&quot;</span> http://<span class="variable">$INGRESS_HOST</span>:<span class="variable">$INGRESS_PORT</span></span></span><br><span class="line">new</span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">curl -H <span class="string">&quot;user: new&quot;</span> http://<span class="variable">$INGRESS_HOST</span>:<span class="variable">$INGRESS_PORT</span></span></span><br><span class="line">new</span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">curl -H <span class="string">&quot;user: new&quot;</span> http://<span class="variable">$INGRESS_HOST</span>:<span class="variable">$INGRESS_PORT</span></span></span><br><span class="line">old</span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">curl -H <span class="string">&quot;user: new&quot;</span> http://<span class="variable">$INGRESS_HOST</span>:<span class="variable">$INGRESS_PORT</span></span></span><br><span class="line">new</span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">curl -H <span class="string">&quot;user: new&quot;</span> http://<span class="variable">$INGRESS_HOST</span>:<span class="variable">$INGRESS_PORT</span></span></span><br><span class="line">old</span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">curl http://<span class="variable">$INGRESS_HOST</span>:<span class="variable">$INGRESS_PORT</span></span></span><br><span class="line">old</span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">curl http://<span class="variable">$INGRESS_HOST</span>:<span class="variable">$INGRESS_PORT</span></span></span><br><span class="line">old</span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">curl http://<span class="variable">$INGRESS_HOST</span>:<span class="variable">$INGRESS_PORT</span></span></span><br><span class="line">old</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>权重随机访问：</p>
+<p>例如，我们仅仅希望20%的客户端请求访问new service，那么我们可以创建一个这样的<code>VirtualService</code></p>
+</blockquote>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">networking.istio.io/v1alpha3</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">VirtualService</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">helloworld</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">gateways:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">helloworld-gateway</span></span><br><span class="line">  <span class="attr">hosts:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">&#x27;*&#x27;</span></span><br><span class="line">  <span class="attr">http:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">route:</span>                        </span><br><span class="line">  <span class="comment"># 这条virtual Service 设置了权重来几率性访问nginx；20%new-nginx，80% old-nginx</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">destination:</span></span><br><span class="line">        <span class="attr">host:</span> <span class="string">new-nginx</span></span><br><span class="line">        <span class="attr">port:</span></span><br><span class="line">          <span class="attr">number:</span> <span class="number">80</span></span><br><span class="line">      <span class="attr">weight:</span> <span class="number">20</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">destination:</span></span><br><span class="line">        <span class="attr">host:</span> <span class="string">old-nginx</span></span><br><span class="line">        <span class="attr">port:</span></span><br><span class="line">          <span class="attr">number:</span> <span class="number">80</span></span><br><span class="line">      <span class="attr">weight:</span> <span class="number">80</span></span><br></pre></td></tr></table></figure>
+
+<p>客户端测试</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">curl http://<span class="variable">$INGRESS_HOST</span>:<span class="variable">$INGRESS_PORT</span></span></span><br><span class="line">old</span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">curl http://<span class="variable">$INGRESS_HOST</span>:<span class="variable">$INGRESS_PORT</span></span></span><br><span class="line">old</span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">curl http://<span class="variable">$INGRESS_HOST</span>:<span class="variable">$INGRESS_PORT</span></span></span><br><span class="line">old</span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">curl http://<span class="variable">$INGRESS_HOST</span>:<span class="variable">$INGRESS_PORT</span></span></span><br><span class="line">old</span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">curl http://<span class="variable">$INGRESS_HOST</span>:<span class="variable">$INGRESS_PORT</span></span></span><br><span class="line">new</span><br></pre></td></tr></table></figure>
+
+<h3 id="Nginx-Ingress"><a href="#Nginx-Ingress" class="headerlink" title="Nginx Ingress"></a>Nginx Ingress</h3><blockquote>
+<p>不支持权重，貌似能够支持headers头</p>
+</blockquote>
+<p>Nginx:</p>
+<blockquote>
+<p>使用$http_ 获取http请求的header，根据配置中是否为完整或者正则匹配，匹配foo的值</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">    ....</span><br><span class="line">    if ($http_foo = &quot;bar&quot;) &#123;  //完全匹配</span><br><span class="line">    #if ($http_foo ~ &quot;bar&quot;) &#123;  //正则匹配</span><br><span class="line">           proxy_pass http://default-new-nginx-80;</span><br><span class="line">           break;</span><br><span class="line">    &#125;</span><br><span class="line">    proxy_pass http://default-old-nginx-80;</span><br><span class="line">    ....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>使用$cookie_获取http请求的cookie，根据配置中是否为完整或者正则匹配，匹配foo的值</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">    ....</span><br><span class="line">    if ($cookie_foo ~ &quot;^bar&quot;) &#123;  //正则匹配</span><br><span class="line">    # if ($cookie_foo = &quot;bar&quot;) &#123;  //完全匹配</span><br><span class="line">         proxy_pass http://default-new-nginx-80;</span><br><span class="line">         break;</span><br><span class="line">    &#125;</span><br><span class="line">    proxy_pass http://default-old-nginx-80;</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>使用$arg_获取http的请求参数，根据配置中是否为完整或者正则匹配，匹配foo的值</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">    ....</span><br><span class="line">    if ($arg_foo ~ &quot;^bar&quot;) &#123;  //正则匹配</span><br><span class="line">    # if ($arg_foo = &quot;bar&quot;) &#123;  //完全匹配</span><br><span class="line">         proxy_pass http://default-new-nginx-80;</span><br><span class="line">         break;</span><br><span class="line">    &#125;</span><br><span class="line">    proxy_pass http://default-old-nginx-80;</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<p>这里用到的两个服务为istio用的两个服务：</p>
+<blockquote>
+<p>应用部署完毕后，我们看要怎么配置ingress才能够正确的刷新到ngixn.conf，在nginx-ingress-controller中，它支持 nginx.ingress.kubernetes.io&#x2F;configuration-snippet 这样一个注解允许我们在location里配置自定义需求。同时结合nginx-ingress-controller的upstream命名方式namespace-serviceName-port的方式配置注解信息。如下ingress yaml所示:</p>
+</blockquote>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Ingress</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">annotations:</span></span><br><span class="line">    <span class="attr">nginx.ingress.kubernetes.io/configuration-snippet:</span> <span class="string">|</span></span><br><span class="line"><span class="string">       if ($http_foo ~ &quot;^.*bar$&quot;) &#123;</span></span><br><span class="line"><span class="string">         proxy_pass http://default-new-nginx-80;</span></span><br><span class="line"><span class="string">         break;</span></span><br><span class="line"><span class="string">       &#125;</span></span><br><span class="line"><span class="string"></span>  <span class="attr">name:</span> <span class="string">gray-release</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">host:</span> <span class="string">www.example.com</span></span><br><span class="line">      <span class="attr">http:</span></span><br><span class="line">        <span class="attr">paths:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">backend:</span></span><br><span class="line">              <span class="attr">serviceName:</span> <span class="string">old-nginx</span></span><br><span class="line">              <span class="attr">servicePort:</span> <span class="number">80</span></span><br><span class="line">            <span class="attr">path:</span> <span class="string">/</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">backend:</span></span><br><span class="line">              <span class="attr">serviceName:</span> <span class="string">new-nginx</span></span><br><span class="line">              <span class="attr">servicePort:</span> <span class="number">80</span></span><br><span class="line">            <span class="attr">path:</span> <span class="string">/</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>输出</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"> curl -H &quot;Host: www.example.com&quot;  http://172.16.0.9</span><br><span class="line">old</span><br><span class="line"> curl -H &quot;Host: www.example.com&quot;  http://172.16.0.9</span><br><span class="line">old</span><br><span class="line"> curl -H &quot;Host: www.example.com&quot;  http://172.16.0.9</span><br><span class="line">old</span><br><span class="line"> curl -H &quot;Host: www.example.com&quot; -H &quot;foo: bar&quot; http://172.16.0.9</span><br><span class="line">new</span><br><span class="line"> curl -H &quot;Host: www.example.com&quot; -H &quot;foo: bar&quot; http://172.16.0.9</span><br><span class="line">new</span><br><span class="line"> curl -H &quot;Host: www.example.com&quot; -H &quot;foo: bar&quot; http://172.16.0.9</span><br><span class="line">new</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Kubernetes/" rel="tag"># Kubernetes</a>
+              <a href="/tags/Ingress/" rel="tag"># Ingress</a>
+              <a href="/tags/Istio/" rel="tag"># Istio</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/passages/Kubernetes-1-13-5%E9%83%A8%E7%BD%B2ingress/" rel="prev" title="Kubernetes_1.13.5_ingress">
+      <i class="fa fa-chevron-left"></i> Kubernetes_1.13.5_ingress
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/passages/%E5%AD%A6%E4%B9%A0%E6%9D%82%E8%AE%B0%E4%B9%8BCeph%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5/" rel="next" title="学习杂记之Ceph相关概念">
+      学习杂记之Ceph相关概念 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">环境准备：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Istio%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">Istio：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nginx-Ingress"><span class="nav-number">3.</span> <span class="nav-text">Nginx Ingress</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Sheldon Lu</p>
+  <div class="site-description" itemprop="description">静下心来写点东西</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/sheldon-lu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;sheldon-lu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sheldon Lu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

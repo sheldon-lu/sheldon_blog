@@ -1,23 +1,512 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block title %}{{ page.title }} | {{ title }}{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
-{% block page_class %}page-post-detail{% endblock %}
 
-{% block content %}
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.sheldonlu.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="记录harbor 1.5升级到1.9背景：简明：内网环境harbor1.5.0升级要1.9">
+<meta property="og:type" content="article">
+<meta property="og:title" content="学习杂记之harbor实践篇2">
+<meta property="og:url" content="https://www.sheldonlu.com/passages/%E5%AD%A6%E4%B9%A0%E6%9D%82%E8%AE%B0%E4%B9%8Bharbor%E5%AE%9E%E8%B7%B5%E7%AF%872/index.html">
+<meta property="og:site_name" content="Sheldon_Lu">
+<meta property="og:description" content="记录harbor 1.5升级到1.9背景：简明：内网环境harbor1.5.0升级要1.9">
+<meta property="og:locale">
+<meta property="og:image" content="https://www.sheldonlu.com/passages/%E5%AD%A6%E4%B9%A0%E6%9D%82%E8%AE%B0%E4%B9%8Bharbor%E5%AE%9E%E8%B7%B5%E7%AF%872/3.png">
+<meta property="og:image" content="https://www.sheldonlu.com/passages/%E5%AD%A6%E4%B9%A0%E6%9D%82%E8%AE%B0%E4%B9%8Bharbor%E5%AE%9E%E8%B7%B5%E7%AF%872/2.png">
+<meta property="og:image" content="https://www.sheldonlu.com/passages/%E5%AD%A6%E4%B9%A0%E6%9D%82%E8%AE%B0%E4%B9%8Bharbor%E5%AE%9E%E8%B7%B5%E7%AF%872/4.png">
+<meta property="og:image" content="https://www.sheldonlu.com/passages/%E5%AD%A6%E4%B9%A0%E6%9D%82%E8%AE%B0%E4%B9%8Bharbor%E5%AE%9E%E8%B7%B5%E7%AF%872/5.png">
+<meta property="og:image" content="https://www.sheldonlu.com/passages/%E5%AD%A6%E4%B9%A0%E6%9D%82%E8%AE%B0%E4%B9%8Bharbor%E5%AE%9E%E8%B7%B5%E7%AF%872/1.png">
+<meta property="article:published_time" content="2020-06-26T13:21:17.000Z">
+<meta property="article:modified_time" content="2020-06-30T14:53:33.179Z">
+<meta property="article:author" content="Sheldon Lu">
+<meta property="article:tag" content="学习杂记">
+<meta property="article:tag" content="Harbor">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.sheldonlu.com/passages/%E5%AD%A6%E4%B9%A0%E6%9D%82%E8%AE%B0%E4%B9%8Bharbor%E5%AE%9E%E8%B7%B5%E7%AF%872/3.png">
+
+<link rel="canonical" href="https://www.sheldonlu.com/passages/%E5%AD%A6%E4%B9%A0%E6%9D%82%E8%AE%B0%E4%B9%8Bharbor%E5%AE%9E%E8%B7%B5%E7%AF%872/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>学习杂记之harbor实践篇2 | Sheldon_Lu</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Sheldon_Lu</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://www.sheldonlu.com/passages/%E5%AD%A6%E4%B9%A0%E6%9D%82%E8%AE%B0%E4%B9%8Bharbor%E5%AE%9E%E8%B7%B5%E7%AF%872/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Sheldon Lu">
+      <meta itemprop="description" content="静下心来写点东西">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sheldon_Lu">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          学习杂记之harbor实践篇2
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-06-26 21:21:17" itemprop="dateCreated datePublished" datetime="2020-06-26T21:21:17+08:00">2020-06-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-06-30 22:53:33" itemprop="dateModified" datetime="2020-06-30T22:53:33+08:00">2020-06-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Study/" itemprop="url" rel="index"><span itemprop="name">Study</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>19k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>17 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="记录harbor-1-5升级到1-9"><a href="#记录harbor-1-5升级到1-9" class="headerlink" title="记录harbor 1.5升级到1.9"></a>记录harbor 1.5升级到1.9</h2><h3 id="背景："><a href="#背景：" class="headerlink" title="背景："></a>背景：</h3><h6 id="简明："><a href="#简明：" class="headerlink" title="简明："></a>简明：</h6><p>内网环境<code>harbor1.5.0</code>升级要1.9<span id="more"></span></p>
+<h6 id="要点："><a href="#要点：" class="headerlink" title="要点："></a>要点：</h6><p>（1）harbor数据库在<code>v1.6</code>版本做了很大的升级。数据库从原来的<code>MySQL</code>升级为<code>postgresql</code>数据库。根据<a target="_blank" rel="noopener" href="https://github.com/goharbor/harbor/blob/master/docs/migration_guide.md">官方文档</a>的解释，旧版本的harbor升级到最新的<code>v1.9</code>,需先将harbor升级到<code>v1.6</code>,再升级到更高的版本。<br>（2）从<code>v1.8.0</code>开始，Harbor的配置已更改为<code>.yml</code>文件，迁移器将配置文件从<code>harbor.cfg</code>转换为<code>harbor.yml</code>。<br>（3）从<code>v1.6.0</code>开始，Harbor会在启动时自动尝试迁移数据库，因此如果从<code>v1.6.0</code>或更高版本升级，则无需调用迁移器工具来迁移数据库，只需要更新<code>cfg</code>文件即可。<br>（4）从<code>v1.7.0</code>开始，支持Helm Chart部署。</p>
+<h6 id="方案："><a href="#方案：" class="headerlink" title="方案："></a>方案：</h6><p>先从1.5升级到1.6，再从1.6升级到1.7，然后升级到1.9（按照官方文档的升级路线）</p>
+<h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><hr>
+<h5 id="一、harbor1-5-0升级到harbor1-6-3（既要升级db也要升级cfg）"><a href="#一、harbor1-5-0升级到harbor1-6-3（既要升级db也要升级cfg）" class="headerlink" title="一、harbor1.5.0升级到harbor1.6.3（既要升级db也要升级cfg）"></a>一、harbor1.5.0升级到harbor1.6.3（既要升级db也要升级cfg）</h5><h6 id="（1）停下在运行的harbor"><a href="#（1）停下在运行的harbor" class="headerlink" title="（1）停下在运行的harbor"></a>（1）停下在运行的harbor</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cd harbor</span><br><span class="line">[root@bogon harbor]# ls</span><br><span class="line">common                    docker-compose.notary.yml  ha          harbor.v1.5.0.tar.gz  LICENSE  prepare</span><br><span class="line">docker-compose.clair.yml  docker-compose.yml         harbor.cfg  install.sh            NOTICE</span><br><span class="line">[root@bogon harbor]# docker ps</span><br><span class="line">CONTAINER ID        IMAGE                                  COMMAND                  CREATED             STATUS                    PORTS                                                              NAMES</span><br><span class="line">717ef68de036        vmware/harbor-jobservice:v1.5.0        &quot;/harbor/start.sh&quot;       40 minutes ago      Up 40 minutes                                                                                harbor-jobservice</span><br><span class="line">ee95661aa905        vmware/nginx-photon:v1.5.0             &quot;nginx -g &#x27;daemon ...&quot;   40 minutes ago      Up 38 minutes (healthy)   0.0.0.0:80-&gt;80/tcp, 0.0.0.0:443-&gt;443/tcp, 0.0.0.0:4443-&gt;4443/tcp   nginx</span><br><span class="line">85aa0167d66a        vmware/harbor-ui:v1.5.0                &quot;/harbor/start.sh&quot;       40 minutes ago      Up 40 minutes (healthy)                                                                      harbor-ui</span><br><span class="line">cb256cbf09ed        vmware/clair-photon:v2.0.1-v1.5.0      &quot;/docker-entrypoin...&quot;   40 minutes ago      Up 40 minutes (healthy)   6060-6061/tcp                                                      clair</span><br><span class="line">e3aa51500bdc        vmware/postgresql-photon:v1.5.0        &quot;/entrypoint.sh po...&quot;   40 minutes ago      Up 40 minutes (healthy)   5432/tcp                                                           clair-db</span><br><span class="line">dce4338d4071        vmware/registry-photon:v2.6.2-v1.5.0   &quot;/entrypoint.sh se...&quot;   40 minutes ago      Up 40 minutes (healthy)   5000/tcp                                                           registry</span><br><span class="line">43e6fbebc160        vmware/harbor-db:v1.5.0                &quot;/usr/local/bin/do...&quot;   40 minutes ago      Up 40 minutes (healthy)   3306/tcp                                                           harbor-db</span><br><span class="line">eca25eea5b18        vmware/harbor-adminserver:v1.5.0       &quot;/harbor/start.sh&quot;       40 minutes ago      Up 40 minutes (healthy)                                                                      harbor-adminserver</span><br><span class="line">d68e94c20695        vmware/redis-photon:v1.5.0             &quot;docker-entrypoint...&quot;   40 minutes ago      Up 40 minutes             6379/tcp                                                           redis</span><br><span class="line">280da2ce97a9        vmware/harbor-log:v1.5.0               &quot;/bin/sh -c /usr/l...&quot;   40 minutes ago      Up 40 minutes (healthy)   127.0.0.1:1514-&gt;10514/tcp                                          harbor-log</span><br><span class="line">[root@bogon harbor]# </span><br><span class="line">[root@bogon harbor]# docker-compose -f docker-compose.yml -f docker-compose.clair.yml down -v</span><br></pre></td></tr></table></figure>
+
+<h6 id="（2）备份harbor目录"><a href="#（2）备份harbor目录" class="headerlink" title="（2）备份harbor目录"></a>（2）备份harbor目录</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon harbor]# cd ..</span><br><span class="line">[root@bogon lanjian]# cp -r harbor harbor1.5.0-bak</span><br></pre></td></tr></table></figure>
+
+<h6 id="（3）下载harbor-1-6-3镜像、数据迁移工具，以及1-5-0数据迁移工具"><a href="#（3）下载harbor-1-6-3镜像、数据迁移工具，以及1-5-0数据迁移工具" class="headerlink" title="（3）下载harbor 1.6.3镜像、数据迁移工具，以及1.5.0数据迁移工具"></a>（3）下载harbor 1.6.3镜像、数据迁移工具，以及1.5.0数据迁移工具</h6><p>Get the Lastest Harbor release package from <a target="_blank" rel="noopener" href="https://github.com/goharbor/harbor/releases">Github</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost lanjian]# docker pull goharbor/harbor-migrator:v1.6.0</span><br><span class="line">Trying to pull repository docker.io/goharbor/harbor-migrator ... </span><br><span class="line">v1.6.0: Pulling from docker.io/goharbor/harbor-migrator</span><br><span class="line">51be32cd3c9d: Pull complete </span><br><span class="line">7e261d84cd9e: Pull complete </span><br><span class="line">f52c9d206429: Pull complete </span><br><span class="line">e399eeb55d79: Pull complete </span><br><span class="line">Digest: sha256:a8398de33c60bba7ad93ddcf977791e187e8b8553214f5589c749959bd265712</span><br><span class="line">Status: Downloaded newer image for docker.io/goharbor/harbor-migrator:v1.6.0</span><br><span class="line">[root@localhost lanjian]# docker images |grep harbor</span><br><span class="line">docker.io/goharbor/harbor-migrator     v1.6.3              dac56e1d921f        11 months ago       799 MB</span><br><span class="line">docker.io/goharbor/harbor-migrator     v1.6.0              22775c4e4066        14 months ago       803 MB</span><br><span class="line">vmware/harbor-log                      v1.5.0              62bb6b8350d9        18 months ago       200 MB</span><br><span class="line">vmware/harbor-jobservice               v1.5.0              aca9fd2e867f        18 months ago       194 MB</span><br><span class="line">vmware/harbor-ui                       v1.5.0              1055166068d0        18 months ago       212 MB</span><br><span class="line">vmware/harbor-adminserver              v1.5.0              019bc4544829        18 months ago       183 MB</span><br><span class="line">vmware/harbor-db                       v1.5.0              82354dcf564f        18 months ago       526 MB</span><br><span class="line">vmware/harbor-migrator                 v1.5.0              466c57ab0dc3        18 months ago       1.16 GB</span><br></pre></td></tr></table></figure>
+
+<h6 id="（4）备份cfg和db"><a href="#（4）备份cfg和db" class="headerlink" title="（4）备份cfg和db"></a>（4）备份cfg和db</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost harbor]# docker run -it --rm -e DB_USR=root -e DB_PWD=root123 -v /data/database:/var/lib/mysql -v /home/lanjian/harbor/harbor.cfg:/harbor-migration/harbor-cfg/harbor.cfg -v /home/lanjian/backup:/harbor-migration/backup goharbor/harbor-migrator:v1.6.3 backup</span><br></pre></td></tr></table></figure>
+
+<h6 id="（5）升级数据库框架（将MySQL框架升级为postgresql）并同步数据"><a href="#（5）升级数据库框架（将MySQL框架升级为postgresql）并同步数据" class="headerlink" title="（5）升级数据库框架（将MySQL框架升级为postgresql）并同步数据"></a>（5）升级数据库框架（将MySQL框架升级为postgresql）并同步数据</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost harbor]# docker run -it --rm -e DB_USR=root -e DB_PWD=root123 -v /data/database:/var/lib/mysql -v /home/lanjian/harbor/harbor.cfg:/harbor-migration/harbor-cfg/harbor.cfg goharbor/harbor-migrator:v1.6.0 up</span><br></pre></td></tr></table></figure>
+
+<h6 id="（6）升级harbor镜像及cfg并拷贝过去"><a href="#（6）升级harbor镜像及cfg并拷贝过去" class="headerlink" title="（6）升级harbor镜像及cfg并拷贝过去"></a>（6）升级harbor镜像及cfg并拷贝过去</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost lanjian]# mkdir harbor-1.6.3</span><br><span class="line">[root@localhost lanjian]# cd 下载</span><br><span class="line">[root@localhost 下载]# tar zxvf harbor-offline-installer-v1.6.3.tgz -C ../harbor1.6.3/</span><br><span class="line">[root@localhost 下载]# cd ../harbor1.6.3/</span><br><span class="line">[root@localhost harbor1.6.3]# ls</span><br><span class="line">harbor</span><br><span class="line">[root@localhost harbor1.6.3]# cd harbor/</span><br><span class="line">[root@localhost harbor]# ls</span><br><span class="line">common                          docker-compose.clair.yml   docker-compose.yml  harbor.cfg            install.sh  NOTICE               prepare</span><br><span class="line">docker-compose.chartmuseum.yml  docker-compose.notary.yml  ha                  harbor.v1.6.3.tar.gz  LICENSE     open_source_license</span><br><span class="line">[root@localhost harbor]#  docker run -it --rm -v /root/backup/harbor.cfg:/harbor-migration/harbor-cfg/harbor.cfg goharbor/harbor-migrator:v1.6.0 --cfg up</span><br><span class="line">[root@localhost backup]# cp harbor.cfg /home/lanjian/harbor/</span><br><span class="line">cp：是否覆盖&quot;/home/lanjian/harbor/harbor.cfg&quot;？ yes</span><br><span class="line">[root@localhost backup]# </span><br></pre></td></tr></table></figure>
+
+<h6 id="（7）启动harbor1-6-3并验证"><a href="#（7）启动harbor1-6-3并验证" class="headerlink" title="（7）启动harbor1.6.3并验证"></a>（7）启动harbor1.6.3并验证</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost harbor]# ./install.sh</span><br></pre></td></tr></table></figure>
+
+<p>验证下版本是否完成升级，以及用户、镜像是否都正常</p>
+<img src="/passages/%E5%AD%A6%E4%B9%A0%E6%9D%82%E8%AE%B0%E4%B9%8Bharbor%E5%AE%9E%E8%B7%B5%E7%AF%872/3.png" class>
+
+<img src="/passages/%E5%AD%A6%E4%B9%A0%E6%9D%82%E8%AE%B0%E4%B9%8Bharbor%E5%AE%9E%E8%B7%B5%E7%AF%872/2.png" class>
+
+<p>二、harbor1.6.3升级到1.7.0（相当于只需要升级cfg文件不用管db）</p>
+<h6 id="（1）同样的，停下正在运行的harbor"><a href="#（1）同样的，停下正在运行的harbor" class="headerlink" title="（1）同样的，停下正在运行的harbor"></a>（1）同样的，停下正在运行的harbor</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost lanjian]# cd harbor</span><br><span class="line">[root@localhost harbor]# docker-compose -f docker-compose.yml -f docker-compose.clair.yml down</span><br></pre></td></tr></table></figure>
+
+<h6 id="（2）备份数据"><a href="#（2）备份数据" class="headerlink" title="（2）备份数据"></a>（2）备份数据</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost lanjian]# mkdir harbor1.6.0-bak</span><br><span class="line">[root@localhost lanjian]# mv harbor harbor1.6.0-bak/harbor</span><br><span class="line">[root@localhost lanjian]# cp -r /data/database harbor1.6.0-bak/</span><br></pre></td></tr></table></figure>
+
+<h6 id="（3）下载harbor-v1-7-0离线安装包解压和migrate容器镜像"><a href="#（3）下载harbor-v1-7-0离线安装包解压和migrate容器镜像" class="headerlink" title="（3）下载harbor v1.7.0离线安装包解压和migrate容器镜像"></a>（3）下载harbor v1.7.0离线安装包解压和migrate容器镜像</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost 下载]# tar zxvf harbor-offline-installer-v1.7.0.tgz</span><br><span class="line">[root@localhost 下载]# mv harbor ../harbor</span><br><span class="line">[root@localhost lanjian]# docker pull goharbor/harbor-migrator:v1.7.0</span><br></pre></td></tr></table></figure>
+
+<h6 id="（4）升级harbor-cfg"><a href="#（4）升级harbor-cfg" class="headerlink" title="（4）升级harbor.cfg"></a>（4）升级harbor.cfg</h6><p>官方文档：NOTE: The ${harbor_cfg} will be overwritten, you must move it to your installation directory after migration.<br>即是在备份目录里直接升级cfg文件的，然后再拷贝到新的harbor目录下，所以为防止意外，先对harbor.cfg再备份一次后再升级<br>PS：这里挂载volume时需要注意宿主机和容器都需要绝对路径，不然会报错，宿主机虽然可以相对路径，但其实所谓的相对路径指的是&#x2F;var&#x2F;lib&#x2F;docker&#x2F;volumes&#x2F;，与宿主机的当前目录无关。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost harbor]# cd ../harbor1.6.0-bak/</span><br><span class="line">[root@localhost harbor]# cp harbor.cfg harbor.cfg.bak</span><br><span class="line">[root@localhost harbor]# docker run -it --rm -v /home/lanjian/harbor1.6.0-bak/harbor/harbor.cfg:/harbor-migration/harbor-cfg/harbor.cfg docker.io/goharbor/harbor-migrator:v1.7.0 --cfg up</span><br><span class="line">Please backup before upgrade, </span><br><span class="line">Enter y to continue updating or n to abort: y</span><br><span class="line">The path of the migrated harbor.cfg is not set, the input file will be overwritten.</span><br><span class="line">input version: 1.6.0, migrator chain: [&#x27;1.7.0&#x27;]</span><br><span class="line">migrating to version 1.7.0</span><br><span class="line">Written new values to /harbor-migration/harbor-cfg/harbor.cfg</span><br></pre></td></tr></table></figure>
+
+<p>我们看到当前cfg文件已经被修改了，不是1.6的了，将其拷贝到1.7的安装路径下面即可</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost harbor]# cat harbor.cfg|grep version</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">This attribute is <span class="keyword">for</span> migrator to detect the version of the .cfg file, DO NOT MODIFY!</span></span><br><span class="line">_version = 1.7.0</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">Log files are rotated log_rotate_count <span class="built_in">times</span> before being removed. If count is 0, old versions are removed rather than rotated.</span></span><br><span class="line">[root@localhost harbor]# mv harbor.cfg /home/lanjian/harbor/</span><br></pre></td></tr></table></figure>
+
+<h6 id="（5）启动harbor-v1-7-0并打开UI确认升级完成情况"><a href="#（5）启动harbor-v1-7-0并打开UI确认升级完成情况" class="headerlink" title="（5）启动harbor v1.7.0并打开UI确认升级完成情况"></a>（5）启动harbor v1.7.0并打开UI确认升级完成情况</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost harbor]# cd /home/lanjian/harbor</span><br><span class="line">[root@localhost harbor]# ./install.sh</span><br></pre></td></tr></table></figure>
+
+<p>如果需要安装clair则带上参数 –with-clair哈</p>
+<img src="/passages/%E5%AD%A6%E4%B9%A0%E6%9D%82%E8%AE%B0%E4%B9%8Bharbor%E5%AE%9E%E8%B7%B5%E7%AF%872/4.png" class>
+
+<h5 id="三、harbor-1-7升级到1-9（升级cfg为yml）"><a href="#三、harbor-1-7升级到1-9（升级cfg为yml）" class="headerlink" title="三、harbor 1.7升级到1.9（升级cfg为yml）"></a>三、harbor 1.7升级到1.9（升级cfg为yml）</h5><p>特别注意两点：<br>With the introduction of storage and artifact quotas in version 1.9.0, migration from 1.7.x and 1.8.x might take a few minutes. This is because the core walks through all blobs in the registry and populates the database with information about the layers and artifacts in projects.<br>因为引入了storage and artifact quotas，这次升级会比较费时间，核心会遍历仓库和数据库中的层信息</p>
+<p>With the introduction of storage and artifact quotas in version 1.9.0, replication between version 1.9.0 and a previous version of Harbor does not work. You must upgrade all Harbor nodes to 1.9.0 if you have configured replication between them.<br>因为引入了storage and artifact quotas，所以同步复制只能再1.9的版本之间进行，如果其中一个仓库低于1.9则无法进行同步</p>
+<h6 id="（1）停止正在运行的harbor"><a href="#（1）停止正在运行的harbor" class="headerlink" title="（1）停止正在运行的harbor"></a>（1）停止正在运行的harbor</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon harbor]# docker-compose -f docker-compose.yml -f docker-compose.clair.yml down -v</span><br></pre></td></tr></table></figure>
+
+<h6 id="（2）备份数据-1"><a href="#（2）备份数据-1" class="headerlink" title="（2）备份数据"></a>（2）备份数据</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon lanjian]# mkdir harbor1.7.0-bak</span><br><span class="line">[root@bogon lanjian]# mv harbor harbor1.7.0-bak/harbor</span><br><span class="line">[root@bogon lanjian]# cp -r /data/database harbor1.7.0-bak/</span><br></pre></td></tr></table></figure>
+
+<h6 id="（3）下载harbor-1-9-0安装包解压及migrator镜像"><a href="#（3）下载harbor-1-9-0安装包解压及migrator镜像" class="headerlink" title="（3）下载harbor 1.9.0安装包解压及migrator镜像"></a>（3）下载harbor 1.9.0安装包解压及migrator镜像</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon lanjian]# docker pull goharbor/harbor-migrator:v1.9.0</span><br><span class="line">[root@bogon 下载]# tar zxvf harbor-offline-installer-v1.9.0.tgz -C /home/lanjian/</span><br><span class="line">[root@bogon lanjian]# cd harbor</span><br><span class="line">[root@bogon harbor]# ls</span><br><span class="line">harbor.v1.9.0.tar.gz  harbor.yml  install.sh  LICENSE  prepare</span><br></pre></td></tr></table></figure>
+
+<h6 id="（4）升级cfg为yml文件"><a href="#（4）升级cfg为yml文件" class="headerlink" title="（4）升级cfg为yml文件"></a>（4）升级cfg为yml文件</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon harbor]# docker run -it --rm -v /home/lanjian/harbor1.7.0-bak/harbor/harbor.cfg:/harbor-migration/harbor-cfg/harbor.yml -v /home/lanjian/harbor/harbor.yml:/harbor-migration/harbor-cfg-out/harbor.yml docker.io/goharbor/harbor-migrator:v1.9.0 --cfg up</span><br></pre></td></tr></table></figure>
+
+<p>发现有报错：jinja2.exceptions.UndefinedError: ‘chart’ is undefined</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">Please backup before upgrade, </span><br><span class="line">Enter y to continue updating or n to abort: y</span><br><span class="line">Command for config file migration: python ./cfg/run.py --input /harbor-migration/harbor-cfg/harbor.yml --output /harbor-migration/harbor-cfg-out/harbor.yml</span><br><span class="line">input version: 1.7.0, migrator chain: [&#x27;1.8.0&#x27;, &#x27;1.9.0&#x27;]</span><br><span class="line">migrating to version 1.8.0</span><br><span class="line">migrating to version 1.9.0</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;./cfg/run.py&quot;, line 70, in &lt;module&gt;</span><br><span class="line">    main()</span><br><span class="line">  File &quot;./cfg/run.py&quot;, line 46, in main</span><br><span class="line">    m.migrate(curr_input_path, curr_output_path)</span><br><span class="line">  File &quot;/harbor-migration/cfg/migrator_1_9_0/__init__.py&quot;, line 21, in migrate</span><br><span class="line">    f.write(tpl.render(**config_dict))</span><br><span class="line">  File &quot;/usr/lib/python2.7/site-packages/jinja2/environment.py&quot;, line 1008, in render</span><br><span class="line">    return self.environment.handle_exception(exc_info, True)</span><br><span class="line">  File &quot;/usr/lib/python2.7/site-packages/jinja2/environment.py&quot;, line 780, in handle_exception</span><br><span class="line">    reraise(exc_type, exc_value, tb)</span><br><span class="line">  File &quot;/harbor-migration/cfg/migrator_1_9_0/harbor.yml.jinja&quot;, line 122, in top-level template code</span><br><span class="line">    absolute_url: &#123;&#123; chart.absolute_url if chart.absolute_url == &#x27;enabled&#x27; else &#x27;disabled&#x27; &#125;&#125;</span><br><span class="line">  File &quot;/usr/lib/python2.7/site-packages/jinja2/environment.py&quot;, line 430, in getattr</span><br><span class="line">    return getattr(obj, attribute)</span><br><span class="line">jinja2.exceptions.UndefinedError: &#x27;chart&#x27; is undefined</span><br></pre></td></tr></table></figure>
+
+<p>通过查看<a target="_blank" rel="noopener" href="https://github.com/goharbor/harbor/issues/9174">issue 9174</a>以及<a target="_blank" rel="noopener" href="https://github.com/goharbor/harbor/issues/9146">issue 9146</a>：<br>发现很多人都报了这个错误，原因时由于 1.7.x 版本的 harbar.cfg 中不存在下面的相关的配置（在1.8版本开始在模板中使用了chart，且为必须项Required Parameters for Harbor Deployment）：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">chart:</span></span><br><span class="line">  <span class="attr">absolute_url:</span> <span class="string">disabled</span></span><br></pre></td></tr></table></figure>
+
+<p>解决方案有两个：<br>（1）先升级到1.8.x版本，并在harbor.yml中加入上述chart配置。<br>（2）替换官方的migrator镜像为issue中大神thatsk提供的镜像。</p>
+<img src="/passages/%E5%AD%A6%E4%B9%A0%E6%9D%82%E8%AE%B0%E4%B9%8Bharbor%E5%AE%9E%E8%B7%B5%E7%AF%872/5.png" class>
+<p>为了避免麻烦，我直接选择方案二，替换掉官方的同步迁移镜像</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon harbor]# docker pull thatsk/harbor-migrator:v1.9.0</span><br><span class="line">[root@bogon harbor]# docker run -it --rm -v /home/lanjian/harbor1.7.0-bak/harbor/harbor.cfg:/harbor-migration/harbor-cfg/harbor.yml -v /home/lanjian/harbor/harbor.yml:/harbor-migration/harbor-cfg-out/harbor.yml docker.io/thatsk/harbor-migrator:v1.9.0 --cfg up                        </span><br><span class="line">Please backup before upgrade, </span><br><span class="line">Enter y to continue updating or n to abort: y</span><br><span class="line">Command for config file migration: python ./cfg/run.py --input /harbor-migration/harbor-cfg/harbor.yml --output /harbor-migration/harbor-cfg-out/harbor.yml</span><br><span class="line">input version: 1.7.0, migrator chain: [&#x27;1.8.0&#x27;, &#x27;1.9.0&#x27;]</span><br><span class="line">migrating to version 1.8.0</span><br><span class="line">migrating to version 1.9.0</span><br><span class="line">Written new values to /harbor-migration/harbor-cfg-out/harbor.yml</span><br></pre></td></tr></table></figure>
+
+<p>升级成功</p>
+<h6 id="（5）启动harbor并检查UI"><a href="#（5）启动harbor并检查UI" class="headerlink" title="（5）启动harbor并检查UI"></a>（5）启动harbor并检查UI</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon harbor]# ./install.sh --with-clair</span><br><span class="line">[Step 0]: checking installation environment ...</span><br><span class="line">✖ Need to upgrade docker package to 17.06.0+.</span><br><span class="line">[root@bogon harbor]# docker --version</span><br><span class="line">Docker version 1.13.1, build b2f74b2/1.13.1</span><br></pre></td></tr></table></figure>
+
+<p>提示docker版本太低，需要升级，那么就升吧，步骤：<br>先停止docker，删除旧版本，然后安装yum管理工具，然后添加国内镜像源，查看版本，安装指定的docker版本以及docker-compose版本：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon bin]# systemctl stop docker</span><br><span class="line">[root@bogon bin]# rpm -qa | grep docker</span><br><span class="line">docker-1.13.1-94.gitb2f74b2.el7.centos.x86_64</span><br><span class="line">docker-client-1.13.1-94.gitb2f74b2.el7.centos.x86_64</span><br><span class="line">docker-common-1.13.1-94.gitb2f74b2.el7.centos.x86_64</span><br><span class="line">[root@bogon bin]# yum remove docker-common-1.13.1-94.gitb2f74b2.el7.centos.x86_64</span><br><span class="line"></span><br><span class="line">[root@bogon bin]# yum install -y yum-utils</span><br><span class="line">[root@bogon bin]# yum-config-manager --add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br><span class="line">已加载插件：fastestmirror, langpacks</span><br><span class="line">adding repo from: https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br><span class="line">grabbing file https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo to /etc/yum.repos.d/docker-ce.repo</span><br><span class="line">repo saved to /etc/yum.repos.d/docker-ce.repo</span><br><span class="line">[root@bogon bin]# yum list docker-ce --showduplicates|sort -r</span><br><span class="line">已加载插件：fastestmirror, langpacks</span><br><span class="line">可安装的软件包</span><br><span class="line"> * updates: mirrors.neusoft.edu.cn</span><br><span class="line">Loading mirror speeds from cached hostfile</span><br><span class="line"> * extras: mirrors.neusoft.edu.cn</span><br><span class="line"> * epel: mirror.lzu.edu.cn</span><br><span class="line">docker-ce.x86_64            3:19.03.5-3.el7                     docker-ce-stable</span><br><span class="line">docker-ce.x86_64            3:19.03.4-3.el7                     docker-ce-stable</span><br><span class="line">docker-ce.x86_64            3:19.03.3-3.el7                     docker-ce-stable</span><br><span class="line">docker-ce.x86_64            3:19.03.2-3.el7                     docker-ce-stable</span><br><span class="line">docker-ce.x86_64            3:19.03.1-3.el7                     docker-ce-stable</span><br><span class="line">docker-ce.x86_64            3:19.03.0-3.el7                     docker-ce-stable</span><br><span class="line">docker-ce.x86_64            3:18.09.9-3.el7                     docker-ce-stable</span><br><span class="line">docker-ce.x86_64            3:18.09.8-3.el7                     docker-ce-stable</span><br><span class="line">docker-ce.x86_64            3:18.09.7-3.el7                     docker-ce-stable</span><br><span class="line">docker-ce.x86_64            3:18.09.6-3.el7                     docker-ce-stable</span><br><span class="line">docker-ce.x86_64            3:18.09.5-3.el7                     docker-ce-stable</span><br><span class="line">docker-ce.x86_64            3:18.09.4-3.el7                     docker-ce-stable</span><br><span class="line">docker-ce.x86_64            3:18.09.3-3.el7                     docker-ce-stable</span><br><span class="line">docker-ce.x86_64            3:18.09.2-3.el7                     docker-ce-stable</span><br><span class="line">docker-ce.x86_64            3:18.09.1-3.el7                     docker-ce-stable</span><br><span class="line">docker-ce.x86_64            3:18.09.0-3.el7                     docker-ce-stable</span><br><span class="line">docker-ce.x86_64            18.06.3.ce-3.el7                    docker-ce-stable</span><br><span class="line">docker-ce.x86_64            18.06.2.ce-3.el7                    docker-ce-stable</span><br><span class="line">docker-ce.x86_64            18.06.1.ce-3.el7                    docker-ce-stable</span><br><span class="line">docker-ce.x86_64            18.06.0.ce-3.el7                    docker-ce-stable</span><br><span class="line">docker-ce.x86_64            18.03.1.ce-1.el7.centos             docker-ce-stable</span><br><span class="line">docker-ce.x86_64            18.03.0.ce-1.el7.centos             docker-ce-stable</span><br><span class="line">docker-ce.x86_64            17.12.1.ce-1.el7.centos             docker-ce-stable</span><br><span class="line">docker-ce.x86_64            17.12.0.ce-1.el7.centos             docker-ce-stable</span><br><span class="line">docker-ce.x86_64            17.09.1.ce-1.el7.centos             docker-ce-stable</span><br><span class="line">docker-ce.x86_64            17.09.0.ce-1.el7.centos             docker-ce-stable</span><br><span class="line">docker-ce.x86_64            17.06.2.ce-1.el7.centos             docker-ce-stable</span><br><span class="line">docker-ce.x86_64            17.06.1.ce-1.el7.centos             docker-ce-stable</span><br><span class="line">docker-ce.x86_64            17.06.0.ce-1.el7.centos             docker-ce-stable</span><br><span class="line">docker-ce.x86_64            17.03.3.ce-1.el7                    docker-ce-stable</span><br><span class="line">docker-ce.x86_64            17.03.2.ce-1.el7.centos             docker-ce-stable</span><br><span class="line">docker-ce.x86_64            17.03.1.ce-1.el7.centos             docker-ce-stable</span><br><span class="line">docker-ce.x86_64            17.03.0.ce-1.el7.centos             docker-ce-stable</span><br><span class="line"> * base: mirrors.nju.edu.cn</span><br><span class="line">[root@bogon bin]# yum install docker-ce.x86_64.18.03.0.ce-1.el7.centos</span><br><span class="line">[root@bogon bin]# systemctl start docker</span><br><span class="line">[root@bogon bin]# systemctl enable docker</span><br><span class="line">Created symlink from /etc/systemd/system/multi-user.target.wants/docker.service to /usr/lib/systemd/system/docker.service.</span><br><span class="line">[root@bogon bin]# docker version</span><br><span class="line">Client:</span><br><span class="line"> Version:       18.03.0-ce</span><br><span class="line"> API version:   1.37</span><br><span class="line"> Go version:    go1.9.4</span><br><span class="line"> Git commit:    0520e24</span><br><span class="line"> Built: Wed Mar 21 23:09:15 2018</span><br><span class="line"> OS/Arch:       linux/amd64</span><br><span class="line"> Experimental:  false</span><br><span class="line"> Orchestrator:  swarm</span><br><span class="line"></span><br><span class="line">Server:</span><br><span class="line"> Engine:</span><br><span class="line">  Version:      18.03.0-ce</span><br><span class="line">  API version:  1.37 (minimum version 1.12)</span><br><span class="line">  Go version:   go1.9.4</span><br><span class="line">  Git commit:   0520e24</span><br><span class="line">  Built:        Wed Mar 21 23:13:03 2018</span><br><span class="line">  OS/Arch:      linux/amd64</span><br><span class="line">  Experimental: false</span><br></pre></td></tr></table></figure>
+
+<p>PS：这里又趟坑了，在yum-config-manager时报错：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">File &quot;/bin/yum-config-manager&quot;, line 135</span><br><span class="line">    except yum.Errors.RepoError, e:</span><br><span class="line">                               ^</span><br><span class="line">SyntaxError: invalid syntax</span><br></pre></td></tr></table></figure>
+
+<p>这时python升级为3.x后的问题，yum-config-manager还是用Python2写的，所以我们需要替换掉这个文件的Python版本：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon bin]# head -n 1 /bin/yum-config-manager</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/usr/bin/python -tt</span></span><br><span class="line">[root@bogon bin]# ll /usr/bin/ |grep -i pytho</span><br><span class="line">-rwxr-xr-x.   1 root root       11312 11月 14 2018 abrt-action-analyze-python</span><br><span class="line">lrwxrwxrwx    1 root root          16 9月  29 23:10 python -&gt; /usr/bin/python3</span><br><span class="line">lrwxrwxrwx    1 root root           9 4月  27 2019 python2 -&gt; python2.7</span><br><span class="line">-rwxr-xr-x    1 root root        7216 4月   9 2019 python2.7</span><br><span class="line">lrwxrwxrwx.   1 root root          24 3月   4 2019 python3 -&gt; /usr/local/bin/python3.6</span><br><span class="line">lrwxrwxrwx    1 root root          24 3月  14 2019 python_backup_20190314 -&gt; /etc/alternatives/python</span><br><span class="line">lrwxrwxrwx.   1 root root           7 3月   3 2019 python_old -&gt; python2</span><br><span class="line">[root@bogon bin]# vim /bin/yum-config-manager</span><br><span class="line">[root@bogon bin]# head -n 1 /bin/yum-config-manager</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/usr/bin/python2 -tt</span></span><br></pre></td></tr></table></figure>
+
+<p>继续升级docker-compose，这个简单些，可以通过pip安装：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon harbor]# rm /usr/local/bin/docker-compose</span><br><span class="line">[root@bogon harbor]# pip install docker-compose==1.18.0</span><br><span class="line">[root@bogon harbor]# docker-compose version</span><br><span class="line">docker-compose version 1.18.0, build 8dd22a9</span><br><span class="line">docker-py version: 2.7.0</span><br><span class="line">CPython version: 3.6.0</span><br><span class="line">OpenSSL version: OpenSSL 1.0.2k-fips  26 Jan 2017</span><br></pre></td></tr></table></figure>
+
+<p>好了，我们终于可以继续启动harbor了：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon harbor]# ./install.sh --with-clair  </span><br><span class="line">...</span><br><span class="line">...</span><br><span class="line">✔ ----Harbor has been installed and started successfully.----</span><br><span class="line"></span><br><span class="line">Now you should be able to visit the admin portal at http://192.168.137.7. </span><br><span class="line">For more details, please visit https://github.com/goharbor/harbor .</span><br></pre></td></tr></table></figure>
+
+<p>完成，检查下UI、镜像和log，升级成功！经历了那么多版本，终于完成了，奈斯！</p>
+<img src="/passages/%E5%AD%A6%E4%B9%A0%E6%9D%82%E8%AE%B0%E4%B9%8Bharbor%E5%AE%9E%E8%B7%B5%E7%AF%872/1.png" class>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%AD%A6%E4%B9%A0%E6%9D%82%E8%AE%B0/" rel="tag"># 学习杂记</a>
+              <a href="/tags/Harbor/" rel="tag"># Harbor</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/passages/%E5%AD%A6%E4%B9%A0%E6%9D%82%E8%AE%B0%E4%B9%8BHelm3%E5%AD%A6%E4%B9%A0/" rel="prev" title="学习杂记之Helm3学习">
+      <i class="fa fa-chevron-left"></i> 学习杂记之Helm3学习
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/passages/%E5%AD%A6%E4%B9%A0%E6%9D%82%E8%AE%B0%E4%B9%8Bharbor%E5%AE%9E%E8%B7%B5%E7%AF%87/" rel="next" title="学习杂记之harbor实践篇">
+      学习杂记之harbor实践篇 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%B0%E5%BD%95harbor-1-5%E5%8D%87%E7%BA%A7%E5%88%B01-9"><span class="nav-number">1.</span> <span class="nav-text">记录harbor 1.5升级到1.9</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%83%8C%E6%99%AF%EF%BC%9A"><span class="nav-number">1.1.</span> <span class="nav-text">背景：</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E7%AE%80%E6%98%8E%EF%BC%9A"><span class="nav-number">1.1.0.0.1.</span> <span class="nav-text">简明：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E8%A6%81%E7%82%B9%EF%BC%9A"><span class="nav-number">1.1.0.0.2.</span> <span class="nav-text">要点：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%96%B9%E6%A1%88%EF%BC%9A"><span class="nav-number">1.1.0.0.3.</span> <span class="nav-text">方案：</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E5%A7%8B"><span class="nav-number">1.2.</span> <span class="nav-text">开始</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%80%E3%80%81harbor1-5-0%E5%8D%87%E7%BA%A7%E5%88%B0harbor1-6-3%EF%BC%88%E6%97%A2%E8%A6%81%E5%8D%87%E7%BA%A7db%E4%B9%9F%E8%A6%81%E5%8D%87%E7%BA%A7cfg%EF%BC%89"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">一、harbor1.5.0升级到harbor1.6.3（既要升级db也要升级cfg）</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%81%9C%E4%B8%8B%E5%9C%A8%E8%BF%90%E8%A1%8C%E7%9A%84harbor"><span class="nav-number">1.2.0.1.1.</span> <span class="nav-text">（1）停下在运行的harbor</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E5%A4%87%E4%BB%BDharbor%E7%9B%AE%E5%BD%95"><span class="nav-number">1.2.0.1.2.</span> <span class="nav-text">（2）备份harbor目录</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E4%B8%8B%E8%BD%BDharbor-1-6-3%E9%95%9C%E5%83%8F%E3%80%81%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB%E5%B7%A5%E5%85%B7%EF%BC%8C%E4%BB%A5%E5%8F%8A1-5-0%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB%E5%B7%A5%E5%85%B7"><span class="nav-number">1.2.0.1.3.</span> <span class="nav-text">（3）下载harbor 1.6.3镜像、数据迁移工具，以及1.5.0数据迁移工具</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E5%A4%87%E4%BB%BDcfg%E5%92%8Cdb"><span class="nav-number">1.2.0.1.4.</span> <span class="nav-text">（4）备份cfg和db</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%EF%BC%885%EF%BC%89%E5%8D%87%E7%BA%A7%E6%95%B0%E6%8D%AE%E5%BA%93%E6%A1%86%E6%9E%B6%EF%BC%88%E5%B0%86MySQL%E6%A1%86%E6%9E%B6%E5%8D%87%E7%BA%A7%E4%B8%BApostgresql%EF%BC%89%E5%B9%B6%E5%90%8C%E6%AD%A5%E6%95%B0%E6%8D%AE"><span class="nav-number">1.2.0.1.5.</span> <span class="nav-text">（5）升级数据库框架（将MySQL框架升级为postgresql）并同步数据</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%EF%BC%886%EF%BC%89%E5%8D%87%E7%BA%A7harbor%E9%95%9C%E5%83%8F%E5%8F%8Acfg%E5%B9%B6%E6%8B%B7%E8%B4%9D%E8%BF%87%E5%8E%BB"><span class="nav-number">1.2.0.1.6.</span> <span class="nav-text">（6）升级harbor镜像及cfg并拷贝过去</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%EF%BC%887%EF%BC%89%E5%90%AF%E5%8A%A8harbor1-6-3%E5%B9%B6%E9%AA%8C%E8%AF%81"><span class="nav-number">1.2.0.1.7.</span> <span class="nav-text">（7）启动harbor1.6.3并验证</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%90%8C%E6%A0%B7%E7%9A%84%EF%BC%8C%E5%81%9C%E4%B8%8B%E6%AD%A3%E5%9C%A8%E8%BF%90%E8%A1%8C%E7%9A%84harbor"><span class="nav-number">1.2.0.1.8.</span> <span class="nav-text">（1）同样的，停下正在运行的harbor</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE"><span class="nav-number">1.2.0.1.9.</span> <span class="nav-text">（2）备份数据</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E4%B8%8B%E8%BD%BDharbor-v1-7-0%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85%E5%8C%85%E8%A7%A3%E5%8E%8B%E5%92%8Cmigrate%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F"><span class="nav-number">1.2.0.1.10.</span> <span class="nav-text">（3）下载harbor v1.7.0离线安装包解压和migrate容器镜像</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E5%8D%87%E7%BA%A7harbor-cfg"><span class="nav-number">1.2.0.1.11.</span> <span class="nav-text">（4）升级harbor.cfg</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%EF%BC%885%EF%BC%89%E5%90%AF%E5%8A%A8harbor-v1-7-0%E5%B9%B6%E6%89%93%E5%BC%80UI%E7%A1%AE%E8%AE%A4%E5%8D%87%E7%BA%A7%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5"><span class="nav-number">1.2.0.1.12.</span> <span class="nav-text">（5）启动harbor v1.7.0并打开UI确认升级完成情况</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%89%E3%80%81harbor-1-7%E5%8D%87%E7%BA%A7%E5%88%B01-9%EF%BC%88%E5%8D%87%E7%BA%A7cfg%E4%B8%BAyml%EF%BC%89"><span class="nav-number">1.2.0.2.</span> <span class="nav-text">三、harbor 1.7升级到1.9（升级cfg为yml）</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%81%9C%E6%AD%A2%E6%AD%A3%E5%9C%A8%E8%BF%90%E8%A1%8C%E7%9A%84harbor"><span class="nav-number">1.2.0.2.1.</span> <span class="nav-text">（1）停止正在运行的harbor</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE-1"><span class="nav-number">1.2.0.2.2.</span> <span class="nav-text">（2）备份数据</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E4%B8%8B%E8%BD%BDharbor-1-9-0%E5%AE%89%E8%A3%85%E5%8C%85%E8%A7%A3%E5%8E%8B%E5%8F%8Amigrator%E9%95%9C%E5%83%8F"><span class="nav-number">1.2.0.2.3.</span> <span class="nav-text">（3）下载harbor 1.9.0安装包解压及migrator镜像</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E5%8D%87%E7%BA%A7cfg%E4%B8%BAyml%E6%96%87%E4%BB%B6"><span class="nav-number">1.2.0.2.4.</span> <span class="nav-text">（4）升级cfg为yml文件</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%EF%BC%885%EF%BC%89%E5%90%AF%E5%8A%A8harbor%E5%B9%B6%E6%A3%80%E6%9F%A5UI"><span class="nav-number">1.2.0.2.5.</span> <span class="nav-text">（5）启动harbor并检查UI</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Sheldon Lu</p>
+  <div class="site-description" itemprop="description">静下心来写点东西</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/sheldon-lu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;sheldon-lu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sheldon Lu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

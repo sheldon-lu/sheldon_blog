@@ -1,23 +1,486 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block title %}{{ page.title }} | {{ title }}{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
-{% block page_class %}page-post-detail{% endblock %}
 
-{% block content %}
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.sheldonlu.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Go-Micro系列一 – 入门篇go 1.13.0 go版本 1.12 - 1.13  官方貌似20200227开始更新版本，关于micro的V2、GO MOD更新  安装go-micro安装consul安装服务发现能力，docker安装consul或者本地安装运行consul，consul在本地开发环境使用方便便于调试。 1、docker安装consul">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go-Micro系列一">
+<meta property="og:url" content="https://www.sheldonlu.com/passages/Go-Micro%E7%B3%BB%E5%88%971/index.html">
+<meta property="og:site_name" content="Sheldon_Lu">
+<meta property="og:description" content="Go-Micro系列一 – 入门篇go 1.13.0 go版本 1.12 - 1.13  官方貌似20200227开始更新版本，关于micro的V2、GO MOD更新  安装go-micro安装consul安装服务发现能力，docker安装consul或者本地安装运行consul，consul在本地开发环境使用方便便于调试。 1、docker安装consul">
+<meta property="og:locale">
+<meta property="article:published_time" content="2020-01-01T13:35:03.000Z">
+<meta property="article:modified_time" content="2020-06-30T13:48:43.216Z">
+<meta property="article:author" content="Sheldon Lu">
+<meta property="article:tag" content="Golang">
+<meta property="article:tag" content="Go-Micro">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://www.sheldonlu.com/passages/Go-Micro%E7%B3%BB%E5%88%971/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>Go-Micro系列一 | Sheldon_Lu</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Sheldon_Lu</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://www.sheldonlu.com/passages/Go-Micro%E7%B3%BB%E5%88%971/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Sheldon Lu">
+      <meta itemprop="description" content="静下心来写点东西">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sheldon_Lu">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Go-Micro系列一
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-01-01 21:35:03" itemprop="dateCreated datePublished" datetime="2020-01-01T21:35:03+08:00">2020-01-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-06-30 21:48:43" itemprop="dateModified" datetime="2020-06-30T21:48:43+08:00">2020-06-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Golang/" itemprop="url" rel="index"><span itemprop="name">Golang</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>4.8k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>4 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Go-Micro系列一-–-入门篇"><a href="#Go-Micro系列一-–-入门篇" class="headerlink" title="Go-Micro系列一 – 入门篇"></a>Go-Micro系列一 – 入门篇</h2><p><code>go 1.13.0</code> go版本 1.12 - 1.13</p>
+<blockquote>
+<p>官方貌似20200227开始更新版本，关于micro的V2、GO MOD更新</p>
+</blockquote>
+<h3 id="安装go-micro"><a href="#安装go-micro" class="headerlink" title="安装go-micro"></a>安装go-micro</h3><h4 id="安装consul"><a href="#安装consul" class="headerlink" title="安装consul"></a>安装consul</h4><p>安装服务发现能力，<strong>docker安装consul</strong>或者<strong>本地安装运行consul</strong>，consul在本地开发环境使用方便便于调试。</p>
+<p>1、docker安装consul<span id="more"></span></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --net=host -e &#x27;CONSUL_LOCAL_CONFIG=&#123;&quot;skip_leave_on_interrupt&quot;: true&#125;&#x27;  --name consul_server  consul agent -server -bind=192.168.0.111 -bootstrap-expect=1  -node=node1 -client 0.0.0.0 -ui</span><br></pre></td></tr></table></figure>
+
+<p>2、本地安装运行consul</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">windows:</span><br><span class="line">https://www.consul.io/downloads.html</span><br><span class="line">mac:</span><br><span class="line">https://www.consul.io/downloads.html</span><br><span class="line"></span><br><span class="line">直接下载对应操作系统的版本即可，自行添加环境变量</span><br><span class="line">consul命令即可直接运行，默认端口8500</span><br><span class="line"></span><br><span class="line">consul agent -server -bind=192.168.0.111 -bootstrap-expect=1  -node=node1 -client 0.0.0.0 -ui</span><br><span class="line">consul agent -dev  # 本地开发测试直接运行dev即可</span><br></pre></td></tr></table></figure>
+
+<p>以上两种方式运行，浏览器输入<a target="_blank" rel="noopener" href="http://192.168.0.111:8500/">http://192.168.0.111:8500</a> 能看到consul的UI页面表示正常启动</p>
+<h4 id="安装Micro"><a href="#安装Micro" class="headerlink" title="安装Micro"></a>安装Micro</h4><h5 id="基础知识补充"><a href="#基础知识补充" class="headerlink" title="基础知识补充"></a>基础知识补充</h5><p>go的包管理工具 – gomod</p>
+<p>可参考：<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000018389353?utm_source=tag-newest">https://segmentfault.com/a/1190000018389353?utm_source=tag-newest</a></p>
+<p> <a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000020293616?utm_source=tag-newest">https://segmentfault.com/a/1190000020293616?utm_source=tag-newest</a></p>
+<h5 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#linux/mac 下</span><br><span class="line">export GO111MODULE=on</span><br><span class="line">export GOPROXY=https://goproxy.cn,direct</span><br><span class="line"># windows下设置如下环境变量</span><br><span class="line">setx GO111MODULE on</span><br><span class="line">setx GOPROXY https://goproxy.cn,direct</span><br><span class="line"></span><br><span class="line"># go 1.12</span><br><span class="line">export GO111MODULE=on</span><br><span class="line">export GOPROXY=https://goproxy.cn</span><br><span class="line"># 使用如下指令安装</span><br><span class="line"># micro为二进制命令文件</span><br><span class="line">go get -u -v github.com/micro/micro</span><br><span class="line">go get -u -v github.com/micro/go-micro</span><br><span class="line"></span><br><span class="line">#如果没有git请自行安装git</span><br><span class="line">#下载地址</span><br><span class="line">#https://git-scm.com/downloads/</span><br></pre></td></tr></table></figure>
+
+<h4 id="安装Protoc"><a href="#安装Protoc" class="headerlink" title="安装Protoc"></a>安装Protoc</h4><p>1、访问如下网址</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/protocolbuffers/protobuf/releases</span><br></pre></td></tr></table></figure>
+
+<p>2、下载,不同的版本文件名称不一样，Win选择protoc-xx-win64.zip，Mac选择protoc-xx-osx-x86_64.zip</p>
+<p>3、解压到目标zip文件，添加<code>xxxxx\bin</code>到环境变量<code>path</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Win</span><br><span class="line">e:\dev\protoc-xx-win64\bin</span><br><span class="line">Mac</span><br><span class="line">/xxx/user/protoc-xx-osx-x86_64/bin</span><br></pre></td></tr></table></figure>
+
+<p>PS：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get github.com/micro/protobuf/&#123;proto,protoc-gen-go&#125;</span><br></pre></td></tr></table></figure>
+
+<p>发现无法用 <code>protoc-gen-go</code> 生成代码。所以我去下载了<code>protobuf</code>。</p>
+<p>这里我是MAC系统所以，下载对应的mac版本 <a target="_blank" rel="noopener" href="https://github.com/google/protobuf/releases/download/v3.0.0/protoc-3.0.0-osx-x86_64.zip">protobuf</a>，有问题可以自行选择各种系统版本。</p>
+<h4 id="安装protoc-gen-micro插件"><a href="#安装protoc-gen-micro插件" class="headerlink" title="安装protoc-gen-micro插件"></a>安装protoc-gen-micro插件</h4><p>这个插件主要作用是通过<code>.proto</code>文件生成适用于<code>go-micro</code>的代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get -u -v github.com/micro/protoc-gen-micro</span><br></pre></td></tr></table></figure>
+
+<h4 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">consul</span><br><span class="line">protoc</span><br><span class="line">micro --version</span><br></pre></td></tr></table></figure>
+
+<h4 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h4><p>两种方法，一种使用micro自动生成代码，另一种手动创建；注意，手动创建可以自定义目录，自行<code>go mod init</code>，自动生成代码会生成在goPath中的指定目录。可自行选择</p>
+<p>这里使用自动生成代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&gt;micro new $GOPATH/microapp/hello</span><br><span class="line">Creating service go.micro.srv.hello in $GOPATH\microapp\hello</span><br><span class="line"></span><br><span class="line">.</span><br><span class="line">├── main.go</span><br><span class="line">├── plugin.go</span><br><span class="line">├── handler</span><br><span class="line">│   └── hello.go</span><br><span class="line">├── subscriber</span><br><span class="line">│   └── hello.go</span><br><span class="line">├── proto\hello</span><br><span class="line">│   └── hello.proto</span><br><span class="line">├── Dockerfile</span><br><span class="line">├── Makefile</span><br><span class="line">├── README.md</span><br><span class="line">└── go.mod</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">download protobuf for micro:</span><br><span class="line"></span><br><span class="line">brew install protobuf</span><br><span class="line">go get -u github.com/golang/protobuf/&#123;proto,protoc-gen-go&#125;</span><br><span class="line">go get -u github.com/micro/protoc-gen-micro</span><br><span class="line"></span><br><span class="line">compile the proto file hello.proto:</span><br><span class="line"></span><br><span class="line">cd $GOPATH\microapp\hello</span><br><span class="line">protoc --proto_path=.:$GOPATH/src --go_out=. --micro_out=. proto/hello/hello.proto</span><br></pre></td></tr></table></figure>
+
+<h5 id="生成适配proto的golang代码"><a href="#生成适配proto的golang代码" class="headerlink" title="生成适配proto的golang代码"></a>生成适配proto的golang代码</h5><blockquote>
+<p>注意：在win系统下<code>$GOPATH</code>环境变量无效,因此如上脚本将创建微服务失败,因此我们需要对如上脚本进行处理</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#切换到项目目录下</span><br><span class="line">&gt;cd $GOPATH\microapp\hello</span><br><span class="line"></span><br><span class="line"># 根据proto生成文件</span><br><span class="line">&gt;protoc --proto_path=. --go_out=. --micro_out=. proto/hello/hello.proto</span><br></pre></td></tr></table></figure>
+
+<h5 id="启动应用"><a href="#启动应用" class="headerlink" title="启动应用"></a>启动应用</h5><p><strong>对于现在的新版本已经默认不使用consul了。可以降低micro版本或者插件代码插入consul插件即可使用consul</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">#启动consul</span><br><span class="line">&gt;consul agent -dev</span><br><span class="line">#默认mdns启动</span><br><span class="line">&gt;go run main.go </span><br><span class="line">2019/08/19 13:00:46 Transport [http] Listening on [::]:54689</span><br><span class="line">2019/08/19 13:00:46 Broker [http] Connected to [::]:54690</span><br><span class="line">2019/08/19 13:00:46 Registry [mdns] Registering node: go.micro.srv.hello-4851dce2-ab5d-4e4c-801e-44dae5d93f26</span><br><span class="line">2019/08/19 13:00:46 Subscribing go.micro.srv.hello-4851dce2-ab5d-4e4c-801e-44dae5d93f26 to topic: go.micro.srv.hello</span><br><span class="line">2019/08/19 13:00:46 Subscribing go.micro.srv.hello-4851dce2-ab5d-4e4c-801e-44dae5d93f26 to topic: go.micro.srv.hello</span><br><span class="line"></span><br><span class="line">#指定registry只需要添加参数即可，默认使用端口8500</span><br><span class="line">&gt;go run main.go --registry=consul</span><br><span class="line"></span><br><span class="line">## 注意这里没有指定注册consul，默认使用mdns（windows中无法使用mdns，并不是注册中心，使用的广播）</span><br><span class="line">## 了解mdns，自行查看</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在mian.go目录下新建一个插件文件plugins.go</span></span><br><span class="line"><span class="comment">// cat plugins.go 导入consul插件即可</span></span><br><span class="line"><span class="keyword">import</span> _ <span class="string">&quot;github.com/micro/go-plugins/registry/consul&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用的时候或者build带上plugins文件</span></span><br><span class="line"><span class="comment">// go run main.go plugins.go --registry=consul</span></span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://micro.mu/docs/">官方文档附上链接</a></p>
+<h5 id="查看是否启动"><a href="#查看是否启动" class="headerlink" title="查看是否启动"></a>查看是否启动</h5><p><strong>这里说一个micro需要跟go-micro的版本兼容，不然无法使用micro命令</strong></p>
+<p><strong>当然，如果你后期不适用micro api，micro命令不用也没关系</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#也可以去consul的ui查看，更加直观</span><br><span class="line">&gt;micro list services --registry=consul</span><br><span class="line">go.micro.srv.hello</span><br><span class="line">topic:go.micro.srv.hello</span><br></pre></td></tr></table></figure>
+
+<h5 id="启动restful-api接口支持支持"><a href="#启动restful-api接口支持支持" class="headerlink" title="启动restful api接口支持支持"></a>启动restful api接口支持支持</h5><p>注意其中的–namespace参数,我们每一个微服务都属于一个命名空间,通过api暴露出来该命名空间后,满足<code>go.micro.srv.*</code>格式的微服务都可以访问。如<code>go.micro.srv.hello</code>可以通过如下格式访问</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:8080/user/call</span><br><span class="line">&gt;micro api --namespace=go.micro.srv --registry=consul</span><br><span class="line">2019/08/19 13:07:11 Registering API Default Handler at /</span><br><span class="line">2019/08/19 13:07:11 HTTP API Listening on [::]:8080</span><br><span class="line">2019/08/19 13:07:11 Transport [http] Listening on [::]:54934</span><br><span class="line">2019/08/19 13:07:11 Broker [http] Connected to [::]:54935</span><br><span class="line">2019/08/19 13:07:11 Registry [consul] Registering node: go.micro.api-1753185c-b8e1-49c4-aa0f-617f243a8e2a</span><br></pre></td></tr></table></figure>
+
+<h5 id="验证api接口"><a href="#验证api接口" class="headerlink" title="验证api接口"></a>验证api接口</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -XPOST -d &quot;&#123;name: nihao&#125;&quot; http://127.0.0.1:8080/user/call -H &quot;Content-Type:application/json&quot;</span><br><span class="line"></span><br><span class="line"># output: hello nihao</span><br></pre></td></tr></table></figure>
+
+<h3 id="系列链接"><a href="#系列链接" class="headerlink" title="系列链接"></a>系列链接</h3><p>-&gt; <a href="#">Post not found: Go-Micro系列一 Go-Micro系列一-入门篇</a></p>
+<p>-&gt; <a href="#">Post not found: Go-Micro系列二 Go-Micro系列二-micro介绍以及微服务</a></p>
+<p>-&gt; <a href="#">Post not found: Go-Micro系列三 Go-Micro系列三-</a></p>
+<p>-&gt; <a href="#">Post not found: Go-Micro系列四 Go-Micro系列四-</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Golang/" rel="tag"># Golang</a>
+              <a href="/tags/Go-Micro/" rel="tag"># Go-Micro</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/passages/Go-Micro%E7%9B%B8%E5%85%B3/" rel="prev" title="Go-Micro相关">
+      <i class="fa fa-chevron-left"></i> Go-Micro相关
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/passages/Go-Micro%E7%B3%BB%E5%88%972/" rel="next" title="Go-Micro系列二">
+      Go-Micro系列二 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Go-Micro%E7%B3%BB%E5%88%97%E4%B8%80-%E2%80%93-%E5%85%A5%E9%97%A8%E7%AF%87"><span class="nav-number">1.</span> <span class="nav-text">Go-Micro系列一 – 入门篇</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85go-micro"><span class="nav-number">1.1.</span> <span class="nav-text">安装go-micro</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85consul"><span class="nav-number">1.1.1.</span> <span class="nav-text">安装consul</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Micro"><span class="nav-number">1.1.2.</span> <span class="nav-text">安装Micro</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E8%A1%A5%E5%85%85"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">基础知识补充</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">安装</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Protoc"><span class="nav-number">1.1.3.</span> <span class="nav-text">安装Protoc</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85protoc-gen-micro%E6%8F%92%E4%BB%B6"><span class="nav-number">1.1.4.</span> <span class="nav-text">安装protoc-gen-micro插件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81"><span class="nav-number">1.1.5.</span> <span class="nav-text">验证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Hello-World"><span class="nav-number">1.1.6.</span> <span class="nav-text">Hello World</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E9%80%82%E9%85%8Dproto%E7%9A%84golang%E4%BB%A3%E7%A0%81"><span class="nav-number">1.1.6.1.</span> <span class="nav-text">生成适配proto的golang代码</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E5%BA%94%E7%94%A8"><span class="nav-number">1.1.6.2.</span> <span class="nav-text">启动应用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%98%AF%E5%90%A6%E5%90%AF%E5%8A%A8"><span class="nav-number">1.1.6.3.</span> <span class="nav-text">查看是否启动</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8restful-api%E6%8E%A5%E5%8F%A3%E6%94%AF%E6%8C%81%E6%94%AF%E6%8C%81"><span class="nav-number">1.1.6.4.</span> <span class="nav-text">启动restful api接口支持支持</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81api%E6%8E%A5%E5%8F%A3"><span class="nav-number">1.1.6.5.</span> <span class="nav-text">验证api接口</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B3%BB%E5%88%97%E9%93%BE%E6%8E%A5"><span class="nav-number">1.2.</span> <span class="nav-text">系列链接</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Sheldon Lu</p>
+  <div class="site-description" itemprop="description">静下心来写点东西</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/sheldon-lu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;sheldon-lu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sheldon Lu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
